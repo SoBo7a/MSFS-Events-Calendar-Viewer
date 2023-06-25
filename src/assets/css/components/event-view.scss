@@ -126,6 +126,13 @@ body {
                 width: 100%;
                 height: auto;
                 border-radius: 5px;
+
+                &.site-icon {
+                    display: none;
+                }
+                &.thumbnail {
+                    width: auto;
+                }
             }
 
             &:last-child {

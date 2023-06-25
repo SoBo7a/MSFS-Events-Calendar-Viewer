@@ -35,7 +35,7 @@
 
     <div>
       <div v-if="selectedDateEvents.length > 0" class="event-grid">
-        <div v-for="event in selectedDateEvents" :key="event.id" class="event-card" @click="navigateToEvent(event.slug)" @contextmenu="onContextMenu($event, event)" :title="event.fancy_title">
+        <div v-for="event in selectedDateEvents" :key="event.id" :class="['event-card', getEventCardClass(event)]" @click="navigateToEvent(event.slug)" @contextmenu="onContextMenu($event, event)" :title="event.fancy_title">
           <h3 class="event-title" v-html="event.fancy_title"></h3>
           <div class="event-time">
             <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event.start) }}
@@ -340,6 +340,20 @@ export default {
       return new Date(dateTime).toLocaleTimeString([], options);
     },
 
+    getEventCardClass(event) {
+      const currentTime = new Date().getTime();
+      const eventStartTime = new Date(event.event.start).getTime();
+      const twoHours = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+
+      if (eventStartTime < currentTime) {
+        return 'event-past';
+      } else if (eventStartTime - currentTime < twoHours) {
+        return 'event-close';
+      } else {
+        return 'event-upcoming';
+      }
+    },
+
     navigateToEvent(slug) {
       // window.open(`${this.msfsEventsUrl}${slug}`);
       this.$router.push({ name: 'EventView', params: { url: `${this.msfsEventsUrl}${slug}` } });
@@ -420,16 +434,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-body {
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
-  
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-</style>

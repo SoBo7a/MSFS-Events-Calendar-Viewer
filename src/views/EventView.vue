@@ -82,10 +82,12 @@ export default {
 
   mounted() {
     document.addEventListener('click', this.handleLinkClick);
+    document.addEventListener('mouseover', this.handleMouseOver);
   },
 
   beforeUnmount() {
     document.removeEventListener('click', this.handleLinkClick);
+    document.removeEventListener('mouseover', this.handleMouseOver);
   },
 
   methods: {
@@ -164,6 +166,15 @@ export default {
         
         event.preventDefault();
         shell.openExternal(event.target.href);
+      }
+    },
+
+    handleMouseOver(event) {
+      if (event.target.tagName === 'A') {
+        if(event.target.className == 'home-link') {
+          return;
+        }
+        event.target.title = event.target.href;
       }
     },
 
