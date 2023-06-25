@@ -1,0 +1,133 @@
+@font-face {
+    font-family: "Montserrat ExtraBold";
+    src: url("/public/fonts/Montserrat-ExtraBold.otf");
+}
+
+body {
+  background-color: #fff;
+  color: #000000;
+  font-family: "Montserrat ExtraBold", ui-monospace;
+
+  .d-icon-far-image,
+  .d-icon-discourse-expand,
+  .meta {
+    display: none;
+  }
+
+  .event-details-wrapper {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f7f7f7d4;
+    border-radius: 20px;
+
+    .fa-chrome,
+    .fa-copy,
+    .fa-house-chimney {
+        color: #000;
+        cursor: pointer;
+        position: relative;
+        font-size: x-large;
+        margin-bottom: -10px;
+        margin-right: 5px;
+        margin-left: 5px;
+
+        &:hover {
+            opacity: 0.8;
+        }
+        &:active {
+            transform: scale(1.1);
+        }
+    }
+
+    .home-link {
+        position: absolute; 
+        right: 45px;
+    }
+
+    .event-details-title {
+      font-weight: 900;
+      margin-bottom: 30px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .event-posts-container {
+      margin-top: 20px;
+
+      .event-post {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #eeececcc;
+        border: 1px solid #afababc5;
+        border-radius: 20px;
+        text-align: left;
+
+        .event-post-profileimage {
+            position: absolute;
+            left: 40px;
+            margin-top: -25px;
+
+            img {
+                border-radius: 50%;
+            }
+        }
+
+        .event-post-username {
+            font-size: larger;
+            font-weight: 700;
+            padding-left: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #000;
+        }
+
+        .event-post-created {
+            font-weight: 700;
+            text-align: center;
+            margin-top: -30px;
+        }
+
+        .event-post-index {
+            font-weight: 700;
+            text-align: right;
+            margin-top: -15px;
+            margin-right: 5px;
+        }
+
+        .event-post-content {
+            line-height: 1.5;
+            color: #000;
+
+            .mention {
+                pointer-events: none;
+                cursor: default;
+                text-decoration: none;
+                color: #000;
+            }
+
+            table {
+                background-color: #c7c7c780;
+                padding: 5px;
+                border-radius: 5px;
+            }
+            
+            td {
+                border-radius: 0;
+                border-top: 1px solid #000;
+                padding: 5px;
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+                border-radius: 5px;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+      }
+    }
+  }
+}

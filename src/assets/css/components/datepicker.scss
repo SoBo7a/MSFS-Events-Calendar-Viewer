@@ -1,0 +1,104 @@
+.datepicker-wrapper {
+  margin-bottom: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.flatpickr-calendar {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.datepicker-label {
+  margin-bottom: -20px;
+}
+
+.datepicker-label h3 {
+  color: #000;
+  font-weight: larger;
+}
+
+.datepicker-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.datepicker-wrapper .fa-calendar-check {
+  cursor: pointer;
+  font-size: 45px;
+  color: #000;
+  margin-right: 5px;
+  padding-bottom: 8px;
+  margin-left: -45px;
+}
+
+.flatpickr-calendar {
+  background-color: #fffffffa;
+}
+
+.flatpickr-input {
+  font-size: larger;
+  font-weight: 700;
+  text-align: center;
+  padding: 5px;
+  border-radius: 20px;
+  background-color: rgb(255 255 255 / 59%);
+}
+
+.flatpickr-input:focus-visible {
+  outline: none !important;
+}
+
+.flatpickr-input:hover {
+  opacity: 0.7;
+}
+
+.refresh-button {
+  cursor: pointer;
+  position: absolute;
+  left: 40px;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  color: #000;
+  font-size: large;
+  border: none;
+}
+
+.refresh-button:active,
+.datepicker-wrapper .fa-calendar-check:active {
+  transform: scale(1.1);
+}
+
+.refresh-button:hover,
+.datepicker-wrapper .fa-calendar-check:hover {
+  opacity: 0.3;
+}
+
+.today-button {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-top: -20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: small;
+  background-color: #c5c3c300;
+  color: #000;
+}
+
+.today-button .fa-clock-rotate-left {
+  margin-right: 5px;
+}
+
+.today-button:active {
+  transform: scale(1.1);
+}
+
+.today-button:hover {
+  opacity: 0.5;
+}
