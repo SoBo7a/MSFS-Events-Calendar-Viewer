@@ -22,7 +22,8 @@ body {
 
     .fa-chrome,
     .fa-copy,
-    .fa-house-chimney {
+    .fa-house-chimney,
+    .fa-arrows-rotate {
         color: #000;
         cursor: pointer;
         position: relative;
@@ -37,6 +38,11 @@ body {
         &:active {
             transform: scale(1.1);
         }
+    }
+
+    .fa-arrows-rotate {
+        position: absolute;
+        left: 45px;
     }
 
     .home-link {

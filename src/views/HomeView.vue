@@ -10,7 +10,7 @@
     </h1>
 
     <div class="toolbar-wrapper">
-      <button class="refresh-button" @click="fetchEventData" title="Reload Data...">
+      <button class="refresh-button" @click="fetchEventData(true)" title="Reload Data...">
         <font-awesome-icon :icon="['fas', 'arrows-rotate']" />
       </button>
       <div class="datepicker-wrapper">
@@ -157,6 +157,12 @@ export default {
         y: e.y,
         items: [
           { 
+            label: 'Open', 
+            onClick: () => {
+              this.navigateToEvent(event.slug);
+            }
+          },
+          { 
             label: 'Open in Browser', 
             onClick: () => {
               this.openEventInBrowser(event.slug);
@@ -194,40 +200,66 @@ export default {
       });
     },
 
-    fetchEventData() {
-      this.$notify({
-        title: 'Loading Events-Data',
-        text: 'Please wait, while MSFS Events are loaded...',
-        type: 'info',
-        duration: 2000,
-      })
+    fetchEventData(force = false) {
+      // Check if cached data exists and is fresh
+      const cachedData = localStorage.getItem('eventData');
+      const cachedTimestamp = localStorage.getItem('eventDataTimestamp');
+      const currentTime = new Date().getTime();
+      const thirtyMinutes = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-      axios
-        .get('http://localhost:3002/api/calendar')
-        .then(response => {
-          const eventTopics = response.data.topic_list.topics;
-          this.eventData = this.filterRecentEventData(eventTopics);
-          this.setMinMaxDates(); // Set the minDate and maxDate options
-          this.setDisabledDates(); // Set the disable option for the days between events
+      if (cachedData && cachedTimestamp && !force && (currentTime - cachedTimestamp) < thirtyMinutes) {
+        // Use cached data
+        this.eventData = JSON.parse(cachedData);
+        this.setMinMaxDates();
+        this.setDisabledDates();
+        this.filterSelectedEventData();
+        
+        this.loading = false;
 
-          this.filterSelectedEventData();
-
-          this.$notify({
-            title: 'Events Loaded',
-            text: 'Events have been loaded successfully...',
-            type: 'success',
-            duration: 3000,
-          })
-        })
-        .catch(error => {
-
-          this.$notify({
-            title: error.code,
-            text: error.message,
-            type: 'error',
-          })
-          console.error('Error fetching data:', error);
+        this.$notify({
+          title: 'Event Details Loaded',
+          text: 'Event details have been loaded from cache.',
+          type: 'success',
+          duration: 3000,
         });
+      } else {
+        // Fetch fresh data
+        this.$notify({
+          title: 'Loading Events-Data',
+          text: 'Please wait, while MSFS Events are loaded...',
+          type: 'info',
+          duration: 2000,
+        });
+
+        axios
+          .get('http://localhost:3002/api/calendar')
+          .then(response => {
+            const eventTopics = response.data.topic_list.topics;
+            this.eventData = this.filterRecentEventData(eventTopics);
+            this.setMinMaxDates();
+            this.setDisabledDates();
+            this.filterSelectedEventData();
+
+            // Cache the data and timestamp in localStorage
+            localStorage.setItem('eventData', JSON.stringify(this.eventData));
+            localStorage.setItem('eventDataTimestamp', currentTime);
+
+            this.$notify({
+              title: 'Events Loaded',
+              text: 'Events have been loaded successfully...',
+              type: 'success',
+              duration: 3000,
+            });
+          })
+          .catch(error => {
+            this.$notify({
+              title: error.code,
+              text: error.message,
+              type: 'error',
+            });
+            console.error('Error fetching data:', error);
+          });
+      }
     },
 
     filterRecentEventData(eventData) {

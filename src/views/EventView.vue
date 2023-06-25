@@ -7,6 +7,7 @@
     <router-link to="/" title="Go back to the Overview..." class="home-link">
       <font-awesome-icon :icon="['fas', 'house-chimney']" />    
     </router-link>
+    <font-awesome-icon :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
     <font-awesome-icon :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
     <font-awesome-icon :icon="['fas', 'copy']" title="Copy the URL of this Event to your Clipboard..." @click="saveToClipboard()" />
 
