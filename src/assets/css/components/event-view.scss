@@ -38,11 +38,28 @@ body {
         &:active {
             transform: scale(1.1);
         }
-    }
 
-    .fa-arrows-rotate {
-        position: absolute;
-        left: 45px;
+        &.fa-arrow-up {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            color: #fff;
+            background-color: #000;
+            padding: 5px;
+            border-radius: 20%;
+            font-size: x-large;
+            opacity: 0.75;
+
+            &:hover {
+                opacity: 1 !important;
+            }
+        }
+        
+        &.fa-arrows-rotate {
+            position: absolute;
+            left: 45px;
+        }
     }
 
     .home-link {
@@ -133,6 +150,12 @@ body {
                 }
                 &.thumbnail {
                     max-width: 70vw;
+                }
+                &.emoji {
+                    min-width: 20px;
+                    height: 20px;
+                    padding-left: 5px;
+                    padding-right: 5px;
                 }
             }
 

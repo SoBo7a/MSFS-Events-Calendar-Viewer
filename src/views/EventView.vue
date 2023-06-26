@@ -13,6 +13,8 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
 
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
+
     <h1 class="event-details-title">{{ eventDetails.fancy_title }}</h1>
 
     <div class="event-posts-container">
@@ -178,6 +180,13 @@ export default {
         }
         event.target.title = event.target.href;
       }
+    },
+
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     },
 
     printPage() {
