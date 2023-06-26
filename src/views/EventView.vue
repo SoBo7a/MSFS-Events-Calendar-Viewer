@@ -12,6 +12,7 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'copy']" title="Copy the URL of this Event to your Clipboard..." @click="saveToClipboard()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
+    <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
 
     <font-awesome-icon class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
 
@@ -46,9 +47,11 @@
 import axios from 'axios';
 import { shell, clipboard } from 'electron';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
+import ModalComponent from '@/components/CalendarModalComponent.vue';
+
 import Loading from 'vue3-loading-overlay';
 
-import { addEventToGoogleCalendar } from '../shared/calendars.js'
+import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
 
 export default {
   name: 'EventView',
@@ -56,12 +59,14 @@ export default {
   components: {
     // Loading,
     BackgroundSlideshowComponent,
+    ModalComponent,
     Loading,
   },
 
   data() {
     return {
       loading: false,
+      showModal: false,
       msfsForumsUrl: 'https://forums.flightsimulator.com',
 
       eventUrl: this.$route.params.url,
@@ -173,6 +178,10 @@ export default {
           return;
         }
 
+        if(event.target.className == 'auto-clicked-link') {
+          return;
+        }
+
         if(event.target.className == 'attachment') {
           event.preventDefault();
           shell.openExternal(this.msfsForumsUrl + event.target.href.replace(window.location.origin, ''));
@@ -206,14 +215,24 @@ export default {
 
     showCalendarPopup() {
       // ToDo: Show Popup; Add option for ICS-Files; Split functions
+      this.showModal = true;
+    },
+
+    handleCalendarOptionSelected(option) {
       const storedEventData = JSON.parse(localStorage.getItem('eventData')); // Parse the stored data from JSON
       const matchingEvent = storedEventData.find(event => event.id === this.eventDetails.id);
 
-      console.log(matchingEvent)
-
+      console.log(option);
       if (matchingEvent) {
-        addEventToGoogleCalendar(matchingEvent);
+        if(option == 'google') {
+            addEventToGoogleCalendar(matchingEvent);
+        }
+
+        if(option == 'ics') {
+            getICSFile(matchingEvent);
+        }
       }
+      
     },
 
   },

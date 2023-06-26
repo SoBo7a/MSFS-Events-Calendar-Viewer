@@ -79,6 +79,7 @@ function downloadICSFile(content, filename) {
     const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+    link.className = 'auto-clicked-link'
     link.href = url;
     link.setAttribute("download", filename);
     document.body.appendChild(link);
