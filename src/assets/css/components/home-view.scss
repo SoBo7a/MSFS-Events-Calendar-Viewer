@@ -36,7 +36,7 @@ body {
       cursor: help;
     }
 
-    .events-time-since-refresh{
+    .events-time-since-refresh {
       text-align: right;
       margin-bottom: 10px;
       margin-top: -30px;
@@ -54,7 +54,6 @@ body {
     padding: 10px;
     border-radius: 20px;
     border: 1px solid #000;
-
 
     .event-card {
       display: flex;
@@ -89,7 +88,7 @@ body {
       .event-time {
         font-weight: bolder;
       }
-    
+
       .event-image {
         width: 100%;
         height: auto;
@@ -109,11 +108,5 @@ body {
         text-align: center; /* Center the description text horizontally */
       }
     }
-
-    
-
-    
-
   }
-  
 }

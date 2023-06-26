@@ -4,10 +4,10 @@
       <button class="close-button" @click="closeModal">x</button>
       <h3 class="modal-title">Choose an option</h3>
       <div class="modal-buttons">
-        <button class="modal-button" @click.stop="selectOption('ics')">
+        <button class="modal-button" @click.stop="selectOption('ics')" title="Download as .ics File">
             <font-awesome-icon :icon="['fas', 'calendar-plus']" /> .ics File
         </button>
-        <button class="modal-button" @click.stop="selectOption('google')">
+        <button class="modal-button" @click.stop="selectOption('google')" title="Add to Google Calendar">
             <font-awesome-icon :icon="['fab', 'google']" /> Google Calendar
         </button>
       </div>
@@ -46,82 +46,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-}
-
-.modal-content {
-  position: relative;
-  margin: auto;
-  max-width: 400px;
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px;
-  background-color: transparent;
-  border: none;
-  color: #aaa;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.close-button:hover {
-  color: #777;
-}
-
-.modal-title {
-  margin-top: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.modal-button {
-  background-color: #4285f4;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-}
-
-.modal-button svg {
-  margin-right: 10px;
-}
-
-.modal-button:hover {
-  background-color: #357ae8;
-}
-
-.modal-button + .modal-button {
-  margin-left: 10px;
-}
-</style>
