@@ -5,7 +5,7 @@ module.exports = {
     devServer: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3002',
+          target: 'http://localhost:8082',
           ws: true,
           changeOrigin: true,
         },
@@ -21,7 +21,7 @@ module.exports = {
         builderOptions: {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar',
-            buildVersion: '0.19',
+            buildVersion: '0.8.0',
             win: {
                 "target": [
                     "nsis"

@@ -12,14 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faChrome } from '@fortawesome/free-brands-svg-icons'
-import { faUserSecret, faArrowsRotate, faClockRotateLeft, faCopy, faHouseChimney } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faArrowsRotate, faClockRotateLeft, faCopy, faHouseChimney, faPrint, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { faClock, faCalendarCheck } from '@fortawesome/free-regular-svg-icons'
 
 import './assets/css/styles.scss';
 
 /* add icons to the library */
-library.add(faChrome, faUserSecret, faArrowsRotate, faClockRotateLeft, faCopy, faClock, faHouseChimney, faCalendarCheck)
-
+library.add(faChrome, faUserSecret, faArrowsRotate, faClockRotateLeft, faCopy, faClock, faHouseChimney, faPrint, faCalendarDays, faCalendarCheck)
 
 createApp(App)
     .use(store)

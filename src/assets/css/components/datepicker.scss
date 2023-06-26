@@ -75,6 +75,7 @@
 
 .refresh-button:hover,
 .datepicker-wrapper .fa-calendar-check:hover {
+  transform: rotate(15deg) scale(1.1);
   opacity: 0.3;
 }
 

@@ -4,12 +4,14 @@
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
   <div class="event-details-wrapper">
-    <router-link to="/" title="Go back to the Overview..." class="home-link">
+    <router-link to="/" title="Go back to the Overview..." class="home-link menu-icon">
       <font-awesome-icon :icon="['fas', 'house-chimney']" />    
     </router-link>
-    <font-awesome-icon :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
-    <font-awesome-icon :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
-    <font-awesome-icon :icon="['fas', 'copy']" title="Copy the URL of this Event to your Clipboard..." @click="saveToClipboard()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
+    <font-awesome-icon class="menu-icon" :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'copy']" title="Copy the URL of this Event to your Clipboard..." @click="saveToClipboard()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
 
     <h1 class="event-details-title">{{ eventDetails.fancy_title }}</h1>
 
@@ -20,7 +22,7 @@
         </div>
         <div class="event-post-username">{{ post.username }}</div>
         <div class="event-post-created">{{ formatDate(post.created_at) }}</div>
-        <div class="event-post-index">#{{ index + 1 }}</div>
+        <div class="event-post-index"># {{ index + 1 }} / {{ eventPosts.length }}</div>
         <p class="event-post-content" v-html="post.cooked"></p>
       </div>
     </div>
@@ -39,6 +41,8 @@ import axios from 'axios';
 import { shell, clipboard } from 'electron';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 import Loading from 'vue3-loading-overlay';
+
+import { addEventToGoogleCalendar } from '../shared/calendars.js'
 
 export default {
   name: 'EventView',
@@ -76,7 +80,6 @@ export default {
       return Promise.reject(error)
     })
 
-    console.log(this.eventUrl);
     this.fetchEventDetails();
   },
 
@@ -104,7 +107,6 @@ export default {
         .then(response => {
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
-          console.log(this.eventPosts)
 
           this.$notify({
             title: 'Event Details Loaded',
@@ -175,6 +177,22 @@ export default {
           return;
         }
         event.target.title = event.target.href;
+      }
+    },
+
+    printPage() {
+      window.print();
+    },
+
+    showCalendarPopup() {
+      // ToDo: Show Popup; Add option for ICS-Files; Split functions
+      const storedEventData = JSON.parse(localStorage.getItem('eventData')); // Parse the stored data from JSON
+      const matchingEvent = storedEventData.find(event => event.id === this.eventDetails.id);
+
+      console.log(matchingEvent)
+
+      if (matchingEvent) {
+        addEventToGoogleCalendar(matchingEvent);
       }
     },
 

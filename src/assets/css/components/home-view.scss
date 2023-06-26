@@ -67,6 +67,10 @@ body {
       &.event-upcoming {
         background-color: rgba(7, 168, 47, 0.57);
       }
+
+      .event-time {
+        font-weight: bolder;
+      }
     
       .event-image {
         width: 100%;

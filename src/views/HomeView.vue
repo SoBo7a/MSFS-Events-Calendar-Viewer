@@ -19,7 +19,7 @@
         </div>
         <div class="datepicker-input-wrapper">
           <a class="input-button" title="toggle" data-toggle>
-            <font-awesome-icon :icon="['far', 'calendar-check']" />
+            <font-awesome-icon :icon="['far', 'calendar-check']" title="Open Calendar" />
           </a>
           <vue-flatpickr data-input v-model="selectedDate" @on-change="filterSelectedEventData" :config="flatpickrConfig" title="Choose a Day..."></vue-flatpickr>
         </div>
@@ -59,13 +59,15 @@
 </template>
 
 <script>
+// FixMe: Date Selector not working properly...
 import { shell, clipboard } from 'electron';
-import { createEvent } from 'ics';
 import axios from 'axios';
 import Loading from 'vue3-loading-overlay';
 import VueFlatpickr from 'vue-flatpickr-component';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
+
+import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js'
 
 
 export default {
@@ -79,6 +81,7 @@ export default {
 
   data() {
     return {
+      eventsCalendarJsonURL: 'https://forums.flightsimulator.com/c/community/community-fly-in-events/143/l/calendar.json',
       msfsEventsUrl: 'https://forums.flightsimulator.com/t/',
       eventData: [],
       loading: true,
@@ -185,13 +188,13 @@ export default {
               { 
                 label: ".ics File",
                 onClick: () => {
-                  this.getICSFile(event);
+                  getICSFile(event);
                 }
               },
               { 
                 label: "Google Calender",
                 onClick: () => {
-                  this.addEventToGoogleCalendar(event);
+                  addEventToGoogleCalendar(event);
                 }
               },
             ]
@@ -232,7 +235,7 @@ export default {
         });
 
         axios
-          .get('http://localhost:3002/api/calendar')
+          .get(this.eventsCalendarJsonURL)
           .then(response => {
             const eventTopics = response.data.topic_list.topics;
             this.eventData = this.filterRecentEventData(eventTopics);
@@ -361,74 +364,6 @@ export default {
 
     openEventInBrowser(slug) {
       shell.openExternal(`${this.msfsEventsUrl}${slug}`);
-    },
-
-    getICSFile(event) {
-      const start = new Date(event.event.start);
-      const startTime = [start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes()];
-      let endTime = null;
-      if(event.event.end) {
-        const end = new Date(event.event.end);
-        endTime = [end.getFullYear(), end.getMonth(), end.getDate(), end.getHours(), end.getMinutes()]
-      }
-
-      const calenderEvent = {
-        title: event.fancy_title,
-        description: event.excerpt,
-        location: 'Microsoft Flight Simulator',
-        start: startTime,
-        end: endTime != null ? endTime : startTime
-      };
-
-      const { error, value } = createEvent(calenderEvent);
-      if (error) {
-        console.error(error);
-      } else {
-        this.downloadICSFile(value, `${event.fancy_title}.ics`);
-      }
-    },
-
-    downloadICSFile(content, filename) {
-      const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    },
-
-    addEventToGoogleCalendar(event) {
-      const formattedStart = this.convertToRFC5545Format(event.event.start);
-      let formattedEnd = null;
-      if(event.event.end) {
-        formattedEnd = this.convertToRFC5545Format(event.event.end);
-      }
-
-      // Encode the event details
-      const encodedTitle = encodeURIComponent(event.fancy_title);
-      const encodedDescription = encodeURIComponent(event.excerpt);
-      const encodedLocation = encodeURIComponent("Microsoft Flight Simulator");
-      const encodedStart = encodeURIComponent(formattedStart);
-      const encodedEnd = encodeURIComponent(formattedEnd != null ? formattedEnd : formattedStart);
-
-      // Construct the URL with the encoded parameters
-      const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodedTitle}&details=${encodedDescription}&location=${encodedLocation}&dates=${encodedStart}/${encodedEnd}`;
-
-      // Open the URL in a new tab or window
-      shell.openExternal(url);
-    },
-
-    convertToRFC5545Format(dateTimeString) {
-      const dateTime = new Date(dateTimeString);
-      const formattedDateTime = dateTime
-        .toISOString()
-        .replace(/[:-]/g, '') // Remove hyphens and colons
-        .replace('.000', 'Z'); // Replace milliseconds and add 'Z' for UTC
-
-      return formattedDateTime;
     },
 
   },
