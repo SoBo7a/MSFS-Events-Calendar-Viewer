@@ -17,6 +17,10 @@
 
     <h1 class="event-details-title">{{ eventDetails.fancy_title }}</h1>
 
+    <div class="event-details-date">
+      {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
+    </div>
+
     <div class="event-posts-container">
       <div v-for="(post, index) in eventPosts" :key="post.id" class="event-post" :id="`post-${index + 1}`">
         <div class="event-post-profileimage">
@@ -63,6 +67,8 @@ export default {
       eventUrl: this.$route.params.url,
       eventDetails: {},
       eventPosts: [],
+      eventStartTime: null,
+      eventEndTime: null,
     }
   },
 
@@ -109,6 +115,11 @@ export default {
         .then(response => {
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
+          this.eventStartTime =this.formatDate(this.eventDetails.event.start);
+
+          if(this.eventDetails.event.end) {
+            this.eventEndTime = this.formatDate(this.eventDetails.event.end);
+          }
 
           this.$notify({
             title: 'Event Details Loaded',

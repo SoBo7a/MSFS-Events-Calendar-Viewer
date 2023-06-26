@@ -21,15 +21,19 @@
           <a class="input-button" title="toggle" data-toggle>
             <font-awesome-icon :icon="['far', 'calendar-check']" title="Open Calendar" />
           </a>
-          <vue-flatpickr data-input v-model="selectedDate" @on-change="filterSelectedEventData" :config="flatpickrConfig" title="Choose a Day..."></vue-flatpickr>
+          <vue-flatpickr data-input v-model="selectedDate" @on-change="filterSelectedEventData" :config="flatpickrConfig" title="Open Calendar"></vue-flatpickr>
         </div>
         <div class="today-button" @click="selectToday" title="Reset to today's date...">
-          <font-awesome-icon :icon="['fas', 'clock-rotate-left']" /> Reset Day
+          <font-awesome-icon :icon="['fas', 'calendar-day']" /> Reset Day
         </div>
       </div>
 
-      <div v-if="selectedDateEvents.length > 0" class="events-counter" style="color: #000;">
+      <div v-if="selectedDateEvents.length > 0" class="events-counter" title="Count of Events for the selected Day" style="color: #000;">
         {{ selectedDateEvents.length }} Events found
+      </div>
+
+      <div v-if="showTimeSinceRefresh" class="events-time-since-refresh" title="Time since last reload" style="color: #000;">
+        <font-awesome-icon :icon="['fas', 'clock-rotate-left']" /> {{ formattedTimeSinceRefresh }}
       </div>
     </div>
 
@@ -100,6 +104,8 @@ export default {
       },
 
       selectedDateEvents: [],
+
+      timeSinceRefresh: ''
     };
   },
 
@@ -109,6 +115,13 @@ export default {
     },
     nextBgImage() {
       return this.bgImages[this.nextBgIndex];
+    },
+
+    showTimeSinceRefresh() {
+      return localStorage.getItem('eventDataTimestamp') !== null;
+    },
+    formattedTimeSinceRefresh() {
+      return this.formatTimeDuration(this.timeSinceRefresh);
     },
   },
 
@@ -132,22 +145,24 @@ export default {
   mounted() {
     this.fetchEventData();
 
+    this.updateTimeSinceRefresh();
+    setInterval(this.updateTimeSinceRefresh, 1000);
+
     window.addEventListener('mouseover', function(event) {
       if (event.target.classList.contains('mx-context-menu')) {
-        event.target.addEventListener('mouseleave', function() {
-          this.style.display = 'none';
-        });
-      }
-    });
+        let timeoutId;
 
-    window.addEventListener('touchstart', function(event) {
-      if (event.target.classList.contains('mx-context-menu')) {
-        event.target.addEventListener('touchend', function() {
-          this.style.display = 'none';
+        event.target.addEventListener('mouseleave', function() {
+          timeoutId = setTimeout(() => {
+            this.style.display = 'none';
+          }, 800);
+        });
+
+        event.target.addEventListener('mouseenter', function() {
+          clearTimeout(timeoutId);
         });
       }
-    });
-    
+    });    
   },
 
   methods: {
@@ -219,9 +234,11 @@ export default {
         
         this.loading = false;
 
+        const timeSinceLastRefresh = new Date() - cachedTimestamp;
+
         this.$notify({
           title: 'Event Details Loaded',
-          text: 'Event details have been loaded from cache.',
+          text: `Event details have been loaded from cache.<br>Time since last refresh:<br>${this.formatTimeDuration(timeSinceLastRefresh)}`,
           type: 'success',
           duration: 3000,
         });
@@ -341,6 +358,33 @@ export default {
         timeZoneName: 'short'
       };
       return new Date(dateTime).toLocaleTimeString([], options);
+    },
+
+    formatTimeDuration(duration) {
+      const seconds = Math.floor(duration / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+
+      if (days > 0) {
+        return `${days} days`;
+      } else if (hours > 0) {
+        return `${hours} hours`;
+      } else if (minutes > 0) {
+        return `${minutes} minutes`;
+      } else {
+        return `${seconds} seconds`;
+      }
+    },
+
+    updateTimeSinceRefresh() {
+      const timestamp = localStorage.getItem('eventDataTimestamp');
+      if (timestamp) {
+        const currentTime = new Date().getTime();
+        const lastRefreshTime = new Date(Number(timestamp));
+        const timeDifference = currentTime - lastRefreshTime;
+        this.timeSinceRefresh = timeDifference;
+      }
     },
 
     getEventCardClass(event) {
