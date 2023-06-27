@@ -17,6 +17,7 @@ module.exports = {
     pluginOptions: {
       electronBuilder: {
         nodeIntegration: true,
+         contextIsolation: true,
 
         builderOptions: {
             appId: 'msfs-events-calendar-app',

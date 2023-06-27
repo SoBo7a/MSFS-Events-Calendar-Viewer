@@ -3,7 +3,7 @@
 
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
-  <div style="margin: 20px;">
+  <div style="margin: 20px; margin-top: 45px;">
     <h1 class="main-title">
       Microsoft Flight Simulator <br>
       Community Events
@@ -138,11 +138,11 @@ export default {
       this.loading = false
       return Promise.reject(error)
     })
-
-    document.title = "Home | MSFS Events Calendar";
   },
 
   mounted() {
+    document.title = "Home | MSFS Events Calendar";
+
     this.fetchEventData();
 
     this.updateTimeSinceRefresh();

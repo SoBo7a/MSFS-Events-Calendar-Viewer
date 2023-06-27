@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, ipcMain, protocol, BrowserWindow, shell } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
@@ -16,19 +16,29 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 1920,
-    height: 1200,
+    width: 1000,
+    minWidth: 680,
+    height: 1100,
+    minHeight: 680,
+    frame: false,
+    // transparent: true, // Cant Snap Windows if used...
 
     webPreferences: {
 
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      nodeIntegration: true,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
       enableRemoteModule: true,
-      webSecurity: false  // Disabled in Order to have working CORS in server.js
+      webSecurity: false,  // Disabled in Order to have working CORS in server.js
+      nativeWindowOpen: true,
     }
   })
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -39,7 +49,45 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+  
+  ipcMain.on('get-window-position', (event) => {
+    const position = win.getPosition();
+    event.returnValue = position;
+  });
+
+  // Handle window minimize
+  ipcMain.on('minimize-window', () => {
+    win.minimize();
+  });
+
+  // Handle window maximize state request
+  ipcMain.on('get-window-maximized-state', (event) => {
+    const isMaximized = win.isMaximized();
+    event.returnValue = isMaximized;
+  });
+
+  // Handle window maximize/restore toggle
+  ipcMain.on('toggle-maximize', () => {
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
+    const isMaximized = win.isMaximized();
+    win.webContents.send('window-maximized-state-changed', isMaximized);
+  });
+
+  // Handle window close
+  ipcMain.on('close-window', () => {
+    if (win.isDevToolsOpened()) {
+      win.closeDevTools();
+    }
+    
+    win.close();
+  });
 }
+
+app.commandLine.appendSwitch('disable-site-isolation-trials'); // Allows Cross-Origin iframe-manipulation
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

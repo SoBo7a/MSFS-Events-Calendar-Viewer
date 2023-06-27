@@ -78,8 +78,6 @@ export default {
   },
 
   created() {
-    document.title = 'Event Details | MSFS Events Calendar';
-
     axios.interceptors.request.use(config => {
         this.loading = true
         return config
@@ -97,8 +95,25 @@ export default {
   },
 
   mounted() {
+    document.title = 'Event Details | MSFS Events Calendar';
+
     document.addEventListener('click', this.handleLinkClick);
     document.addEventListener('mouseover', this.handleMouseOver);
+
+    // Use MutationObserver to check if iframe present in the DOM and add handleLinkClick Eventlistener
+    const observer = new MutationObserver(() => {
+      const iframes = document.querySelectorAll('iframe');
+      if (iframes.length > 0) {
+        iframes.forEach((iframe) => {
+          iframe.contentWindow.addEventListener('click', this.handleLinkClick);
+        });
+        // Disconnect the observer once the desired elements are found
+        observer.disconnect();
+      }
+    });
+
+    // Start observing changes in the DOM
+    observer.observe(document.body, { childList: true, subtree: true });
   },
 
   beforeUnmount() {
@@ -126,12 +141,21 @@ export default {
             this.eventEndTime = this.formatDate(this.eventDetails.event.end);
           }
 
+          // Modify Twitch Iframes
+          this.eventPosts.forEach(post => {
+            if (post.cooked.includes('iframe src="https://player.twitch.tv')) {
+              post.cooked = post.cooked.replace('parent=forums.flightsimulator.com', 'parent=localhost');
+              console.log("found iframe", post.cooked)
+            }
+          });
+
           this.$notify({
             title: 'Event Details Loaded',
             text: 'Events Details have been loaded successfully...',
             type: 'success',
             duration: 3000,
           });
+          
         })
         .catch(error => {
           this.$notify({
@@ -173,6 +197,7 @@ export default {
 
     handleLinkClick(event) {
       // Check if the clicked element is an <a> tag
+        // "offline-embeds--stylized-link" for twitch iframe links
       if (event.target.tagName === 'A') {
         if(event.target.className == 'home-link') {
           return;
@@ -190,6 +215,15 @@ export default {
         
         event.preventDefault();
         shell.openExternal(event.target.href);
+      }
+
+      // ToDo: Test on twitch iframe without active stream
+      if(event.target.className === 'offline-embeds--stylized-link') {
+          const parentEl = event.target.parentElement;
+          const href = parentEl.href;
+          console.log(href)
+          event.preventDefault();
+          shell.openExternal(href);
       }
     },
 
