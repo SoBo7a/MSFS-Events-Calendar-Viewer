@@ -222,7 +222,6 @@ export default {
       const storedEventData = JSON.parse(localStorage.getItem('eventData')); // Parse the stored data from JSON
       const matchingEvent = storedEventData.find(event => event.id === this.eventDetails.id);
 
-      console.log(option);
       if (matchingEvent) {
         if(option == 'google') {
             addEventToGoogleCalendar(matchingEvent);
