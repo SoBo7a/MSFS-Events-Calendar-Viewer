@@ -22,7 +22,7 @@ module.exports = {
         builderOptions: {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar',
-            buildVersion: '1.0.0-beta',
+            buildVersion: '1.0.1-beta',
             win: {
                 "target": [
                     "nsis"

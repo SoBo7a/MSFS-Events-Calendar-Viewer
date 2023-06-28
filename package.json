@@ -2,7 +2,7 @@
   "name": "msfs-events-calender-app",
   "description": "App to view the Events from the MSFS Events Calender.",
   "homepage": "TODO: Add Repo here...",
-  "version": "1.0.0-beta",
+  "version": "1.0.1-beta",
   "author": "Leon Wochnik",
   "private": true,
   "scripts": {
