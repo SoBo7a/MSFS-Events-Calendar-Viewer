@@ -8,7 +8,7 @@
       <div
         class="scrollbar-thumb"
         :style="thumbStyle"
-        @mousedown="startDrag"
+        @mousedown.prevent="startDrag"
         ref="thumb"
       ></div>
     </div>
@@ -20,6 +20,8 @@ export default {
   name: "ScrollBarComponent",
   data() {
     return {
+      titlebarHeight: 34, // Height of titlebar in PX. Set to 0 if no custom titlebar set
+
       scrollHeight: 0, // Total scrollable height
       thumbHeight: 0, // Height of the scrollbar thumb
       thumbPosition: 0, // Position of the scrollbar thumb
@@ -54,7 +56,8 @@ export default {
 
     calculateScrollbar() {
       const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      let windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      windowHeight -= this.titlebarHeight;
       this.scrollHeight = document.documentElement.scrollHeight - windowHeight;
       this.thumbHeight = ((windowHeight / this.scrollHeight) * windowHeight) / 2;
 
@@ -74,7 +77,7 @@ export default {
     dragThumb(event) {
       if (this.isDragging) {
         const deltaY = event.clientY - this.startY;
-        const maxThumbPosition = window.innerHeight - this.thumbHeight;
+        const maxThumbPosition = (window.innerHeight - this.titlebarHeight) - this.thumbHeight;
         const newThumbPosition = this.startThumbPosition + deltaY;
 
         // Ensure the new thumb position stays within the bounds
@@ -93,19 +96,22 @@ export default {
     },
 
     handleTrackClick(event) {
-      const trackRect = this.$refs.scrollbarTrack.getBoundingClientRect();
-      const clickPosition = event.clientY - trackRect.top;
-      const maxThumbPosition = window.innerHeight - this.thumbHeight;
+        const trackRect = this.$refs.scrollbarTrack.getBoundingClientRect();
+        const clickPosition = event.clientY - trackRect.top;
+        const maxThumbPosition = window.innerHeight - this.thumbHeight;
 
-      // Calculate the new thumb position based on the click position within the track
-      const newThumbPosition = clickPosition - this.thumbHeight / 2;
+        // Calculate the new thumb position based on the click position within the track
+        const newThumbPosition = clickPosition - this.thumbHeight / 2;
 
-      // Ensure the new thumb position stays within the bounds
-      this.thumbPosition = Math.max(0, Math.min(newThumbPosition, maxThumbPosition));
+        // Calculate the scroll position based on the thumb position
+        const scrollPercentage = newThumbPosition / maxThumbPosition;
+        const targetScrollTop = scrollPercentage * this.scrollHeight;
 
-      // Calculate the scroll position based on the thumb position
-      const scrollPercentage = this.thumbPosition / maxThumbPosition;
-      window.scrollTo(0, scrollPercentage * this.scrollHeight);
+        // Scroll to the target position with smooth animation
+        window.scrollTo({
+            top: targetScrollTop,
+            behavior: "smooth",
+        });
     },
   },
   watch: {
@@ -132,6 +138,7 @@ export default {
 .custom-scrollbar {
   position: relative;
   width: 10px;
+  
 }
 
 .scrollbar-track {
@@ -153,5 +160,6 @@ export default {
   width: 100%;
   background-color: #008cdd;
   border-radius: 5px;
+  transition: top 0.2s ease-in-out;
 }
 </style>

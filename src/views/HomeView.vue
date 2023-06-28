@@ -54,8 +54,6 @@
       </div>
     </div>
 
-    <ScrollBarComponent :content-ready="!loading" ></ScrollBarComponent>
-
     <Loading v-model:active="loading"
              :can-cancel="false"
              :enforce-focus="true"
