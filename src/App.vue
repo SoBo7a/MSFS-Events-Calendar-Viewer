@@ -1,9 +1,8 @@
 <template>
   <TitleBarComponent />
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
+
+  <div class="border-overlay"></div>
+
   <router-view />
 </template>
 
@@ -29,16 +28,13 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.border-overlay {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px; /* Adjust the height of the border as needed */
+  background-color: #000; /* Adjust the color of the border as needed */
+  z-index: 1; /* Ensure the border overlay is above the content */
 }
 </style>

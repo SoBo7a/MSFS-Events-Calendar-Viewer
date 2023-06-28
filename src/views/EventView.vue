@@ -33,8 +33,9 @@
         <p class="event-post-content" v-html="post.cooked"></p>
       </div>
     </div>
-
   </div>
+
+  <ScrollBarComponent :content-ready="!loading" ></ScrollBarComponent>
 
   <Loading v-model:active="loading"
              :can-cancel="false"
@@ -53,6 +54,8 @@ import Loading from 'vue3-loading-overlay';
 
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
 
+import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
+
 export default {
   name: 'EventView',
 
@@ -61,6 +64,7 @@ export default {
     BackgroundSlideshowComponent,
     ModalComponent,
     Loading,
+    ScrollBarComponent,
   },
 
   data() {
