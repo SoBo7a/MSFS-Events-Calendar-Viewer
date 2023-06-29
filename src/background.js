@@ -87,7 +87,18 @@ async function createWindow() {
   });
 }
 
-app.commandLine.appendSwitch('disable-site-isolation-trials'); // Allows Cross-Origin iframe-manipulation
+// Allows Cross-Origin iframes to show and minipulate them
+app.on('ready', () => {
+  const { session } = require('electron');
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': ['frame-src *']
+      }
+    });
+  });
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

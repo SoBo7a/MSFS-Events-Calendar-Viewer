@@ -63,7 +63,7 @@
 </template>
 
 <script>
-// FixMe: Date Selector not working properly...
+// FixMe: Date Selector not working properly... (Timezone differences between server and client might be the problem here)
 import { shell, clipboard } from 'electron';
 import axios from 'axios';
 import Loading from 'vue3-loading-overlay';
@@ -71,7 +71,7 @@ import VueFlatpickr from 'vue-flatpickr-component';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 
-import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js'
+import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
 
 
 export default {

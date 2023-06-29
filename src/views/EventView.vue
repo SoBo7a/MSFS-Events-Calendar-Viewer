@@ -49,12 +49,12 @@ import axios from 'axios';
 import { shell, clipboard } from 'electron';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 import ModalComponent from '@/components/CalendarModalComponent.vue';
+import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
 
 import Loading from 'vue3-loading-overlay';
 
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
 
-import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
 
 export default {
   name: 'EventView',
@@ -145,6 +145,7 @@ export default {
             this.eventEndTime = this.formatDate(this.eventDetails.event.end);
           }
 
+            // FixMe: Iframe not showing in Prod Build
           // Modify Twitch Iframes
           this.eventPosts.forEach(post => {
             if (post.cooked.includes('iframe src="https://player.twitch.tv')) {

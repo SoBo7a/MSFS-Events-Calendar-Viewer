@@ -77,7 +77,8 @@ export default {
     dragThumb(event) {
       if (this.isDragging) {
         const deltaY = event.clientY - this.startY;
-        const maxThumbPosition = (window.innerHeight - this.titlebarHeight) - this.thumbHeight;
+        const maxThumbPosition =
+          window.innerHeight - this.titlebarHeight - this.thumbHeight;
         const newThumbPosition = this.startThumbPosition + deltaY;
 
         // Ensure the new thumb position stays within the bounds
@@ -96,29 +97,29 @@ export default {
     },
 
     handleTrackClick(event) {
-        const trackRect = this.$refs.scrollbarTrack.getBoundingClientRect();
-        const clickPosition = event.clientY - trackRect.top;
-        const maxThumbPosition = window.innerHeight - this.thumbHeight;
+      const trackRect = this.$refs.scrollbarTrack.getBoundingClientRect();
+      const clickPosition = event.clientY - trackRect.top;
+      const maxThumbPosition = window.innerHeight - this.thumbHeight;
 
-        // Calculate the new thumb position based on the click position within the track
-        const newThumbPosition = clickPosition - this.thumbHeight / 2;
+      // Calculate the new thumb position based on the click position within the track
+      const newThumbPosition = clickPosition - this.thumbHeight / 2;
 
-        // Calculate the scroll position based on the thumb position
-        const scrollPercentage = newThumbPosition / maxThumbPosition;
-        const targetScrollTop = scrollPercentage * this.scrollHeight;
+      // Calculate the scroll position based on the thumb position
+      const scrollPercentage = newThumbPosition / maxThumbPosition;
+      const targetScrollTop = scrollPercentage * this.scrollHeight;
 
-        // Scroll to the target position with smooth animation
-        window.scrollTo({
-            top: targetScrollTop,
-            behavior: "smooth",
-        });
+      // Scroll to the target position with smooth animation
+      window.scrollTo({
+        top: targetScrollTop,
+        behavior: "smooth",
+      });
     },
   },
   watch: {
     contentReady(newVal) {
       if (newVal) {
         setTimeout(() => {
-            this.calculateScrollbar();
+          this.calculateScrollbar();
         }, 100); // 5 ms on mid-end system are sufficient, setting 100ms for safety reasons
       }
     },
@@ -133,33 +134,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.custom-scrollbar {
-  position: relative;
-  width: 10px;
-  
-}
-
-.scrollbar-track {
-  position: fixed;
-  top: 35px;
-  right: 5px;
-  bottom: 3px;
-  width: 10px;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.scrollbar-thumb {
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #008cdd;
-  border-radius: 5px;
-  transition: top 0.2s ease-in-out;
-}
-</style>
