@@ -20,7 +20,7 @@ export default {
   name: "ScrollBarComponent",
   data() {
     return {
-      titlebarHeight: 34, // Height of titlebar in PX. Set to 0 if no custom titlebar set
+      titlebarHeight: 32, // Height of titlebar in PX. Set to 0 if no custom titlebar set
 
       scrollHeight: 0, // Total scrollable height
       thumbHeight: 0, // Height of the scrollbar thumb
@@ -58,11 +58,18 @@ export default {
       const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
       let windowHeight = window.innerHeight || document.documentElement.clientHeight;
       windowHeight -= this.titlebarHeight;
-      this.scrollHeight = document.documentElement.scrollHeight - windowHeight;
-      this.thumbHeight = ((windowHeight / this.scrollHeight) * windowHeight) / 2;
+      const contentHeight = document.documentElement.scrollHeight;
+      
+      // Adjust the scroll height and thumb height based on the content height
+      this.scrollHeight = Math.max(contentHeight - windowHeight, 0);
+      this.thumbHeight = (windowHeight / (contentHeight || 1)) * windowHeight;
 
       // Calculate the position of the scrollbar thumb relative to the scrollable content
-      const maxThumbPosition = windowHeight - this.thumbHeight;
+      let maxThumbPosition = windowHeight - this.thumbHeight;
+      if (this.scrollHeight < 200) {
+        maxThumbPosition = windowHeight - this.thumbHeight + this.titlebarHeight;
+      }
+      
       this.thumbPosition = (windowScrollTop / this.scrollHeight) * maxThumbPosition;
     },
 
