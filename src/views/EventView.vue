@@ -16,7 +16,7 @@
 
     <font-awesome-icon class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
 
-    <h1 class="event-details-title">{{ eventDetails.fancy_title }}</h1>
+    <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
 
     <div class="event-details-date">
       {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
@@ -60,7 +60,6 @@ export default {
   name: 'EventView',
 
   components: {
-    // Loading,
     BackgroundSlideshowComponent,
     ModalComponent,
     Loading,
@@ -145,12 +144,11 @@ export default {
             this.eventEndTime = this.formatDate(this.eventDetails.event.end);
           }
 
-            // FixMe: Iframe not showing in Prod Build
+          // FixMe: Iframe not showing in Prod Build
           // Modify Twitch Iframes
           this.eventPosts.forEach(post => {
             if (post.cooked.includes('iframe src="https://player.twitch.tv')) {
               post.cooked = post.cooked.replace('parent=forums.flightsimulator.com', 'parent=localhost');
-              console.log("found iframe", post.cooked)
             }
           });
 
@@ -222,11 +220,9 @@ export default {
         shell.openExternal(event.target.href);
       }
 
-      // ToDo: Test on twitch iframe without active stream
       if(event.target.className === 'offline-embeds--stylized-link') {
           const parentEl = event.target.parentElement;
           const href = parentEl.href;
-          console.log(href)
           event.preventDefault();
           shell.openExternal(href);
       }
