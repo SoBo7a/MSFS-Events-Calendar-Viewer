@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, ipcMain, protocol, BrowserWindow, shell } from 'electron'
+import { app, ipcMain, protocol, BrowserWindow, shell, nativeTheme } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
@@ -97,6 +97,11 @@ app.on('ready', () => {
         'Content-Security-Policy': ['frame-src *']
       }
     });
+  });
+
+  ipcMain.on('get-dark-mode-status', (event) => {
+    // Send the dark mode status to the renderer process
+    event.sender.send('dark-mode-status', nativeTheme.shouldUseDarkColors);
   });
 });
 

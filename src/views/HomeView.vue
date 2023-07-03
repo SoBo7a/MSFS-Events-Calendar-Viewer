@@ -28,11 +28,11 @@
         </div>
       </div>
 
-      <div v-if="selectedDateEvents.length > 0" class="events-counter" title="Count of Events for the selected Day" style="color: #000;">
+      <div v-if="selectedDateEvents.length > 0" class="events-counter" title="Count of Events for the selected Day">
         {{ selectedDateEvents.length }} Events found
       </div>
 
-      <div v-if="showTimeSinceRefresh" class="events-time-since-refresh" title="Time since last reload" style="color: #000;">
+      <div v-if="showTimeSinceRefresh" class="events-time-since-refresh" title="Time since last reload">
         <font-awesome-icon :icon="['fas', 'clock-rotate-left']" /> {{ formattedTimeSinceRefresh }}
       </div>
     </div>
@@ -54,6 +54,8 @@
       </div>
     </div>
 
+    <ScrollBarComponent :content-ready="!loading" ></ScrollBarComponent>
+
     <Loading v-model:active="loading"
              :can-cancel="false"
              :enforce-focus="true"
@@ -70,6 +72,7 @@ import Loading from 'vue3-loading-overlay';
 import VueFlatpickr from 'vue-flatpickr-component';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
+import ScrollBarComponent from '@/components/ScrollBarComponent.vue';
 
 import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
 
@@ -81,6 +84,7 @@ export default {
     VueFlatpickr,
     Loading,
     BackgroundSlideshowComponent,
+    ScrollBarComponent,
   },
 
   data() {

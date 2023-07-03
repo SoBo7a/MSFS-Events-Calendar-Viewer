@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   height: 32px;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--background-color-primary);
+  color: var(--text-color-primary);
   -webkit-app-region: drag;
   position: fixed;
   top: 0;
@@ -16,6 +16,31 @@
   /* FixMe: Cant have rounded TitleBar as transparency on electron window prevents window snapping on Windows */
   //   border-top-left-radius: 15px;
   //   border-top-right-radius: 15px;
+
+  .dark-mode-toggle {
+    -webkit-app-region: no-drag;
+    position: absolute;
+    cursor: pointer;
+    width: 20px;
+    margin-left: 5px;
+    padding: 5px;
+
+    &:hover {
+      background-color: var(--titlebar-button-hover);
+      transition: background-color 0.3s ease;
+      border-radius: 5px;
+    }
+
+    &:active {
+      transform: scale(1.05);
+    }
+
+    .fa-icon {
+      color: var(--text-color-primary);
+      font-size: 12px; /* Adjust the font size as needed */
+      line-height: 1;
+    }
+  }
 
   .title {
     flex: 1;
@@ -41,8 +66,9 @@
     -webkit-app-region: no-drag;
 
     &:hover {
-      background-color: #e0e0e0;
+      background-color: var(--titlebar-button-hover);
       transition: background-color 0.3s ease;
+      border-radius: 5px;
     }
 
     &:active {
@@ -50,7 +76,7 @@
     }
 
     .fa-icon {
-      color: #fff;
+      color: var(--text-color-primary);
       font-size: 12px; /* Adjust the font size as needed */
       line-height: 1;
     }

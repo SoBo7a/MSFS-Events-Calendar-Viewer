@@ -1,5 +1,9 @@
 <template>
   <div class="title-bar" @mousedown="handleMouseDown">
+    <div class="dark-mode-toggle" @click="toggleDarkMode">
+      <font-awesome-icon v-if="darkModeEnabled" :icon="['fas', 'sun']" class="fa-icon" title="Disable Darkmode" />
+      <font-awesome-icon v-else :icon="['fas', 'moon']" class="fa-icon" title="Enable Darkmode" />
+    </div>
     <div class="title">{{ pageTitle }}</div>
     <div class="buttons">
       <div class="button minimize" @click="minimizeWindow">
@@ -19,7 +23,7 @@
 </template>
 
 <script>
-const { ipcRenderer } = require("electron");
+import { ipcRenderer } from 'electron';
 import router from "@/router"; // Import your Vue Router instance
 
 export default {
@@ -29,6 +33,8 @@ export default {
     return {
       pageTitle: document.title,
       isMaximized: false,
+
+      darkModeEnabled: false,
     };
   },
 
@@ -48,6 +54,19 @@ export default {
 
     ipcRenderer.on("window-maximized-state-changed", (event, isMaximized) => {
       this.isMaximized = isMaximized;
+    });
+
+    // Request the dark mode status from the main process
+    ipcRenderer.send('get-dark-mode-status');
+
+    // Listen for the response from the main process
+    ipcRenderer.on('dark-mode-status', (event, isDarkMode) => {
+      // Use the dark mode status in your component
+      if (isDarkMode) {
+        // System is in dark mode
+        // Apply dark mode styles or logic
+        this.toggleDarkMode();
+      }
     });
   },
 
@@ -90,6 +109,16 @@ export default {
 
     getMaximizeIcon() {
       return this.isMaximized ? ["far", "window-restore"] : ["far", "window-maximize"];
+    },
+
+    toggleDarkMode() {
+      this.darkModeEnabled = !this.darkModeEnabled; // Toggle the dark mode state
+
+      if (this.darkModeEnabled) {
+        document.documentElement.classList.add("dark-mode"); // Apply the dark mode class to the root element
+      } else {
+        document.documentElement.classList.remove("dark-mode"); // Remove the dark mode class from the root element
+      }
     },
   },
 };

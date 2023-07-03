@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-scrollbar">
+  <div v-if="showScrollbar" class="custom-scrollbar">
     <div
       class="scrollbar-track"
       @mousedown.prevent="handleTrackClick"
@@ -20,6 +20,8 @@ export default {
   name: "ScrollBarComponent",
   data() {
     return {
+      showScrollbar: true,
+
       titlebarHeight: 32, // Height of titlebar in PX. Set to 0 if no custom titlebar set
 
       scrollHeight: 0, // Total scrollable height
@@ -66,8 +68,14 @@ export default {
 
       // Calculate the position of the scrollbar thumb relative to the scrollable content
       let maxThumbPosition = windowHeight - this.thumbHeight;
-      if (this.scrollHeight < 200) {
+      if (this.scrollHeight < 1000) {
         maxThumbPosition = windowHeight - this.thumbHeight + this.titlebarHeight;
+      }
+
+      if (this.scrollHeight <= this.titlebarHeight) {
+        this.showScrollbar = false;
+      } else if (this.scrollHeight > this.titlebarHeight) {
+        this.showScrollbar = true;
       }
       
       this.thumbPosition = (windowScrollTop / this.scrollHeight) * maxThumbPosition;

@@ -23,6 +23,8 @@ import {
   faArrowUp,
   faCalendarDay,
   faCalendarPlus,
+  faSun,
+  faMoon,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faClock,
@@ -54,7 +56,9 @@ library.add(
   faWindowMinimize,
   faWindowMaximize,
   faWindowRestore,
-  faWindowClose
+  faWindowClose,
+  faSun,
+  faMoon,
 );
 
 createApp(App)

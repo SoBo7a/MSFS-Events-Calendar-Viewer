@@ -1,0 +1,33 @@
+:root {
+  --background-color-primary: #f7f7f799;
+  --background-color-secondary: #000;
+  --text-color-primary: #000;
+  --text-color-secondary: #fff;
+  --border-color-primary: #afababc5;
+  --border-color-secondary: #000;
+
+  --titlebar-button-hover: #e0e0e0;
+
+  --modal-background-color: #ececece1;
+
+  --event-card-past: rgba(167, 11, 0, 0.85);
+  --event-card-close: rgba(158, 110, 2, 0.85);
+  --event-card-upcoming: rgba(0, 94, 23, 0.85);
+}
+
+.dark-mode {
+  --background-color-primary: #222222e0;
+  --background-color-secondary: #fff;
+  --text-color-primary: #cfcfcf;
+  --text-color-secondary: #000;
+  --border-color-primary: #666;
+  --border-color-secondary: #fff;
+
+  --titlebar-button-hover: #575757;
+  
+  --modal-background-color: #444444da;
+
+  --event-card-past: rgba(167, 11, 0, 0.57);
+  --event-card-close: rgba(158, 110, 2, 0.72);
+  --event-card-upcoming: rgba(0, 94, 23, 0.57);
+}
