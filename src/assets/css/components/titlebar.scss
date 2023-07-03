@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   height: 32px;
-  background-color: var(--background-color-primary);
+  background-color: var(--titlebar-background-color);
   color: var(--text-color-primary);
   -webkit-app-region: drag;
   position: fixed;
@@ -52,6 +52,7 @@
     display: flex;
     justify-content: flex-end;
     padding-right: 10px;
+    margin-bottom: 1px;
   }
 
   .button {
@@ -59,6 +60,7 @@
     width: 25px;
     height: 20px;
     margin-left: 20px;
+    margin-bottom: 5px;
     background-color: transparent;
     border: none;
     padding: 0;

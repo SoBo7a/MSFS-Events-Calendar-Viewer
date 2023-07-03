@@ -5,7 +5,7 @@
 
   <div class="event-details-wrapper">
     <router-link to="/" title="Go back to the Overview..." class="home-link menu-icon">
-      <font-awesome-icon :icon="['fas', 'house-chimney']" />    
+      <font-awesome-icon :icon="['fas', 'house-chimney']" title="Go back to the Overview..." />    
     </router-link>
     <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
     <font-awesome-icon class="menu-icon" :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
@@ -14,7 +14,7 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
     <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
 
-    <font-awesome-icon class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
+    <font-awesome-icon v-show="!scrolledToTop" class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
 
     <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
 
@@ -77,6 +77,8 @@ export default {
       eventPosts: [],
       eventStartTime: null,
       eventEndTime: null,
+
+      scrolledToTop: true,
     }
   },
 
@@ -102,6 +104,16 @@ export default {
 
     document.addEventListener('click', this.handleLinkClick);
     document.addEventListener('mouseover', this.handleMouseOver);
+
+    // EventListener to show/hide to scroll up button
+    window.addEventListener('mousewheel', () => {
+      this.scrolledToTop = window.scrollY === 0 ? true : false;
+    });
+    window.addEventListener('mouseup', () => {
+      setTimeout(() => {
+        this.scrolledToTop = window.scrollY <= 3 ? true : false;
+      }, 1000);
+    });
 
     // Use MutationObserver to check if iframe present in the DOM and add handleLinkClick Eventlistener
     const observer = new MutationObserver(() => {
@@ -144,7 +156,6 @@ export default {
             this.eventEndTime = this.formatDate(this.eventDetails.event.end);
           }
 
-          // FixMe: Iframe not showing in Prod Build
           // Modify Twitch Iframes
           this.eventPosts.forEach(post => {
             if (post.cooked.includes('iframe src="https://player.twitch.tv')) {
@@ -242,6 +253,10 @@ export default {
         top: 0,
         behavior: 'smooth'
       });
+
+      setTimeout(() => {
+        this.scrolledToTop = true;
+      }, 1000);
     },
 
     printPage() {
@@ -249,7 +264,6 @@ export default {
     },
 
     showCalendarPopup() {
-      // ToDo: Show Popup; Add option for ICS-Files; Split functions
       this.showModal = true;
     },
 
