@@ -1,1 +1,1 @@
-- Add Scrollbar to HomeView
+- No Context Menu on EventView

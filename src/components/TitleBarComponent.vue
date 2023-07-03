@@ -57,17 +57,9 @@ export default {
     });
 
     // Request the dark mode status from the main process
-    ipcRenderer.send('get-dark-mode-status');
-
-    // Listen for the response from the main process
-    ipcRenderer.on('dark-mode-status', (event, isDarkMode) => {
-      // Use the dark mode status in your component
-      if (isDarkMode) {
-        // System is in dark mode
-        // Apply dark mode styles or logic
-        this.toggleDarkMode();
-      }
-    });
+    if (ipcRenderer.sendSync('get-dark-mode-status')) {
+      this.toggleDarkMode();
+    }
   },
 
   methods: {

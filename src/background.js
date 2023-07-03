@@ -87,8 +87,8 @@ async function createWindow() {
   });
 }
 
-// Allows Cross-Origin iframes to show and minipulate them
 app.on('ready', () => {
+  // Allows Cross-Origin iframes to show and minipulate them
   const { session } = require('electron');
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -99,9 +99,9 @@ app.on('ready', () => {
     });
   });
 
+  // Send the dark mode status to the renderer process
   ipcMain.on('get-dark-mode-status', (event) => {
-    // Send the dark mode status to the renderer process
-    event.sender.send('dark-mode-status', nativeTheme.shouldUseDarkColors);
+    event.returnValue = nativeTheme.shouldUseDarkColors;
   });
 });
 
