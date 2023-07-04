@@ -52,6 +52,7 @@ npm run electron:build
 ### Customize Configuration
 
 For customizing the Vue configuration, refer to the [Configuration Reference Vue](https://cli.vuejs.org/config/).
+
 For customizing the Electron configuration, refer to the [Configuration Reference Electron](https://nklayman.github.io/vue-cli-plugin-electron-builder/).
 
 
