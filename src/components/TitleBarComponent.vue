@@ -1,5 +1,8 @@
 <template>
   <div class="title-bar" @mousedown="handleMouseDown">
+    <div class="about-page-toggle" @click="showAboutModal = !showAboutModal">
+      <font-awesome-icon :icon="['fas', 'circle-info']" class="fa-icon" title="About" />
+    </div>
     <div class="dark-mode-toggle" @click="toggleDarkMode">
       <font-awesome-icon v-if="darkModeEnabled" :icon="['fas', 'sun']" class="fa-icon" title="Disable Darkmode" />
       <font-awesome-icon v-else :icon="['fas', 'moon']" class="fa-icon" title="Enable Darkmode" />
@@ -20,14 +23,22 @@
       </div>
     </div>
   </div>
+
+  <AboutModalComponent :showModal="showAboutModal" @toggle-modal="toggleModal"></AboutModalComponent>
 </template>
 
 <script>
 import { ipcRenderer } from 'electron';
 import router from "@/router"; // Import your Vue Router instance
 
+import AboutModalComponent from './AboutModalComponent.vue'
+
 export default {
   name: "TitleBarComponent",
+
+  components: {
+    AboutModalComponent,
+  },
 
   data() {
     return {
@@ -35,6 +46,8 @@ export default {
       isMaximized: false,
 
       darkModeEnabled: false,
+
+      showAboutModal: false,
     };
   },
 
@@ -63,6 +76,10 @@ export default {
   },
 
   methods: {
+    toggleModal() {
+      this.showAboutModal = !this.showAboutModal;
+    },
+    
     handleMouseDown(event) {
       // eslint-disable-next-line
       const { screenX, screenY } = event;

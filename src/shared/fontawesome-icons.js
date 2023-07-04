@@ -19,6 +19,8 @@ import {
   faLink,
   faDoorOpen,
   faShareNodes,
+  faCircleInfo,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -55,6 +57,8 @@ const iconObj = {
   faLink,
   faDoorOpen,
   faShareNodes,
+  faCircleInfo,
+  faXmarkCircle,
 };
 
 // Convert the icon objects to an array
