@@ -16,8 +16,8 @@ To use the app, please refer to the [releases section](https://urlToMyReleases) 
 
 ### Prerequisites
 
-- Node.js (version X.X.X)
-- npm (version X.X.X)
+- Node.js (version 16.15.1^)
+- npm (version 8.11.0^)
 
 
 ### Clone the Repository

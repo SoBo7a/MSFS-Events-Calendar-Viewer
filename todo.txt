@@ -1,2 +1,3 @@
+- Finish README.md
 - Implement theme switching for flatpickr datepicker element
 - Upload 1.0.1-beta relase 
