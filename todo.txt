@@ -1,2 +1,2 @@
-- No Context Menu on EventView   https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+- Implement theme switching for flatpickr datepicker element
 - Upload 1.0.1-beta relase 

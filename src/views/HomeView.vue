@@ -173,6 +173,70 @@ export default {
   },
 
   methods: {
+    fetchEventData(force = false) {
+      // Check if cached data exists and is fresh
+      const cachedData = localStorage.getItem('eventData');
+      const cachedTimestamp = localStorage.getItem('eventDataTimestamp');
+      const currentTime = new Date().getTime();
+      const thirtyMinutes = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+      if (cachedData && cachedTimestamp && !force && (currentTime - cachedTimestamp) < thirtyMinutes) {
+        // Use cached data
+        this.eventData = JSON.parse(cachedData);
+        this.setMinMaxDates();
+        this.setDisabledDates();
+        this.filterSelectedEventData();
+        
+        this.loading = false;
+
+        const timeSinceLastRefresh = new Date() - cachedTimestamp;
+
+        this.$notify({
+          title: 'Event Details Loaded',
+          text: `Event details have been loaded from cache.<br>Time since last refresh:<br>${this.formatTimeDuration(timeSinceLastRefresh)}`,
+          type: 'success',
+          duration: 3000,
+        });
+      } else {
+        // Fetch fresh data
+        this.$notify({
+          title: 'Loading Events-Data',
+          text: 'Please wait, while MSFS Events are loaded...',
+          type: 'info',
+          duration: 2000,
+        });
+
+        axios
+          .get(this.eventsCalendarJsonURL)
+          .then(response => {
+            const eventTopics = response.data.topic_list.topics;
+            this.eventData = this.filterRecentEventData(eventTopics);
+            this.setMinMaxDates();
+            this.setDisabledDates();
+            this.filterSelectedEventData();
+
+            // Cache the data and timestamp in localStorage
+            localStorage.setItem('eventData', JSON.stringify(this.eventData));
+            localStorage.setItem('eventDataTimestamp', currentTime);
+
+            this.$notify({
+              title: 'Events Loaded',
+              text: 'Events have been loaded successfully...',
+              type: 'success',
+              duration: 3000,
+            });
+          })
+          .catch(error => {
+            this.$notify({
+              title: error.code,
+              text: error.message,
+              type: 'error',
+            });
+            console.error('Error fetching data:', error);
+          });
+      }
+    },
+
     onContextMenu(e, event) {
       //prevent the browser's default menu
       e.preventDefault();
@@ -247,70 +311,6 @@ export default {
           },
         ]
       });
-    },
-
-    fetchEventData(force = false) {
-      // Check if cached data exists and is fresh
-      const cachedData = localStorage.getItem('eventData');
-      const cachedTimestamp = localStorage.getItem('eventDataTimestamp');
-      const currentTime = new Date().getTime();
-      const thirtyMinutes = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-      if (cachedData && cachedTimestamp && !force && (currentTime - cachedTimestamp) < thirtyMinutes) {
-        // Use cached data
-        this.eventData = JSON.parse(cachedData);
-        this.setMinMaxDates();
-        this.setDisabledDates();
-        this.filterSelectedEventData();
-        
-        this.loading = false;
-
-        const timeSinceLastRefresh = new Date() - cachedTimestamp;
-
-        this.$notify({
-          title: 'Event Details Loaded',
-          text: `Event details have been loaded from cache.<br>Time since last refresh:<br>${this.formatTimeDuration(timeSinceLastRefresh)}`,
-          type: 'success',
-          duration: 3000,
-        });
-      } else {
-        // Fetch fresh data
-        this.$notify({
-          title: 'Loading Events-Data',
-          text: 'Please wait, while MSFS Events are loaded...',
-          type: 'info',
-          duration: 2000,
-        });
-
-        axios
-          .get(this.eventsCalendarJsonURL)
-          .then(response => {
-            const eventTopics = response.data.topic_list.topics;
-            this.eventData = this.filterRecentEventData(eventTopics);
-            this.setMinMaxDates();
-            this.setDisabledDates();
-            this.filterSelectedEventData();
-
-            // Cache the data and timestamp in localStorage
-            localStorage.setItem('eventData', JSON.stringify(this.eventData));
-            localStorage.setItem('eventDataTimestamp', currentTime);
-
-            this.$notify({
-              title: 'Events Loaded',
-              text: 'Events have been loaded successfully...',
-              type: 'success',
-              duration: 3000,
-            });
-          })
-          .catch(error => {
-            this.$notify({
-              title: error.code,
-              text: error.message,
-              type: 'error',
-            });
-            console.error('Error fetching data:', error);
-          });
-      }
     },
 
     filterRecentEventData(eventData) {
