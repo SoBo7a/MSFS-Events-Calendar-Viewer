@@ -3,13 +3,13 @@
 
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
-  <div class="event-details-wrapper">
+  <div class="event-details-wrapper" @contextmenu="onContextMenu($event, event)">
     <router-link to="/" title="Go back to the Overview..." class="home-link menu-icon">
       <font-awesome-icon :icon="['fas', 'house-chimney']" title="Go back to the Overview..." />    
     </router-link>
     <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
     <font-awesome-icon class="menu-icon" :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
-    <font-awesome-icon class="menu-icon" :icon="['fas', 'copy']" title="Copy the URL of this Event to your Clipboard..." @click="saveToClipboard()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'link']" title="Copy the URL of this Event to your Clipboard..." @click="saveURLToClipboard()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
     <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
@@ -47,6 +47,7 @@
 <script>
 import axios from 'axios';
 import { shell, clipboard } from 'electron';
+import ContextMenu from '@imengyu/vue3-context-menu';
 import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 import ModalComponent from '@/components/CalendarModalComponent.vue';
 import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
@@ -54,6 +55,9 @@ import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
 import Loading from 'vue3-loading-overlay';
 
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
+
+import { h } from 'vue';
+import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
 
 
 export default {
@@ -181,6 +185,188 @@ export default {
         })
     },
 
+    onContextMenu(e) {
+      //prevent the browser's default menu
+      e.preventDefault();
+      //show your menu
+      const rootElement = document.documentElement;
+
+      ContextMenu.showContextMenu({
+        x: e.x,
+        y: e.y,
+        theme: rootElement.classList.contains('dark-mode') ? 'default dark' : 'default',
+        items: [
+          { 
+            label: 'Copy selection', 
+            onClick: () => {
+              this.copySelectedToClipboard(e);
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faCopy,
+            })
+          },
+          { 
+            label: 'Refresh',
+            onClick: () => {
+              this.fetchEventDetails();
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faArrowsRotate,
+            })
+          },
+          { 
+            label: 'Open in Browser', 
+            onClick: () => {
+              this.openEventInBrowser();
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faChrome,
+            })
+          },
+          { 
+            label: 'Copy Event URL', 
+            onClick: () => {
+              this.saveURLToClipboard();
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faLink,
+            })
+          },
+          { 
+            label: 'Print', 
+            onClick: () => {
+              this.printPage();
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faPrint,
+            })
+          },
+          { 
+            label: "Add to Calender", 
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faCalendarDays,
+            }),
+              children: [
+              { 
+                label: ".ics File",
+                onClick: () => {
+                  this.handleCalendarOptionSelected('ics');
+                },
+                icon: h(FontAwesomeIcon, {
+                  icon: iconObj.faCalendarPlus,
+                }),
+              },
+              { 
+                label: "Google Calender",
+                onClick: () => {
+                  this.handleCalendarOptionSelected('google');
+                },
+                icon: h(FontAwesomeIcon, {
+                  icon: iconObj.faGoogle,
+                }),
+              },
+            ]
+          },
+          { 
+            label: 'Back to Overview', 
+            onClick: () => {
+              this.$router.push('/');
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faHouseChimney,
+            })
+          },
+        ]
+      });
+    },
+
+    copySelectedToClipboard(event) {
+      const selectedText = window.getSelection().toString();
+      const target = event.target;
+
+      if (target.tagName === 'A') {
+        const linkHref = target.href;
+
+        if (selectedText) {
+          navigator.clipboard.writeText(selectedText)
+            .then(() => {
+              console.log('Selected Text:', selectedText);
+            })
+            .catch((error) => {
+              this.$notify({
+                title: 'ERROR',
+                text: error,
+                type: 'error',
+                duration: 5000,
+              });
+            });
+        } else {
+          navigator.clipboard.writeText(linkHref)
+            .then(() => {
+              this.$notify({
+                title: 'URL copied',
+                text: 'URL has been copied to the clipboard.',
+                type: 'success',
+                duration: 2000,
+              });
+            })
+            .catch((error) => {
+              this.$notify({
+                title: 'ERROR',
+                text: error,
+                type: 'error',
+                duration: 5000,
+              });
+            });
+        }
+      } else if (target.tagName === 'IMG') {
+        const imageUrl = target.src;
+
+        navigator.clipboard.writeText(imageUrl)
+          .then(() => {
+            this.$notify({
+              title: 'Image URL copied',
+              text: 'Image URL has been copied to the clipboard.',
+              type: 'success',
+              duration: 2000,
+            });
+          })
+          .catch((error) => {
+            this.$notify({
+              title: 'ERROR',
+              text: error,
+              type: 'error',
+              duration: 5000,
+            });
+          });
+      } else if (selectedText) {
+        navigator.clipboard.writeText(selectedText)
+          .then(() => {
+            this.$notify({
+              title: 'Text copied',
+              text: 'Selected Text has been copied to the clipboard.',
+              type: 'success',
+              duration: 2000,
+            });
+          })
+          .catch((error) => {
+            this.$notify({
+              title: 'ERROR',
+              text: error,
+              type: 'error',
+              duration: 5000,
+            });
+          });
+      } else {
+        this.$notify({
+          title: 'ERROR',
+          text: 'Nothing to copy...',
+          type: 'error',
+          duration: 2000,
+        });
+      }
+    },
+
     formatDate(dateString) {
       const date = new Date(dateString);
       const options = {
@@ -198,7 +384,7 @@ export default {
       shell.openExternal(this.eventUrl);
     },
 
-    saveToClipboard() {
+    saveURLToClipboard() {
       clipboard.writeText(this.eventUrl);
 
       this.$notify({

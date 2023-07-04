@@ -76,6 +76,9 @@ import ScrollBarComponent from '@/components/ScrollBarComponent.vue';
 
 import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
 
+import { h } from 'vue';
+import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
+
 
 export default {
   name: "HomeView",
@@ -173,48 +176,72 @@ export default {
     onContextMenu(e, event) {
       //prevent the browser's default menu
       e.preventDefault();
-      //show your menu
+      const rootElement = document.documentElement;
+
       ContextMenu.showContextMenu({
         x: e.x,
         y: e.y,
+        theme: rootElement.classList.contains('dark-mode') ? 'default dark' : 'default',
         items: [
           { 
             label: 'Open', 
             onClick: () => {
               this.navigateToEvent(event.slug);
             }
+            ,
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faDoorOpen,
+            })
           },
           { 
             label: 'Open in Browser', 
             onClick: () => {
               this.openEventInBrowser(event.slug);
-            }
+            },
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faChrome,
+            })
           },
           { 
             label: "Share", 
-              children: [
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faShareNodes,
+            }),
+            children: [
               { 
                 label: "Copy Link",
                 onClick: () => {
                   clipboard.writeText(`${this.msfsEventsUrl}${event.slug}`);
-                }
+                },
+                icon: h(FontAwesomeIcon, {
+                  icon: iconObj.faCopy,
+                })
               },
             ]
           },
           { 
             label: "Add to Calender", 
-              children: [
+            icon: h(FontAwesomeIcon, {
+              icon: iconObj.faCalendarDays,
+            }),
+            children: [
               { 
                 label: ".ics File",
                 onClick: () => {
                   getICSFile(event);
-                }
+                },
+                icon: h(FontAwesomeIcon, {
+                  icon: iconObj.faCalendarPlus,
+                })
               },
               { 
                 label: "Google Calender",
                 onClick: () => {
                   addEventToGoogleCalendar(event);
-                }
+                },
+                icon: h(FontAwesomeIcon, {
+                  icon: iconObj.faGoogle,
+                })
               },
             ]
           },
