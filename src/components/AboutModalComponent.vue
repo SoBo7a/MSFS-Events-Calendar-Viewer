@@ -3,7 +3,7 @@
     <div class="backdrop" v-if="showModal" @click="closeModal"></div>
 
     <div class="about-modal" v-if="showModal">
-      <span class="close-icon" @click="closeModal">
+      <span class="close-icon" @click="closeModal" title="Close">
         <font-awesome-icon :icon="['fas', 'circle-xmark']" class="fa-icon" />
       </span>
 
@@ -17,6 +17,7 @@
         <a
           href="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar"
           target="_blank"
+          title="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar"
           class="shortened-url"
           >Learn more</a
         >
@@ -32,7 +33,7 @@
       <p>
         For more information and to contribute to the development of MSFS Events Calendar
         Viewer, please visit the
-        <a href="https://github.com/your-repo" target="_blank">GitHub repository</a>.
+        <a href="https://github.com/your-repo" target="_blank" title="https://github.com/your-repo">GitHub repository</a>.
         <!-- ToDo: Add correct Repo URL -->
       </p>
 

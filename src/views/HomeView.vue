@@ -148,7 +148,7 @@ export default {
   },
 
   mounted() {
-    document.title = "Home | MSFS Events Calendar";
+    document.title = "Home | MSFS Events Calendar Viewer";
 
     this.fetchEventData();
 

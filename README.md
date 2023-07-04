@@ -1,4 +1,4 @@
-# MSFS Events Calendar App
+# MSFS Events Calendar Viewer
 
 Provides a simplified usage for the [MSFS Events Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar).
 

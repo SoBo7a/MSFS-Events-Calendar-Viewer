@@ -7,13 +7,13 @@ const routes = [
     path: "/",
     name: "HomeView",
     component: HomeView,
-    meta: { title: "Home | MSFS Events Calendar" },
+    meta: { title: "Home | MSFS Events Calendar Viewer" },
   },
   {
     path: "/view-event/:url",
     name: "EventView",
     component: EventView,
-    meta: { title: "Events | MSFS Events Calendar" },
+    meta: { title: "Events | MSFS Events Calendar Viewer" },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

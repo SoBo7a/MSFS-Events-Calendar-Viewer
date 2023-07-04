@@ -21,7 +21,7 @@ module.exports = {
 
         builderOptions: {
             appId: 'msfs-events-calendar-app',
-            productName: 'MSFS Events Calendar',
+            productName: 'MSFS Events Calendar Viewer',
             buildVersion: '1.0.1-beta',
             win: {
                 "target": [
@@ -32,7 +32,7 @@ module.exports = {
             "nsis": {
                 "installerIcon": "public/icon.ico",
                 "uninstallerIcon": "public/icon.ico",
-                "uninstallDisplayName": "MSFS Events Calendar",
+                "uninstallDisplayName": "MSFS Events Calendar Viewer",
                 "oneClick": false,
                 "allowToChangeInstallationDirectory": true
             }

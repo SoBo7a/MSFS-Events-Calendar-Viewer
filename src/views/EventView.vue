@@ -104,7 +104,7 @@ export default {
   },
 
   mounted() {
-    document.title = 'Event Details | MSFS Events Calendar';
+    document.title = 'Event Details | MSFS Events Calendar Viewer';
 
     document.addEventListener('click', this.handleLinkClick);
     document.addEventListener('mouseover', this.handleMouseOver);

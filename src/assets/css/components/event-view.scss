@@ -87,8 +87,12 @@ body {
 
         a {
           text-decoration: none;
-          color: #007ebd;
+          color: var(--link-color);
           font-weight: 700;
+
+          &:hover {
+            color: var(--link-color-hover);
+          }
         }
 
         blockquote {
