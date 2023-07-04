@@ -58,27 +58,28 @@ export default {
 
     calculateScrollbar() {
       const windowScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      let windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      windowHeight -= this.titlebarHeight;
-      const contentHeight = document.documentElement.scrollHeight;
-      
-      // Adjust the scroll height and thumb height based on the content height
-      this.scrollHeight = Math.max(contentHeight - windowHeight, 0);
-      this.thumbHeight = (windowHeight / (contentHeight || 1)) * windowHeight;
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      const contentHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+      );
 
-      // Calculate the position of the scrollbar thumb relative to the scrollable content
-      let maxThumbPosition = windowHeight - this.thumbHeight;
-      if (this.scrollHeight < 1000) {
-        maxThumbPosition = windowHeight - this.thumbHeight + this.titlebarHeight;
-      }
+      const scrollableHeight = contentHeight - windowHeight;
+      const hasScrollableContent = scrollableHeight > 0;
 
-      if (this.scrollHeight <= this.titlebarHeight) {
-        this.showScrollbar = false;
-      } else if (this.scrollHeight > this.titlebarHeight) {
-        this.showScrollbar = true;
+      this.showScrollbar = hasScrollableContent;
+
+      if (hasScrollableContent) {
+        const availableHeight = windowHeight - this.titlebarHeight;
+        this.scrollHeight = scrollableHeight;
+        this.thumbHeight = Math.max((availableHeight / contentHeight) * availableHeight, 20); // Minimum thumb height of 20px
+        this.thumbPosition = (windowScrollTop / scrollableHeight) * (availableHeight - this.thumbHeight);
+      } else {
+        this.scrollHeight = 0;
+        this.thumbHeight = 0;
+        this.thumbPosition = 0;
       }
-      
-      this.thumbPosition = (windowScrollTop / this.scrollHeight) * maxThumbPosition;
     },
 
     startDrag(event) {

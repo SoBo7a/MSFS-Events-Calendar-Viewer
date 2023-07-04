@@ -1,1 +1,2 @@
-- No Context Menu on EventView
+- No Context Menu on EventView   https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+- Upload 1.0.1-beta relase 
