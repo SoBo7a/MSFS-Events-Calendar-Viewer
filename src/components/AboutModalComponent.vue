@@ -37,7 +37,7 @@
       </p>
 
       <ul>
-        <li><strong>Version:</strong> 1.0.1-beta</li>
+        <li><strong>Version:</strong> {{ appVersion }}</li>
         <li><strong>Developer:</strong> SoBo7a</li>
       </ul>
     </div>
@@ -47,6 +47,11 @@
 <script>
 export default {
   name: "AboutModalComponent",
+  data() {
+    return {
+        appVersion: require("../../package.json").version,
+    }
+  },
   props: {
     showModal: {
       type: Boolean,
@@ -70,83 +75,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.about-modal-open {
-  overflow: hidden;
-}
-
-.backdrop {
-  position: fixed;
-  top: var(--titlebar-height);
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Adjust the opacity to your preference */
-  backdrop-filter: blur(8px); /* Apply the blur effect */
-  z-index: 9998;
-}
-
-.about-modal {
-  position: fixed;
-  z-index: 9999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--about-background-color);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-}
-
-.shortened-url {
-  max-width: 30vw; /* Adjust the max-width to your preference */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-}
-
-.close-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 24px;
-  color: var(--text-color-primary);
-  transition: color 0.3s ease;
-}
-
-.close-icon:hover {
-  color: #777;
-}
-
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-li {
-  margin-bottom: 5px;
-}
-
-p {
-  margin-bottom: 10px;
-}
-
-a {
-  color: var(--link-color);
-  text-decoration: underline;
-}
-
-a:hover {
-  color: var(--link-color-hover);
-}
-</style>
