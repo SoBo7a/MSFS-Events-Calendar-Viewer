@@ -2,3 +2,6 @@
 - Implement theme switching for flatpickr datepicker element
 
 - Improve manual check for updates
+- Notify user if update was installed
+
+- Remove success notifications (only show "info" and "error")
