@@ -95,8 +95,7 @@ async function createWindow() {
   
   ipcMain.on('install-now', () => {
     setImmediate(() => {
-      // FixMe: Not restarting after user selected "update now"
-      autoUpdater.quitAndInstall(true);
+      autoUpdater.quitAndInstall(true, true);
     })
   });
 
