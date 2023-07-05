@@ -21,6 +21,7 @@
 'use strict'
 
 import { app, ipcMain, protocol, BrowserWindow, shell, nativeTheme } from 'electron'
+import { autoUpdater } from 'electron-updater'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
@@ -55,6 +56,10 @@ async function createWindow() {
     }
   })
 
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdates();
+  });
+  
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
@@ -69,7 +74,25 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send('update_available');
+  });
   
+  let updateDownloaded = false;
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update_downloaded');
+    updateDownloaded = true;
+  });
+  
+  ipcMain.on('install-now', () => {
+    if (updateDownloaded) {
+      autoUpdater.quitAndInstall();
+    } else {
+      console.error("Nothing to update...")
+    }
+  });
+
   ipcMain.on('get-window-position', (event) => {
     const position = win.getPosition();
     event.returnValue = position;

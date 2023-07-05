@@ -19,6 +19,7 @@
 
 <template>
   <TitleBarComponent />
+  <UpdateNotificationComponent />
 
   <div class="border-overlay"></div>
 
@@ -27,12 +28,14 @@
 
 <script>
 import TitleBarComponent from './components/TitleBarComponent.vue';
+import UpdateNotificationComponent from './components/UpdateNotificationComponent.vue'
 
 export default {
   name: 'App',
 
   components: {
     TitleBarComponent,
+    UpdateNotificationComponent,
   },
   
 }
