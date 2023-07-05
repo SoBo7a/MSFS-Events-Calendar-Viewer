@@ -103,11 +103,6 @@ For customizing the Electron configuration, refer to the [Configuration Referenc
 Contributions are very welcome!
 
 
-## License
-
-This project as a whole is licensed under the [GPL License](https://www.gnu.org/licenses/gpl-3.0.html). Individual files may have a different, but compatible license.
-
-
 ## Warranty 
 
 This program comes with ABSOLUTELY NO WARRANTY.
@@ -116,3 +111,8 @@ This program comes with ABSOLUTELY NO WARRANTY.
 ## Support
 
 For any questions or issues, please reach out to the project maintainers or open an issue in the [issue tracker](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/issues).
+
+
+## License
+
+This project as a whole is licensed under the [GPL License](https://www.gnu.org/licenses/gpl-3.0.html). Individual files may have a different, but compatible license.
