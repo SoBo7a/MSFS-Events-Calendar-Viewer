@@ -1,2 +1,5 @@
 - Add Components that are used in multiple views to main.js
 - Implement theme switching for flatpickr datepicker element
+
+- App not restarting after update
+- Improve manual check for updates

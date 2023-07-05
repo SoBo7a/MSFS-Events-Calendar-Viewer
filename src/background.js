@@ -94,11 +94,10 @@ async function createWindow() {
   });
   
   ipcMain.on('install-now', () => {
-    if (updateDownloaded) {
-      autoUpdater.quitAndInstall();
-    } else {
-      console.error("Nothing to update...")
-    }
+    setImmediate(() => {
+      // FixMe: Not restarting after user selected "update now"
+      autoUpdater.quitAndInstall(true);
+    })
   });
 
   ipcMain.on('get-window-position', (event) => {
