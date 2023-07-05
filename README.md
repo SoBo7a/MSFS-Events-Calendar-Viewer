@@ -26,7 +26,7 @@ To use the app, please follow the steps below:
 
 - Go to the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases) of this GitHub repository.
 - Download the latest version of the app for your operating system.
-- When downloading the app, your web browser and operating system may display warnings about the installer. These warnings are displayed because the app doesn't use a paid certificate. You can safely disregard these warnings.
+- When downloading the app, your web browser and operating system may display warnings about the installer. You can safely disregard these warnings.
 - Once the download is complete, locate the downloaded file and run the installer.
 - Follow the installation prompts to complete the installation process.
 - After the installation is finished, you can launch the app from your desktop or applications menu.
