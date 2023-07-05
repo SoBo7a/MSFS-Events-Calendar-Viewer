@@ -56,9 +56,9 @@ async function createWindow() {
     }
   })
 
-  win.once('ready-to-show', () => {
-    autoUpdater.checkForUpdates();
-  });
+  // win.once('ready-to-show', () => {
+  //   autoUpdater.checkForUpdates();
+  // });
   
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
@@ -74,6 +74,14 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  ipcMain.on("check-for-updates", () => {
+    autoUpdater.on("update-not-available", () => {
+      win.webContents.send("update_not_found");
+    });
+  
+    autoUpdater.checkForUpdates();
+  });
 
   autoUpdater.on('update-available', () => {
     win.webContents.send('update_available');

@@ -57,11 +57,14 @@
         For more information and to contribute to the development of MSFS Events Calendar
         Viewer, please visit the
         <a href="https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer" target="_blank" title="https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer">GitHub repository</a>.
-        <!-- ToDo: Add correct Repo URL -->
       </p>
 
       <ul>
-        <li><strong>Version:</strong> {{ appVersion }}</li>
+        <li>
+            <strong>Version:</strong> {{ appVersion }}
+            <font-awesome-icon :icon="['fa', 'arrows-rotate']" class="fa-icon update-icon" @click="checkForUpdates" title="Check for Updates" />
+            <div v-if="showNoUpdateMsg" class="update-not-found"><strong>You already use the latest version...</strong></div>
+        </li>
         <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="https://github.com/SoBo7a" target="_blank" title="https://github.com/SoBo7a">SoBo7a</a></li>
         <li><strong>License:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0" target="_blank" title="https://www.gnu.org/licenses/gpl-3.0">GPLv3</a></li>
       </ul>
@@ -70,11 +73,16 @@
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
+
+
 export default {
   name: "AboutModalComponent",
   data() {
     return {
         appVersion: require("../../package.json").version,
+
+        showNoUpdateMsg: false,
     }
   },
   props: {
@@ -96,6 +104,18 @@ export default {
   methods: {
     closeModal() {
       this.$emit("toggle-modal");
+    },
+
+    checkForUpdates() {
+      ipcRenderer.send("check-for-updates");
+
+      ipcRenderer.on("update_not_found", () => {
+        this.showNoUpdateMsg = true;
+
+        setTimeout(() => {
+            this.showNoUpdateMsg = false;
+        }, 3000);
+      });
     },
   },
 };

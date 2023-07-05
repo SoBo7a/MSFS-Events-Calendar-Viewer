@@ -17,7 +17,6 @@
  * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
  *--------------------------------------------------------------------------------------------*/
 
-
 .about-modal-open {
   overflow: hidden;
 }
@@ -50,15 +49,45 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   z-index: 9999;
 
-    .shortened-url {
+  .no-update-notification {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .show-notification {
+    opacity: 1;
+  }
+
+  .shortened-url {
     max-width: 30vw; /* Adjust the max-width to your preference */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
-    }
+  }
 
-    .close-icon {
+  .update-icon {
+    margin-left: 3px;
+    font-size: 15px;
+    color: var(--text-color-primary);
+    cursor: pointer;
+
+    &:hover {
+      color: #777;
+    }
+  }
+
+  .close-icon {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -66,38 +95,38 @@
     font-size: 24px;
     color: var(--text-color-primary);
     transition: color 0.3s ease;
-    }
 
-    .close-icon:hover {
-    color: #777;
+    &:hover {
+      color: #777;
     }
+  }
 
-    h2 {
+  h2 {
     font-size: 24px;
     margin-bottom: 10px;
-    }
+  }
 
-    ul {
+  ul {
     list-style-type: none;
     padding: 0;
     margin-bottom: 10px;
-    }
+  }
 
-    li {
+  li {
     margin-bottom: 5px;
-    }
+  }
 
-    p {
+  p {
     margin-bottom: 10px;
-    }
+  }
 
-    a {
+  a {
     color: var(--link-color);
     font-weight: 700;
     text-decoration: none;
-    }
+  }
 
-    a:hover {
+  a:hover {
     color: var(--link-color-hover);
-    }
+  }
 }
