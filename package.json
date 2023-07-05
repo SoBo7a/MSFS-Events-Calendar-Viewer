@@ -6,7 +6,7 @@
   "author": "SoBo7a",
   "license": "GPL-3.0-or-later",
   "private": true,
-  "repository": "<linkToMyRepo>",
+  "repository": "https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer",
   "scripts": {
     "start": "concurrently \"node ./proxy/server.js\" \"vue-cli-service electron:serve\"",
     "serve": "vue-cli-service serve",

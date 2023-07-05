@@ -1,7 +1,7 @@
 <!---------------------------------------------------------------------------------------------
  * Copyright (c) 2023 SoBo7a.
  * 
- * This file is part of MSFS Events Calendar Viewer <linkToMyRepo>.
+ * This file is part of MSFS Events Calendar Viewer https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer.
  * 
  * MSFS Events Calendar Viewer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,13 +56,13 @@
       <p>
         For more information and to contribute to the development of MSFS Events Calendar
         Viewer, please visit the
-        <a href="https://github.com/your-repo" target="_blank" title="https://github.com/your-repo">GitHub repository</a>.
+        <a href="https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer" target="_blank" title="https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer">GitHub repository</a>.
         <!-- ToDo: Add correct Repo URL -->
       </p>
 
       <ul>
         <li><strong>Version:</strong> {{ appVersion }}</li>
-        <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="<linkToMyGitHub>" target="_blank" title="<linkToMyGitHub>">SoBo7a</a></li>
+        <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="https://github.com/SoBo7a" target="_blank" title="https://github.com/SoBo7a">SoBo7a</a></li>
         <li><strong>License:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0" target="_blank" title="https://www.gnu.org/licenses/gpl-3.0">GPLv3</a></li>
       </ul>
     </div>

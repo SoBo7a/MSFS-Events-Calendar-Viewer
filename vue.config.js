@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------
  * Copyright (c) 2023 SoBo7a.
  * 
- * This file is part of MSFS Events Calendar Viewer <linkToMyRepo>.
+ * This file is part of MSFS Events Calendar Viewer https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer.
  * 
  * MSFS Events Calendar Viewer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ module.exports = {
             "publish": [
               {
                 "provider": "github",
-                "owner": "<your-github-username>",
-                "repo": "<your-repo-name>"
+                "owner": "SoBo7a",
+                "repo": "MSFS-Events-Calendar-Viewer"
               }
             ],
             win: {

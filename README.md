@@ -13,7 +13,7 @@ This program comes with ABSOLUTELY NO WARRANTY.
 
 ## Installation
 
-To use the app, please refer to the [releases section](https://urlToMyReleases) and download the latest version for your operating system.
+To use the app, please refer to the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases) and download the latest version for your operating system.
 
 
 ## Development Setup
@@ -27,7 +27,7 @@ To use the app, please refer to the [releases section](https://urlToMyReleases) 
 ### Clone the Repository
 
 ```shell
-git clone https://github.com/your-repo.git
+git clone https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer.git
 cd msfs-events-calendar-app
 ```
 
@@ -77,4 +77,4 @@ This program comes with ABSOLUTELY NO WARRANTY.
 
 ## Support
 
-For any questions or issues, please reach out to the project maintainers or open an issue in the [issue tracker](https://urlToMyIssueTracker).
+For any questions or issues, please reach out to the project maintainers or open an issue in the [issue tracker](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/issues).
