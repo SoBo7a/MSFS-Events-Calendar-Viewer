@@ -309,9 +309,6 @@ export default {
 
         if (selectedText) {
           navigator.clipboard.writeText(selectedText)
-            .then(() => {
-              console.log('Selected Text:', selectedText);
-            })
             .catch((error) => {
               this.$notify({
                 title: 'ERROR',

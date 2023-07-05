@@ -2,7 +2,3 @@
 - Finish licensing
 - Add Components that are used in multiple views to main.js
 - Implement theme switching for flatpickr datepicker element
-- Upload 1.0.1-beta relase / 1.0.2 relase 
-- Switch @ stable release to Github
-
-(- implement auto update)
