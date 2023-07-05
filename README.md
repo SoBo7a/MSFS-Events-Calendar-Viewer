@@ -31,7 +31,7 @@ To use the app, please follow the steps below:
 - Follow the installation prompts to complete the installation process.
 - After the installation is finished, you can launch the app from your desktop or applications menu.
 
-Please note that if you encounter any warnings during the installation process, they can be safely ignored as the app is open-source and doesn't contain any malicious code. If you prefer, you can also build the application yourself by following the instructions provided in the source code.
+Please note that if you encounter any warnings during the installation process, they can be safely ignored as the app is open-source and doesn't contain any malicious code. If you prefer, you can also build the application yourself by following the instructions below.
 
 
 ## Development Setup
