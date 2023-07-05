@@ -38,7 +38,7 @@
       <span class="update-message" v-html="downloadedMessage"></span>
       <div class="update-button-container">
         <button class="later-button" @click="installLater" title="Install after closing the application.">Later</button>
-        <button class="install-button" @click="installNow" title="Close the application and update now.">Now</button>
+        <button class="install-button" @click="installNow" title="Close the application and update now.">Install Now</button>
       </div>
     </div>
   </div>
