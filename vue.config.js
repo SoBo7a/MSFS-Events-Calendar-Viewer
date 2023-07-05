@@ -23,18 +23,6 @@ require('dotenv').config();
 
 module.exports = {
   ...defineConfig({
-    devServer: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:8082',
-          ws: true,
-          changeOrigin: true,
-        },
-      },
-    }, // ToDo Check if it can be removed as no server.js in use anymore
-
-    transpileDependencies: ["axios"],
-
     pluginOptions: {
       electronBuilder: {
         nodeIntegration: true,
@@ -43,7 +31,7 @@ module.exports = {
         builderOptions: {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar Viewer',
-            buildVersion: '1.0.2-rc',
+            buildVersion: '1.0.3-rc',
             "publish": [
               {
                 "provider": "github",

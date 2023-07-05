@@ -1,4 +1,2 @@
-- Finish README.md
-- Finish licensing
 - Add Components that are used in multiple views to main.js
 - Implement theme switching for flatpickr datepicker element

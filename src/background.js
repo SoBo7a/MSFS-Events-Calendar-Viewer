@@ -55,10 +55,6 @@ async function createWindow() {
       nativeWindowOpen: true,
     }
   })
-
-  // win.once('ready-to-show', () => {
-  //   autoUpdater.checkForUpdates();
-  // });
   
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
@@ -74,6 +70,10 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdates();
+  });
 
   ipcMain.on("check-for-updates", () => {
     autoUpdater.on("update-not-available", () => {

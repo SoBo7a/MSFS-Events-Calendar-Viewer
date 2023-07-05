@@ -11,9 +11,27 @@ The program is written in Vue 3, using "vue-electron-builder".
 This program comes with ABSOLUTELY NO WARRANTY.
 
 
+## Features
+
+- Shows Events up to 30 Days in the past
+- Shows all future Events
+- Provides a faster usage of the [MSFS Events Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar). This is archieved by caching and more optimiziations
+- Automatic Application updates
+- Much more...
+
+
 ## Installation
 
-To use the app, please refer to the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases) and download the latest version for your operating system.
+To use the app, please follow the steps below:
+
+- Go to the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases) of this GitHub repository.
+- Download the latest version of the app for your operating system.
+- When downloading the app, your web browser and operating system may display warnings about the installer. These warnings are displayed because the app doesn't use a paid certificate. You can safely disregard these warnings.
+- Once the download is complete, locate the downloaded file and run the installer.
+- Follow the installation prompts to complete the installation process.
+- After the installation is finished, you can launch the app from your desktop or applications menu.
+
+Please note that if you encounter any warnings during the installation process, they can be safely ignored as the app is open-source and doesn't contain any malicious code. If you prefer, you can also build the application yourself by following the instructions provided in the source code.
 
 
 ## Development Setup
@@ -51,6 +69,26 @@ npm run electron:serve
 ```shell
 npm run electron:build
 ```
+
+
+### Compiling, Minifying, and Creating a New GitHub Release
+
+- First, you'll need to create a [GitHub Access-Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) if you haven't already. This token will be used to authenticate your app and enable the release creation process.
+- Once you have your GitHub Access Token, create a new file named .env in the root directory of your project.
+- Open the .env file and add the following line, replacing <YOUR_ACCESS_TOKEN> with your actual GitHub Access Token:
+```javascript
+GH_TOKEN=<YOUR_ACCESS_TOKEN>
+```
+- Save the .env file.
+
+- Run the following command in your terminal or command prompt:
+
+```shell
+npm run electron:deploy
+```
+This command will compile and minify your app for production and automatically create a new GitHub release.
+
+- Once the release process is complete, your new release will be available on the GitHub repository's releases page.
 
 
 ### Customize Configuration
