@@ -6,7 +6,7 @@
  * MSFS Events Calendar Viewer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * any later version.
  * 
  * MSFS Events Calendar Viewer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -62,7 +62,7 @@
 
       <ul>
         <li><strong>Version:</strong> {{ appVersion }}</li>
-        <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 SoBo7a</li>
+        <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="<linkToMyGitHub>" target="_blank" title="<linkToMyGitHub>">SoBo7a</a></li>
         <li><strong>License:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0" target="_blank" title="https://www.gnu.org/licenses/gpl-3.0">GPLv3</a></li>
       </ul>
     </div>

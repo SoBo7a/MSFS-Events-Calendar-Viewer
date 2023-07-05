@@ -1,3 +1,23 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) 2023 SoBo7a.
+ * 
+ * This file is part of MSFS Events Calendar Viewer <linkToMyRepo>.
+ * 
+ * MSFS Events Calendar Viewer is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * MSFS Events Calendar Viewer is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
+ *--------------------------------------------------------------------------------------------*/
+
+
 const { defineConfig } = require("@vue/cli-service");
 
 module.exports = {
@@ -10,7 +30,7 @@ module.exports = {
           changeOrigin: true,
         },
       },
-    },
+    }, // ToDo Check if it can be removed as no server.js in use anymore
 
     transpileDependencies: ["axios"],
 
@@ -23,6 +43,13 @@ module.exports = {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar Viewer',
             buildVersion: '1.0.1-beta',
+            "publish": [
+              {
+                "provider": "github",
+                "owner": "<your-github-username>",
+                "repo": "<your-repo-name>"
+              }
+            ],
             win: {
                 "target": [
                     "nsis"
