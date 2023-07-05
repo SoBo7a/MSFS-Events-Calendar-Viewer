@@ -3,7 +3,8 @@
   "description": "App to view the Events from the MSFS Events Calender.",
   "homepage": "TODO: Add Repo here...",
   "version": "1.0.1-beta",
-  "author": "Leon Wochnik",
+  "author": "SoBo7a",
+  "license": "GPL-3.0-or-later",
   "private": true,
   "scripts": {
     "start": "concurrently \"node ./proxy/server.js\" \"vue-cli-service electron:serve\"",

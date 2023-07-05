@@ -17,7 +17,7 @@ module.exports = {
     pluginOptions: {
       electronBuilder: {
         nodeIntegration: true,
-         contextIsolation: true,
+        contextIsolation: true,
 
         builderOptions: {
             appId: 'msfs-events-calendar-app',
@@ -34,8 +34,25 @@ module.exports = {
                 "uninstallerIcon": "public/icon.ico",
                 "uninstallDisplayName": "MSFS Events Calendar Viewer",
                 "oneClick": false,
-                "allowToChangeInstallationDirectory": true
-            }
+                "allowToChangeInstallationDirectory": true,
+            },
+            extraFiles: [
+              {
+                "from": "LICENSE.MSFS_Events_Calendar_Viewer.txt",
+                "to": "LICENSE.MSFS_Events_Calendar_Viewer.txt",
+                "filter": ["**/*"]
+              },
+              {
+                "from": "README.md",
+                "to": "README.md",
+                "filter": ["**/*"]
+              },
+              {
+                "from": "ThirdPartyNotices.txt",
+                "to": "ThirdPartyNotices.txt",
+                "filter": ["**/*"]
+              },
+            ]
         },
       }
     }
