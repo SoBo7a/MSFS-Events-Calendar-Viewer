@@ -35,6 +35,21 @@
   font-family: Arial, sans-serif;
   z-index: 9999;
 
+  .progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: var(--background-color-secondary); /* Set the desired background color of the progress bar */
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: #007bff; /* Set the desired color of the progress bar */
+    transition: width 0.3s ease;
+    border-radius: 5px;
+  }
+
   .update-icon-container {
     display: flex;
     align-items: center;

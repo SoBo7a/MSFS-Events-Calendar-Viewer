@@ -101,6 +101,11 @@ async function createWindow() {
   autoUpdater.on('update-available', () => {
     win.webContents.send('update_available');
   });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    const downloadProgress = progressObj.percent;
+    win.webContents.send('download-progress', downloadProgress);
+  });
   
   let updateDownloaded = false;
   autoUpdater.on('update-downloaded', () => {

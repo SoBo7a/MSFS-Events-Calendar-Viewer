@@ -34,6 +34,10 @@
       class="update-message"
       v-html="downloadingMessage"
     ></span>
+    <div v-if="state === 'downloading'" class="progress-bar-container">
+      <div class="progress-bar" :style="{ width: downloadProgress + '%' }"></div>
+    </div>
+    <span v-if="state === 'downloading'" class="progress-label">{{ downloadProgress.toFixed(0) }} / 100%</span>
     <div v-if="state === 'downloaded'" class="downloaded-container">
       <span class="update-message" v-html="downloadedMessage"></span>
       <div class="update-button-container">
@@ -64,6 +68,7 @@ export default {
       downloadingMessage: "",
       downloadedMessage: "",
       updatedVersion: "",
+      downloadProgress: 0,
     };
   },
 
@@ -74,6 +79,10 @@ export default {
 
     ipcRenderer.on("update_available", () => {
       this.showDownloadingNotification();
+    });
+
+    ipcRenderer.on('download-progress', (event, downloadProgress) => {
+      this.downloadProgress = downloadProgress;
     });
 
     ipcRenderer.on("update_downloaded", () => {
