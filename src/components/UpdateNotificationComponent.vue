@@ -89,7 +89,7 @@ export default {
 
       setTimeout(() => {
         this.visible = false;
-      }, 10000);
+      }, 8000);
     },
 
     showDownloadingNotification() {
