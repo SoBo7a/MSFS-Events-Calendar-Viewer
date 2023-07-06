@@ -31,7 +31,7 @@
 
     <div class="toolbar-wrapper">
       <button class="refresh-button" @click="fetchEventData(true)" title="Reload Data...">
-        <font-awesome-icon :icon="['fas', 'arrows-rotate']" />
+        <font-awesome-icon :icon="['fas', 'arrows-rotate']" :class="{ 'rotate': loading }" />
       </button>
       <div class="datepicker-wrapper">
         <div class="datepicker-label">
@@ -208,15 +208,6 @@ export default {
         this.filterSelectedEventData();
         
         this.loading = false;
-
-        const timeSinceLastRefresh = new Date() - cachedTimestamp;
-
-        this.$notify({
-          title: 'Event Details Loaded',
-          text: `Event details have been loaded from cache.<br>Time since last refresh:<br>${this.formatTimeDuration(timeSinceLastRefresh)}`,
-          type: 'success',
-          duration: 3000,
-        });
       } else {
         // Fetch fresh data
         this.$notify({
@@ -238,13 +229,6 @@ export default {
             // Cache the data and timestamp in localStorage
             localStorage.setItem('eventData', JSON.stringify(this.eventData));
             localStorage.setItem('eventDataTimestamp', currentTime);
-
-            this.$notify({
-              title: 'Events Loaded',
-              text: 'Events have been loaded successfully...',
-              type: 'success',
-              duration: 3000,
-            });
           })
           .catch(error => {
             this.$notify({

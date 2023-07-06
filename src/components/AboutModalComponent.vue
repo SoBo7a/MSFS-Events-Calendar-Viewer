@@ -62,9 +62,17 @@
       <ul>
         <li>
             <strong>Version:</strong> {{ appVersion }}
-            <font-awesome-icon :icon="['fa', 'arrows-rotate']" class="fa-icon update-icon" @click="checkForUpdates" title="Check for Updates" />
-            <div v-if="showNoUpdateMsg" class="update-not-found"><strong>You already use the latest version...</strong></div>
+            <font-awesome-icon
+                :icon="['fa', 'arrows-rotate']"
+                class="fa-icon update-icon"
+                :class="{ 'rotate': isUpdating }"
+                @click="checkForUpdates"
+                title="Check for Updates"
+            />
+            <div v-if="showNoUpdateMsg" class="update-not-found pulsing"><strong>You already use the latest version...</strong></div>
         </li>
+        <li v-if="showErrorMsg" class="error-msg pulsing"><strong>Failed to check for updates...</strong></li>
+
         <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="https://github.com/SoBo7a" target="_blank" title="https://github.com/SoBo7a">SoBo7a</a></li>
         <li><strong>License:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0" target="_blank" title="https://www.gnu.org/licenses/gpl-3.0">GPLv3</a></li>
       </ul>
@@ -78,22 +86,28 @@ import { ipcRenderer } from "electron";
 
 export default {
   name: "AboutModalComponent",
+
   data() {
     return {
         appVersion: require("../../package.json").version,
-
         showNoUpdateMsg: false,
+        isUpdating: false,
+        showErrorMsg: false,
+
+        timeToUpdateTimeout: 15000,
+        timeToShowMsg: 10000,
     }
   },
+
   props: {
     showModal: {
       type: Boolean,
       required: true,
     },
   },
+
   watch: {
     showModal(value) {
-      // Add/remove 'modal-open' class to the body when the showModal prop changes
       if (value) {
         document.body.style.overflow = 'hidden';
       } else {
@@ -101,20 +115,40 @@ export default {
       }
     },
   },
+
   methods: {
     closeModal() {
       this.$emit("toggle-modal");
     },
 
     checkForUpdates() {
+      if (this.isUpdating) {
+        return; // Exit the method if already checking for update
+      }
+
+      this.isUpdating = true;
       ipcRenderer.send("check-for-updates");
 
-      ipcRenderer.on("update_not_found", () => {
-        this.showNoUpdateMsg = true;
+      const updateTimeout = setTimeout(() => {
+        this.showNoUpdateMsg = false;
+        this.showErrorMsg = true;
+        this.isUpdating = false;
 
         setTimeout(() => {
-            this.showNoUpdateMsg = false;
-        }, 3000);
+          this.showErrorMsg = false;
+        }, this.timeToShowMsg);
+
+      }, this.timeToUpdateTimeout);
+
+      ipcRenderer.on("update_not_found", () => {
+        clearTimeout(updateTimeout);
+        this.showNoUpdateMsg = true;
+        this.showErrorMsg = false;
+        this.isUpdating = false;
+
+        setTimeout(() => {
+          this.showNoUpdateMsg = false;
+        }, this.timeToShowMsg);
       });
     },
   },

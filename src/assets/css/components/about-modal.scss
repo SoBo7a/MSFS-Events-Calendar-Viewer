@@ -17,6 +17,7 @@
  * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
  *--------------------------------------------------------------------------------------------*/
 
+
 .about-modal-open {
   overflow: hidden;
 }
@@ -42,6 +43,7 @@
   z-index: 9999;
   top: 50%;
   left: 50%;
+  max-width: 550px;
   transform: translate(-50%, -50%);
   background-color: var(--about-background-color);
   padding: 20px;

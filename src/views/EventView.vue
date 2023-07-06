@@ -27,7 +27,7 @@
     <router-link to="/" title="Go back to the Overview..." class="home-link menu-icon">
       <font-awesome-icon :icon="['fas', 'house-chimney']" title="Go back to the Overview..." />    
     </router-link>
-    <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." @click="fetchEventDetails()" />
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." :class="{ 'rotate': loading }" @click="fetchEventDetails()" />
     <font-awesome-icon class="menu-icon" :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'link']" title="Copy the URL of this Event to your Clipboard..." @click="saveURLToClipboard()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
@@ -185,15 +185,7 @@ export default {
             if (post.cooked.includes('iframe src="https://player.twitch.tv')) {
               post.cooked = post.cooked.replace('parent=forums.flightsimulator.com', 'parent=localhost');
             }
-          });
-
-          this.$notify({
-            title: 'Event Details Loaded',
-            text: 'Events Details have been loaded successfully...',
-            type: 'success',
-            duration: 3000,
-          });
-          
+          });          
         })
         .catch(error => {
           this.$notify({
@@ -201,7 +193,6 @@ export default {
             text: error.message,
             type: 'error',
           });
-          // eslint-disable-next-line
           console.error('Error fetching data:', error);
         })
     },
@@ -408,7 +399,7 @@ export default {
       this.$notify({
             title: 'Saved to Clipboard',
             text: 'The Event URL has been saved to the Clipboard...',
-            type: 'info',
+            type: 'success',
             duration: 3000,
       });
     },

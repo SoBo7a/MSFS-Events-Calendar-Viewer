@@ -18,21 +18,36 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-@import './variables.scss';
-@import './animations.scss';
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    filter: brightness(100%);
+  }
+  50% {
+    transform: scale(0.97);
+    filter: brightness(80%);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(100%);
+  }
+}
 
-@import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
-@import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
-@import 'flatpickr/dist/flatpickr.css';
+.pulsing {
+  animation: pulse 1s infinite;
+}
 
-@import './components/home-view.scss';
-@import './components/notification.scss';
-@import './components/background.scss';
-@import './components/datepicker.scss';
-@import './components/contextmenu.scss';
-@import './components/event-view.scss';
-@import './components/calendar-modal.scss';
-@import './components/titlebar.scss';
-@import './components/scrollbar.scss';
-@import './components/about-modal.scss';
-@import './components/update-notification.scss';
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 1s infinite linear;
+  cursor: not-allowed !important;
+}

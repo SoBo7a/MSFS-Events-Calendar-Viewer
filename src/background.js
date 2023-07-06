@@ -93,7 +93,7 @@ async function createWindow() {
   ipcMain.on("check-for-updates", () => {
     autoUpdater.on("update-not-available", () => {
       win.webContents.send("update_not_found");
-    });
+  });
   
     autoUpdater.checkForUpdates();
   });
