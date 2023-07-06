@@ -37,6 +37,7 @@
     <div v-if="state === 'downloading'" class="progress-bar-container">
       <div class="progress-bar" :style="{ width: downloadProgress + '%' }"></div>
     </div>
+    <br>
     <span v-if="state === 'downloading'" class="progress-label">{{ downloadProgress.toFixed(0) }} / 100%</span>
     <div v-if="state === 'downloaded'" class="downloaded-container">
       <span class="update-message" v-html="downloadedMessage"></span>
@@ -48,8 +49,8 @@
     <div v-if="state === 'updated'" class="updated-container">
       <span class="update-message">
         The app has been updated to version:
-        <br>
-        v{{ updatedVersion }}
+        <br><br>
+        <strong>v{{ updatedVersion }}</strong>
       </span>
     </div>
   </div>
