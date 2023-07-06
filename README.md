@@ -10,6 +10,7 @@ The program is written in Vue 3, using "vue-electron-builder".
 
 This program comes with ABSOLUTELY NO WARRANTY.
 
+<br>
 
 ## Features
 
@@ -19,6 +20,13 @@ This program comes with ABSOLUTELY NO WARRANTY.
 - Automatic Application updates
 - Much more...
 
+<img src="screenshots/home01.png" alt="Alt Text" width="400">
+<img src="screenshots/home02.png" alt="Alt Text" width="400">
+<br><br>
+<img src="screenshots/event01.png" alt="Alt Text" width="400">
+<img src="screenshots/event02.png" alt="Alt Text" width="400">
+
+<br>
 
 ## Installation
 
@@ -33,6 +41,7 @@ To use the app, please follow the steps below:
 
 Please note that if you encounter any warnings during the installation process, they can be safely ignored as the app is open-source and doesn't contain any malicious code. If you prefer, you can also build the application yourself by following the instructions below.
 
+<br>
 
 ## Development Setup
 
@@ -41,6 +50,7 @@ Please note that if you encounter any warnings during the installation process, 
 - Node.js (version 16.15.1^)
 - npm (version 8.11.0^)
 
+<br>
 
 ### Clone the Repository
 
@@ -49,6 +59,7 @@ git clone https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer.git
 cd msfs-events-calendar-app
 ```
 
+<br>
 
 ### Install Dependencies
 
@@ -56,6 +67,7 @@ cd msfs-events-calendar-app
 npm install
 ```
 
+<br>
 
 ### Compiles and hot-reloads for development
 
@@ -63,6 +75,7 @@ npm install
 npm run electron:serve
 ```
 
+<br>
 
 ### Compiles and minifies for production
 
@@ -70,6 +83,7 @@ npm run electron:serve
 npm run electron:build
 ```
 
+<br>
 
 ### Compiling, Minifying, and Creating a New GitHub Release
 
@@ -90,6 +104,7 @@ This command will compile and minify your app for production and automatically c
 
 - Once the release process is complete, your new release will be available on the GitHub repository's releases page.
 
+<br>
 
 ### Customize Configuration
 
@@ -97,21 +112,25 @@ For customizing the Vue configuration, refer to the [Configuration Reference Vue
 
 For customizing the Electron configuration, refer to the [Configuration Reference Electron](https://nklayman.github.io/vue-cli-plugin-electron-builder/).
 
+<br>
 
 ## Contributing
 
 Contributions are very welcome!
 
+<br>
 
 ## Warranty 
 
 This program comes with ABSOLUTELY NO WARRANTY.
 
+<br>
 
 ## Support
 
 For any questions or issues, please reach out to the project maintainers or open an issue in the [issue tracker](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/issues).
 
+<br>
 
 ## License
 
