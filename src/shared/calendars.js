@@ -53,6 +53,7 @@ export function getICSFile(event) {
 
   const { error, value } = createEvent(calenderEvent);
   if (error) {
+    // eslint-disable-next-line
     console.error(error);
   } else {
     downloadICSFile(value, `${event.fancy_title}.ics`);

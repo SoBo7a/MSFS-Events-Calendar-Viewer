@@ -201,6 +201,7 @@ export default {
             text: error.message,
             type: 'error',
           });
+          // eslint-disable-next-line
           console.error('Error fetching data:', error);
         })
     },

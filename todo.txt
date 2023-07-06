@@ -5,3 +5,5 @@
 - Notify user if update was installed
 
 - Remove success notifications (only show "info" and "error")
+
+- Implement logging?!

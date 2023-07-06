@@ -56,6 +56,7 @@ export default {
         this.closeModal();
         this.$emit("option-selected", option);
       } else {
+        // eslint-disable-next-line
         console.error("Invalid Option");
       }
     },
