@@ -20,11 +20,9 @@ This program comes with ABSOLUTELY NO WARRANTY.
 - Automatic Application updates
 - Much more...
 
-<img src="screenshots/home01.png" alt="Alt Text" width="400">
-<img src="screenshots/home02.png" alt="Alt Text" width="400">
+<img src="screenshots/home01.png" alt="Alt Text" width="400"><img src="screenshots/home02.png" alt="Alt Text" width="400">
 <br><br>
-<img src="screenshots/event01.png" alt="Alt Text" width="400">
-<img src="screenshots/event02.png" alt="Alt Text" width="400">
+<img src="screenshots/event01.png" alt="Alt Text" width="400"><img src="screenshots/event02.png" alt="Alt Text" width="400">
 
 <br>
 
