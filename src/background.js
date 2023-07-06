@@ -25,7 +25,13 @@ import { autoUpdater } from 'electron-updater'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
+import fs from 'fs'
+import path from 'path'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+const tempDir = app.getPath('temp');
+const versionFilePath = path.join(tempDir, 'msfs_events_viewer_version.txt');
 
 require('@electron/remote/main').initialize()
 
@@ -72,6 +78,15 @@ async function createWindow() {
   }
 
   win.once('ready-to-show', () => {
+    // Check if update was installed
+    if (fs.existsSync(versionFilePath)) {
+      if (fs.readFileSync(versionFilePath, 'utf8') !== app.getVersion()) {
+        const version = app.getVersion();
+        win.webContents.send('app-updated', version);
+      }
+      fs.unlinkSync(versionFilePath);
+    }
+
     autoUpdater.checkForUpdates();
   });
 
@@ -91,6 +106,9 @@ async function createWindow() {
   autoUpdater.on('update-downloaded', () => {
     win.webContents.send('update_downloaded');
     updateDownloaded = true;
+
+    // Create Text file with current version to use for check, if update was installed
+    fs.writeFileSync(versionFilePath, app.getVersion());
   });
   
   ipcMain.on('install-now', () => {

@@ -21,7 +21,7 @@
   <div
     v-if="visible"
     class="update-notification"
-    :class="{ pulsing: state === 'downloading' }"
+    :class="{ pulsing: state === 'downloading', updated: state === 'updated' }"
   >
     <div class="update-close-button" v-if="state === 'downloaded'" @click="installLater">
       <span>&times;</span>
@@ -41,6 +41,13 @@
         <button class="install-button" @click="installNow" title="Close the application and update now.">Install Now</button>
       </div>
     </div>
+    <div v-if="state === 'updated'" class="updated-container">
+      <span class="update-message">
+        The app has been updated to version:
+        <br>
+        v{{ updatedVersion }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -56,10 +63,15 @@ export default {
       state: "",
       downloadingMessage: "",
       downloadedMessage: "",
+      updatedVersion: "",
     };
   },
 
   created() {
+      ipcRenderer.on("app-updated", (event, version) => {
+      this.showUpdatedNotification(version);
+    });
+
     ipcRenderer.on("update_available", () => {
       this.showDownloadingNotification();
     });
@@ -70,6 +82,16 @@ export default {
   },
 
   methods: {
+    showUpdatedNotification(version) {
+      this.state = "updated";
+      this.visible = true;
+      this.updatedVersion = version;
+
+      setTimeout(() => {
+        this.visible = false;
+      }, 10000);
+    },
+
     showDownloadingNotification() {
       this.state = "downloading";
       this.visible = true;

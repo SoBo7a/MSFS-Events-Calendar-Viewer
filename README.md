@@ -41,6 +41,23 @@ Please note that if you encounter any warnings during the installation process, 
 
 <br>
 
+## Updates
+
+The app automatically checks for new versions every time it is launched. Additionally, you can manually trigger a check for updates from the "About" page. 
+
+If a new version is available, you have two options:
+1. **Install Now:** If you choose to update the app instantly, it will download and install the update immediately. Once the update is installed, the app will automatically restart itself, ensuring you have the latest version.
+
+2. **Install Later:** If you prefer to install the update at a later time, the app will remember the pending update. On the next app launch, it will automatically install the update before starting. This allows you to continue using the app without interruptions and update it at your convenience.
+
+To manually update the app, you can follow these steps:
+- Uninstall the old version of the app from your system.
+- Visit the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases). on GitHub.
+- Download the latest version of the app.
+- Install the downloaded version on your system.
+
+<br>
+
 ## Development Setup
 
 ### Prerequisites
