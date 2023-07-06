@@ -19,8 +19,6 @@
 
 
 <template>
-  <BackgroundSlideshowComponent></BackgroundSlideshowComponent>
-
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
   <div style="margin: 20px; margin-top: 45px;">
@@ -85,18 +83,15 @@
 </template>
 
 <script>
-// FixMe: Date Selector not working properly... (Timezone differences between server and client might be the problem here)
+import { h } from 'vue';
 import { shell, clipboard } from 'electron';
 import axios from 'axios';
 import Loading from 'vue3-loading-overlay';
 import VueFlatpickr from 'vue-flatpickr-component';
 import ContextMenu from '@imengyu/vue3-context-menu';
-import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 import ScrollBarComponent from '@/components/ScrollBarComponent.vue';
-
 import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
 
-import { h } from 'vue';
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
 
 
@@ -106,7 +101,6 @@ export default {
   components: {
     VueFlatpickr,
     Loading,
-    BackgroundSlideshowComponent,
     ScrollBarComponent,
   },
 
@@ -281,6 +275,12 @@ export default {
                 label: "Copy Link",
                 onClick: () => {
                   clipboard.writeText(`${this.msfsEventsUrl}${event.slug}`);
+                  this.$notify({
+                    title: 'Event URL copied',
+                    text: 'URL of the selected Event has been copied to the clipboard.',
+                    type: 'success',
+                    duration: 2000,
+                  });
                 },
                 icon: h(FontAwesomeIcon, {
                   icon: iconObj.faCopy,

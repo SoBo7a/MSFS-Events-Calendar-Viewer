@@ -19,8 +19,6 @@
 
 
 <template>
-  <BackgroundSlideshowComponent></BackgroundSlideshowComponent>
-
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
   <div class="event-details-wrapper" @contextmenu="onContextMenu($event, event)">
@@ -65,18 +63,14 @@
 </template>
 
 <script>
+import { h } from 'vue';
 import axios from 'axios';
 import { shell, clipboard } from 'electron';
 import ContextMenu from '@imengyu/vue3-context-menu';
-import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
 import ModalComponent from '@/components/CalendarModalComponent.vue';
 import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
-
 import Loading from 'vue3-loading-overlay';
-
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
-
-import { h } from 'vue';
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
 
 
@@ -84,7 +78,6 @@ export default {
   name: 'EventView',
 
   components: {
-    BackgroundSlideshowComponent,
     ModalComponent,
     Loading,
     ScrollBarComponent,

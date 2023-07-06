@@ -69,9 +69,9 @@
                 @click="checkForUpdates"
                 title="Check for Updates"
             />
-            <div v-if="showNoUpdateMsg" class="update-not-found pulsing"><strong>You already use the latest version...</strong></div>
+            <div v-if="showNoUpdateMsg" class="update-not-found pulsing" style="color: green;"><strong>You already use the latest version...</strong></div>
         </li>
-        <li v-if="showErrorMsg" class="error-msg pulsing"><strong>Failed to check for updates...</strong></li>
+        <li v-if="showErrorMsg" class="error-msg pulsing" style="color: red;"><strong>Failed to check for updates...</strong></li>
 
         <li><strong>Copyright<small style="vertical-align: top;">&copy;</small>:</strong> 2023 <a href="https://github.com/SoBo7a" target="_blank" title="https://github.com/SoBo7a">SoBo7a</a></li>
         <li><strong>License:</strong> <a href="https://www.gnu.org/licenses/gpl-3.0" target="_blank" title="https://www.gnu.org/licenses/gpl-3.0">GPLv3</a></li>

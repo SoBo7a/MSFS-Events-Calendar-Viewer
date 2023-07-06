@@ -1,3 +1,4 @@
 - Implement theme switching for flatpickr datepicker element
+- Date Selector not working properly... (Timezone differences between server and client might be the problem here)
 
 - Implement logging?!

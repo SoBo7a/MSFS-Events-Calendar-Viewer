@@ -20,6 +20,7 @@
 <template>
   <TitleBarComponent />
   <UpdateNotificationComponent />
+  <BackgroundSlideshowComponent />
 
   <div class="border-overlay"></div>
 
@@ -29,6 +30,8 @@
 <script>
 import TitleBarComponent from './components/TitleBarComponent.vue';
 import UpdateNotificationComponent from './components/UpdateNotificationComponent.vue'
+import BackgroundSlideshowComponent from '@/components/BackgroundSlideshowComponent.vue';
+
 
 export default {
   name: 'App',
@@ -36,6 +39,7 @@ export default {
   components: {
     TitleBarComponent,
     UpdateNotificationComponent,
+    BackgroundSlideshowComponent,
   },
   
 }
