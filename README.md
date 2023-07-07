@@ -18,6 +18,7 @@ This program comes with ABSOLUTELY NO WARRANTY.
 - Shows all future Events
 - Provides a faster usage of the [MSFS Events Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar). This is archieved by caching and more optimiziations
 - Automatic Application updates
+- Dark mode
 - Much more...
 
 <img src="screenshots/home01.png" alt="Alt Text" width="400"> <img src="screenshots/home02.png" alt="Alt Text" width="400">
