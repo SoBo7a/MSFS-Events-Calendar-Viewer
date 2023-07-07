@@ -20,24 +20,24 @@
 
 <template>
   <div class="title-bar" @mousedown="handleMouseDown">
-    <div class="about-page-toggle" @click="showAboutModal = !showAboutModal">
-      <font-awesome-icon :icon="['fas', 'circle-info']" class="fa-icon" title="About" />
+    <div class="about-page-toggle" @click="showAboutModal = !showAboutModal" title="About" >
+      <font-awesome-icon :icon="['fas', 'circle-info']" class="fa-icon"/>
     </div>
-    <div class="dark-mode-toggle" @click="toggleDarkMode">
-      <font-awesome-icon v-if="darkModeEnabled" :icon="['fas', 'sun']" class="fa-icon" title="Disable Darkmode" />
+    <div class="dark-mode-toggle" @click="toggleDarkMode" title="Disable Darkmode">
+      <font-awesome-icon v-if="darkModeEnabled" :icon="['fas', 'sun']" class="fa-icon" />
       <font-awesome-icon v-else :icon="['fas', 'moon']" class="fa-icon" title="Enable Darkmode" />
     </div>
     <div class="title">{{ pageTitle }}</div>
     <div class="buttons">
-      <div class="button minimize" @click="minimizeWindow">
+      <div class="button minimize" @click="minimizeWindow" title="Minimize">
         <font-awesome-icon :icon="['far', 'window-minimize']" class="fa-icon" />
         <div class="button-overlay"></div>
       </div>
-      <div class="button maximize" @click="toggleMaximize">
+      <div class="button maximize" @click="toggleMaximize" :title="isMaximized ? 'Restore' : 'Maximize'">
         <font-awesome-icon :icon="getMaximizeIcon()" class="fa-icon" />
         <div class="button-overlay"></div>
       </div>
-      <div class="button close" @click="closeWindow">
+      <div class="button close" @click="closeWindow" title="Close">
         <font-awesome-icon :icon="['far', 'window-close']" class="fa-icon" />
         <div class="button-overlay"></div>
       </div>

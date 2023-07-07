@@ -123,7 +123,7 @@ export default {
 
     checkForUpdates() {
       if (this.isUpdating) {
-        return; // Exit the method if already checking for update
+        return;
       }
 
       this.isUpdating = true;

@@ -1,4 +1,3 @@
-- Implement theme switching for flatpickr datepicker element
 - Date Selector not working properly at around midnight... (Timezone differences between server and client might be the problem here)
 - Improve HomeView Theme
 
