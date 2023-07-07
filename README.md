@@ -52,7 +52,7 @@ If a new version is available, you have two options:
 
 To manually update the app, you can follow these steps:
 - Uninstall the old version of the app from your system.
-- Visit the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases). on GitHub.
+- Visit the [releases section](https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/releases) on GitHub.
 - Download the latest version of the app.
 - Install the downloaded version on your system.
 

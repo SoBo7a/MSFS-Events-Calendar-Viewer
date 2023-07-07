@@ -40,6 +40,15 @@
 
   --link-color: #007ebd;
   --link-color-hover: #4da8d6;
+  
+  --datepicker-background-color: #f7f7f7f5;
+  --datepicker-box-shadow-color: #afababa6;
+  --datepicker-arrow-color: rgba(17, 17, 17, 0.925);
+  --datepicker-weekday-color: rgba(49, 49, 49, 0.589);
+  --datepicker-day-color: #000000;
+  --datepicker-disabled-day-color: rgba(0, 0, 0, 0.418);
+  --datepicker-disabled-day-hover-color: rgba(0, 0, 0, 0.205);
+  --datepicker-day-hover-color: #e6e6e6;
 }
 
 .dark-mode {
@@ -60,4 +69,13 @@
   --event-card-past: rgba(167, 11, 0, 0.57);
   --event-card-close: rgba(158, 110, 2, 0.72);
   --event-card-upcoming: rgba(0, 94, 23, 0.57);
+
+  --datepicker-background-color: rgb(43 43 43 / 98%);
+  --datepicker-box-shadow-color: #363636;
+  --datepicker-arrow-color: rgb(255 255 255 / 90%);
+  --datepicker-weekday-color: rgb(255 255 255 / 54%);
+  --datepicker-day-color: #ffffff;
+  --datepicker-disabled-day-color: rgb(255 255 255 / 30%);
+  --datepicker-disabled-day-hover-color: rgb(255 255 255 / 16%);
+  --datepicker-day-hover-color: #616161;
 }

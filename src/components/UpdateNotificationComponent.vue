@@ -36,9 +36,9 @@
     ></span>
     <div v-if="state === 'downloading'" class="progress-bar-container">
       <div class="progress-bar" :style="{ width: downloadProgress + '%' }"></div>
+      <div class="progress-label">{{ downloadProgress.toFixed(0) }}%</div>
     </div>
     <br>
-    <span v-if="state === 'downloading'" class="progress-label">{{ downloadProgress.toFixed(0) }} / 100%</span>
     <div v-if="state === 'downloaded'" class="downloaded-container">
       <span class="update-message" v-html="downloadedMessage"></span>
       <div class="update-button-container">
