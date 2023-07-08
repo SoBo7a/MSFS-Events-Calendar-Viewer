@@ -1,6 +1,4 @@
 - Date Selector not working properly at around midnight... (Timezone differences between server and client might be the problem here)
 - Improve HomeView Theme
 
-- FixMe: Check for update not working if app was updated and not restarted
-
 - Implement logging?!

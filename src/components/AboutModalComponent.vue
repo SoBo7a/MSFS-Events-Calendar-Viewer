@@ -130,37 +130,59 @@ export default {
       ipcRenderer.send("check-for-updates");
 
       const updateTimeout = setTimeout(() => {
-        this.showNoUpdateMsg = false;
-        this.showErrorMsg = true;
-        this.isUpdating = false;
-
-        setTimeout(() => {
-          this.showErrorMsg = false;
-        }, this.timeToShowMsg);
-
+        this.handleUpdateTimeout();
       }, this.timeToUpdateTimeout);
 
       ipcRenderer.on("update_error", () => {
         clearTimeout(updateTimeout);
-        this.showNoUpdateMsg = false;
-        this.showErrorMsg = true;
-        this.isUpdating = false;
-
-        setTimeout(() => {
-          this.showErrorMsg = false;
-        }, this.timeToShowMsg);
+        this.handleUpdateError();
       });
 
       ipcRenderer.on("update_not_found", () => {
         clearTimeout(updateTimeout);
-        this.showNoUpdateMsg = true;
-        this.showErrorMsg = false;
-        this.isUpdating = false;
-
-        setTimeout(() => {
-          this.showNoUpdateMsg = false;
-        }, this.timeToShowMsg);
+        this.handleUpdateNotFound();
       });
+
+      ipcRenderer.on("update_available", () => {
+        clearTimeout(updateTimeout);
+        this.handleUpdateAvailable();
+      });
+    },
+
+    handleUpdateTimeout() {
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = true;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showErrorMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateError() {
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = true;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showErrorMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateNotFound() {
+      this.showNoUpdateMsg = true;
+      this.showErrorMsg = false;
+      this.isUpdating = false;
+
+      setTimeout(() => {
+        this.showNoUpdateMsg = false;
+      }, this.timeToShowMsg);
+    },
+
+    handleUpdateAvailable() {
+      this.isUpdating = false;
+      this.showNoUpdateMsg = false;
+      this.showErrorMsg = false;
     },
   },
 };
