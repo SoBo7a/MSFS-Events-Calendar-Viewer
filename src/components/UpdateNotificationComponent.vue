@@ -142,7 +142,7 @@ export default {
       this.updatedVersion = info.version;
       this.releaseNotes = this.formatReleaseNotes(info.releaseNotes);
       
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('about-modal-open');
     },
 
     showDownloadingNotification() {
@@ -188,7 +188,7 @@ export default {
     closeNotification() {
       this.visible = false;
       this.state = '';
-      document.body.style.overflow = '';
+      document.body.classList.remove('about-modal-open');
     },
 
     copyToClipboard(text) {

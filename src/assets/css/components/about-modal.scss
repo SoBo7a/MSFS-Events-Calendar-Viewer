@@ -18,26 +18,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-.about-modal-open {
-  overflow: hidden;
-}
-
-.backdrop {
-  position: fixed;
-  top: var(--titlebar-height);
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.6
-  ); 
-  backdrop-filter: blur(8px); 
-  z-index: 9998;
-}
-
 .about-modal {
   position: fixed;
   z-index: 9999;
