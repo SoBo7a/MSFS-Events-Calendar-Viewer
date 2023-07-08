@@ -25,7 +25,7 @@
     class="update-notification"
     :class="{ pulsing: state === 'downloading' || state === 'error', updated: state === 'updated' }"
   >
-    <div class="update-close-button" @click="closeNotification" v-if="state === 'updated'">
+    <div class="update-close-button" @click="closeNotification" v-if="state === 'updated' || state === 'downloaded'">
       <font-awesome-icon :icon="['fas', 'circle-xmark']" class="fa-icon" />
     </div>
     <div class="update-icon-container">
@@ -84,8 +84,8 @@ export default {
 
   data() {
     return {
-      visible: false,
-      state: "",
+      visible: true,
+      state: "downloaded",
       errorMessage: "",
       downloadingMessage: "",
       downloadedMessage: "",
