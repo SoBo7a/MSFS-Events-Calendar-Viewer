@@ -17,3 +17,20 @@
 - Improved update progressbar styling
 - Implemented theme switching for flatpickr datepicker element
 - Small UI improvements
+
+
+## Changelog - v1.0.3
+
+- Added progressbar for autoupdater
+- Undocumented changes...
+
+
+## Changelog - v1.0.1
+
+- Implemented update functionality, using electron autoupdater
+- Undocumented changes...
+
+
+## Changelog - v1.0.0
+
+- Stable release
