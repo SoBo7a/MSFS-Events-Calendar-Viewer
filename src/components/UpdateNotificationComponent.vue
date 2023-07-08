@@ -23,7 +23,7 @@
   <div
     v-if="visible"
     class="update-notification"
-    :class="{ pulsing: state === 'downloading' || state === 'error', updated: state === 'updated' }"
+    :class="{ pulsing: state === 'downloading', updated: state === 'updated' }"
   >
     <div class="update-close-button" @click="closeNotification" v-if="state === 'updated' || state === 'downloaded'">
       <font-awesome-icon :icon="['fas', 'circle-xmark']" class="fa-icon" />
@@ -35,6 +35,8 @@
       v-if="state === 'error'"
       class="error-message"
       v-html="errorMessage"
+      @click="copyToClipboard(errorMessage)"
+      title="Click to copy the error message to the clipboard"
     ></span>
     <span
       v-if="state === 'downloading'"
@@ -187,6 +189,10 @@ export default {
       this.visible = false;
       this.state = '';
       document.body.style.overflow = '';
+    },
+
+    copyToClipboard(text) {
+      navigator.clipboard.writeText(text)
     },
   },
 };
