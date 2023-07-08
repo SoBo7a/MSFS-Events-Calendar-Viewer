@@ -74,7 +74,18 @@
     .icon {
       font-size: 24px;
       color: var(--text-color-primary);
+      
+      &.error {
+        color: red;
+      }
     }
+
+    
+  }
+
+  .error-message {
+    text-align: left;
+    font-weight: 700;
   }
 
   .update-message {

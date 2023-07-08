@@ -31,7 +31,7 @@ module.exports = {
         builderOptions: {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar Viewer',
-            buildVersion: '1.0.4',
+            buildVersion: '1.0.5',
             "publish": [
               {
                 "provider": "github",
@@ -39,6 +39,9 @@ module.exports = {
                 "repo": "MSFS-Events-Calendar-Viewer"
               }
             ],
+            releaseInfo: {
+              releaseNotesFile: "CHANGELOG.md"
+            },
             win: {
                 "target": [
                     "nsis"

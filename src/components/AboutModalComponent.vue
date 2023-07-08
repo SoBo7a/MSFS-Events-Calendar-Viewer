@@ -140,6 +140,17 @@ export default {
 
       }, this.timeToUpdateTimeout);
 
+      ipcRenderer.on("update_error", () => {
+        clearTimeout(updateTimeout);
+        this.showNoUpdateMsg = false;
+        this.showErrorMsg = true;
+        this.isUpdating = false;
+
+        setTimeout(() => {
+          this.showErrorMsg = false;
+        }, this.timeToShowMsg);
+      });
+
       ipcRenderer.on("update_not_found", () => {
         clearTimeout(updateTimeout);
         this.showNoUpdateMsg = true;

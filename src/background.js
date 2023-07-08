@@ -27,6 +27,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 import fs from 'fs'
 import path from 'path'
+import { error } from 'console'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -77,6 +78,10 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
 
+  autoUpdater.on('error', (error) => {
+    win.webContents.send('update_error', error);
+  })
+
   win.once('ready-to-show', () => {
     // Check if update was installed
     if (fs.existsSync(versionFilePath)) {
@@ -91,6 +96,7 @@ async function createWindow() {
   });
 
   ipcMain.on("check-for-updates", () => {
+    // autoUpdater.emit('error', new Error('Simulated update error'));
     autoUpdater.on("update-not-available", () => {
       win.webContents.send("update_not_found");
   });

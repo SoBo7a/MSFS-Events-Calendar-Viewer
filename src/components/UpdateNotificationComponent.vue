@@ -21,14 +21,19 @@
   <div
     v-if="visible"
     class="update-notification"
-    :class="{ pulsing: state === 'downloading', updated: state === 'updated' }"
+    :class="{ pulsing: state === 'downloading' || state === 'error', updated: state === 'updated' }"
   >
     <div class="update-close-button" v-if="state === 'downloaded'" @click="installLater">
       <span>&times;</span>
     </div>
     <div class="update-icon-container">
-      <font-awesome-icon :icon="['fas', 'circle-exclamation']" class="icon" />
+      <font-awesome-icon :icon="['fas', 'circle-exclamation']" class="icon" :class="{ error: state === 'error' }" />
     </div>
+    <span
+      v-if="state === 'error'"
+      class="error-message"
+      v-html="errorMessage"
+    ></span>
     <span
       v-if="state === 'downloading'"
       class="update-message"
@@ -66,6 +71,7 @@ export default {
     return {
       visible: false,
       state: "",
+      errorMessage: "",
       downloadingMessage: "",
       downloadedMessage: "",
       updatedVersion: "",
@@ -74,7 +80,11 @@ export default {
   },
 
   created() {
-      ipcRenderer.on("app-updated", (event, version) => {
+    ipcRenderer.on("update_error", (event, error) => {
+      this.showUpdateErrorNotification(error);
+    });
+
+    ipcRenderer.on("app-updated", (event, version) => {
       this.showUpdatedNotification(version);
     });
 
@@ -86,12 +96,25 @@ export default {
       this.downloadProgress = downloadProgress;
     });
 
-    ipcRenderer.on("update_downloaded", () => {
-      this.showDownloadedNotification();
+    ipcRenderer.on("update_downloaded", (event) => {
+      this.showDownloadedNotification(event);
     });
   },
 
   methods: {
+    showUpdateErrorNotification(error) {
+      this.state = "error";
+      this.visible = true;
+      this.errorMessage = error.stack.replace(/\n/g, "<br>");
+
+      console.error(this.errorMessage)
+
+      setTimeout(() => {
+        this.visible = false;
+        this.state = "";
+      }, 20000);
+    },
+
     showUpdatedNotification(version) {
       this.state = "updated";
       this.visible = true;
@@ -99,6 +122,7 @@ export default {
 
       setTimeout(() => {
         this.visible = false;
+        this.state = "";
       }, 8000);
     },
 
