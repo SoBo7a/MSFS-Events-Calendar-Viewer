@@ -84,8 +84,8 @@ export default {
 
   data() {
     return {
-      visible: true,
-      state: "downloaded",
+      visible: false,
+      state: "",
       errorMessage: "",
       downloadingMessage: "",
       downloadedMessage: "",
