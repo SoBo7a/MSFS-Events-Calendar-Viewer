@@ -27,7 +27,6 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 import fs from 'fs'
 import path from 'path'
-import { error } from 'console'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 

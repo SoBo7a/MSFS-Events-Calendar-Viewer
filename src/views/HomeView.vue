@@ -112,13 +112,12 @@ export default {
       loading: true,
       error: null,
 
-      selectedDate: new Date(),
+      selectedDate: new Date().toUTCString(),
       flatpickrConfig: {
         minDate: new Date(new Date().setDate(new Date().getDate() - 30)), // Set the minimum allowed date to 30 days in the past
         maxDate: null, // Set the maximum allowed date dynamically
         disable: [],
         dateFormat: 'D M d Y',
-        defaultDate: 'today', // Initialize disable option as an empty array
         wrap: true,
         weekNumbers: true,
         monthSelectorType: 'static'
@@ -383,7 +382,7 @@ export default {
     },
 
     selectToday() {
-      this.selectedDate = new Date();
+      this.selectedDate = new Date().toUTCString();
     },
 
     formatTime(dateTime) {
