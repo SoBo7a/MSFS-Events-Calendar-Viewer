@@ -86,8 +86,18 @@ async function createWindow() {
     // Check if update was installed
     if (fs.existsSync(versionFilePath)) {
       if (fs.readFileSync(versionFilePath, 'utf8') !== app.getVersion()) {
+        let changelogPath
+        if (process.env.WEBPACK_DEV_SERVER_URL) {
+          changelogPath = path.join(__dirname, '..', 'CHANGELOG.md');
+        } else {
+          changelogPath = path.join(__dirname, '..', '..', 'CHANGELOG.md');
+        }
+        const releaseNotes = fs.readFileSync(changelogPath, 'utf8');
         const version = app.getVersion();
-        win.webContents.send('app-updated', version);
+        win.webContents.send('app-updated', {
+          version: version,
+          releaseNotes: releaseNotes,
+        });
       }
       fs.unlinkSync(versionFilePath);
     }
@@ -96,7 +106,6 @@ async function createWindow() {
   });
 
   ipcMain.on("check-for-updates", () => {
-    // autoUpdater.emit('error', new Error('Simulated update error'));
     autoUpdater.on("update-not-available", () => {
       win.webContents.send("update_not_found");
   });
@@ -133,18 +142,15 @@ async function createWindow() {
     event.returnValue = position;
   });
 
-  // Handle window minimize
   ipcMain.on('minimize-window', () => {
     win.minimize();
   });
 
-  // Handle window maximize state request
   ipcMain.on('get-window-maximized-state', (event) => {
     const isMaximized = win.isMaximized();
     event.returnValue = isMaximized;
   });
 
-  // Handle window maximize/restore toggle
   ipcMain.on('toggle-maximize', () => {
     if (win.isMaximized()) {
       win.unmaximize();
@@ -155,7 +161,6 @@ async function createWindow() {
     win.webContents.send('window-maximized-state-changed', isMaximized);
   });
 
-  // Handle window close
   ipcMain.on('close-window', () => {
     if (win.isDevToolsOpened()) {
       win.closeDevTools();
@@ -177,7 +182,6 @@ app.on('ready', () => {
     });
   });
 
-  // Send the dark mode status to the renderer process
   ipcMain.on('get-dark-mode-status', (event) => {
     event.returnValue = nativeTheme.shouldUseDarkColors;
   });

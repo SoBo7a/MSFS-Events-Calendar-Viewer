@@ -17,14 +17,16 @@
  * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------------------------->
 
-<template>
+ <template>
+  <div class="backdrop" v-if="state === 'updated'" @click="closeNotification"></div>
+
   <div
     v-if="visible"
     class="update-notification"
     :class="{ pulsing: state === 'downloading' || state === 'error', updated: state === 'updated' }"
   >
-    <div class="update-close-button" v-if="state === 'downloaded'" @click="installLater">
-      <span>&times;</span>
+    <div class="update-close-button" @click="closeNotification" v-if="state === 'updated'">
+      <font-awesome-icon :icon="['fas', 'circle-xmark']" class="fa-icon" />
     </div>
     <div class="update-icon-container">
       <font-awesome-icon :icon="['fas', 'circle-exclamation']" class="icon" :class="{ error: state === 'error' }" />
@@ -43,7 +45,6 @@
       <div class="progress-bar" :style="{ width: downloadProgress + '%' }"></div>
       <div class="progress-label">{{ downloadProgress.toFixed(0) }}%</div>
     </div>
-    <br>
     <div v-if="state === 'downloaded'" class="downloaded-container">
       <span class="update-message" v-html="downloadedMessage"></span>
       <div class="update-button-container">
@@ -52,11 +53,25 @@
       </div>
     </div>
     <div v-if="state === 'updated'" class="updated-container">
-      <span class="update-message">
-        The app has been updated to version:
-        <br><br>
+      <div class="update-message">
+        <h2>New Update Installed</h2>
         <strong>v{{ updatedVersion }}</strong>
-      </span>
+        <h3>Release Notes:</h3>
+        <ul v-if="Array.isArray(releaseNotes)">
+          <li v-for="note in releaseNotes" :key="note.id" class="release-notes">
+            {{ note }}
+          </li>
+        </ul>  
+        <div v-else>
+          <br><br>
+          {{ releaseNotes }}
+        </div> 
+        <span>
+          <a :href="changelogURL.replace('<v>', updatedVersion)" :title="changelogURL.replace('<v>', updatedVersion)" target="_blank" >
+            View release notes on GitHub
+          </a>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +90,10 @@ export default {
       downloadingMessage: "",
       downloadedMessage: "",
       updatedVersion: "",
+      releaseNotes: "",
       downloadProgress: 0,
+
+      changelogURL: `https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/blob/<v>/CHANGELOG.md`,
     };
   },
 
@@ -84,8 +102,8 @@ export default {
       this.showUpdateErrorNotification(error);
     });
 
-    ipcRenderer.on("app-updated", (event, version) => {
-      this.showUpdatedNotification(version);
+    ipcRenderer.on("app-updated", (event, info) => {
+      this.showUpdatedNotification(info);
     });
 
     ipcRenderer.on("update_available", () => {
@@ -107,6 +125,7 @@ export default {
       this.visible = true;
       this.errorMessage = error.stack.replace(/\n/g, "<br>");
 
+      // eslint-disable-next-line
       console.error(this.errorMessage)
 
       setTimeout(() => {
@@ -115,15 +134,13 @@ export default {
       }, 20000);
     },
 
-    showUpdatedNotification(version) {
+    showUpdatedNotification(info) {
       this.state = "updated";
       this.visible = true;
-      this.updatedVersion = version;
-
-      setTimeout(() => {
-        this.visible = false;
-        this.state = "";
-      }, 8000);
+      this.updatedVersion = info.version;
+      this.releaseNotes = this.formatReleaseNotes(info.releaseNotes);
+      
+      document.body.style.overflow = 'hidden';
     },
 
     showDownloadingNotification() {
@@ -138,6 +155,25 @@ export default {
       this.downloadedMessage = "New update downloaded.<br>Do you want to install it now?";
     },
 
+    formatReleaseNotes(notes) {
+      const startIndex = notes.indexOf(`## Changelog - v${this.updatedVersion}`);
+
+      if (startIndex !== -1) {
+        let endIndex = notes.indexOf('## Changelog', startIndex + 1);
+        if (endIndex === -1) {
+          endIndex = notes.length;
+        }
+
+        const currentReleaseNotes = notes.substring(startIndex, endIndex).trim();
+        let listItems = currentReleaseNotes.split('\n').filter(item => item.trim().startsWith('-'));
+        listItems = listItems.map(item => item.replace(/^-/, '').trim());
+        
+        return listItems;
+      }
+      
+      return 'No release notes found...';
+    },
+
     installNow() {
       this.visible = false;
       ipcRenderer.send("install-now");
@@ -145,6 +181,12 @@ export default {
 
     installLater() {
       this.visible = false;
+    },
+
+    closeNotification() {
+      this.visible = false;
+      this.state = '';
+      document.body.style.overflow = '';
     },
   },
 };

@@ -186,6 +186,7 @@ export default {
             text: error.message,
             type: 'error',
           });
+          // eslint-disable-next-line
           console.error('Error fetching data:', error);
         })
     },
@@ -193,7 +194,6 @@ export default {
     onContextMenu(e) {
       //prevent the browser's default menu
       e.preventDefault();
-      //show your menu
       const rootElement = document.documentElement;
 
       ContextMenu.showContextMenu({

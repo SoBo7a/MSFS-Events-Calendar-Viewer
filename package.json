@@ -2,7 +2,7 @@
   "name": "msfs-events-calender-app",
   "description": "App to view the Events from the MSFS Events Calender.",
   "homepage": "https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "SoBo7a",
   "license": "GPL-3.0-or-later",
   "private": true,

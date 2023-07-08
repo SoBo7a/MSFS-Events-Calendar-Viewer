@@ -61,7 +61,7 @@
 
       <ul>
         <li>
-            <strong>Version:</strong> {{ appVersion }}
+            <strong>Version:</strong> <a :href="`https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer/blob/${appVersion}/CHANGELOG.md`" title="Show release notes on GitHub" target="_blank" >{{ appVersion }}</a>
             <font-awesome-icon
                 :icon="['fa', 'arrows-rotate']"
                 class="fa-icon update-icon"

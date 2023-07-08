@@ -35,6 +35,12 @@
   font-family: Arial, sans-serif;
   z-index: 9999;
 
+  &.updated {
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
   .progress-bar-container {
     position: relative;
     width: 100%;
@@ -79,8 +85,6 @@
         color: red;
       }
     }
-
-    
   }
 
   .error-message {
@@ -91,6 +95,31 @@
   .update-message {
     text-align: center;
     font-weight: 700;
+
+    strong {
+      font-weight: 900;
+      font-size: large;
+    }
+
+    h3 {
+      text-align: left;
+      margin-bottom: -5px;
+    }
+
+    ul {
+      text-align: left;
+      line-height: 25px;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--link-color);
+      font-weight: 700;
+
+      &:hover {
+        color: var(--link-color-hover);
+      }
+    }
   }
 
   .update-button-container {
