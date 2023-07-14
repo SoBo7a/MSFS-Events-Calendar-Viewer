@@ -3,6 +3,7 @@
 - Added next and previous day buttons to the datepicker
 - Now remembers selected day when coming back from event details
 - Added "scroll to the top" button on home-view
+- Event cards now always have the same height
 
 
 ## Changelog - v1.0.6

@@ -161,8 +161,9 @@ body {
     
       .event-image {
         width: 100%;
-        height: auto;
-        margin-top: 5%;
+        max-height: 250px;
+        margin-top: 10px;
+        object-fit: cover;
         border-radius: 10px;
       }
     
