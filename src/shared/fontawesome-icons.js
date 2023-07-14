@@ -42,6 +42,8 @@ import {
   faCircleInfo,
   faXmarkCircle,
   faCircleExclamation,
+  faChevronRight,
+  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -81,6 +83,8 @@ const iconObj = {
   faCircleInfo,
   faXmarkCircle,
   faCircleExclamation,
+  faChevronRight,
+  faChevronLeft,
 };
 
 // Convert the icon objects to an array

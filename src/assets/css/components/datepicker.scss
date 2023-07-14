@@ -77,36 +77,64 @@
     }
   }
 
-  .today-button {
+  .datepicker-below-menu {
     display: flex;
     align-items: center;
     padding: 5px;
     margin-top: -15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: small;
-    background-color: #c5c3c300;
-    color: var(--text-color-primary);
+    user-select: none;
 
-    &:active {
-      transform: scale(1.1);
+    .prev-day-button,
+    .next-day-button {
+      padding: 8px;
+      width: 15px;
+      margin: 0 5px; 
+      cursor: pointer;
+      border-radius: 5px;
+      transition: opacity 0.3s ease;
+      transition: background-color 0.3s ease;
+    
+      &:active {
+        transform: scale(1.1);
+      }
+  
+      &:hover {
+        background-color: #69696998;
+        opacity: 0.3;
+      }
     }
 
-    &:hover {
-      opacity: 0.5;
-    }
-
-    .fa-calendar-day {
-      margin-right: 3px;
+    .today-button {
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
       font-size: small;
-      padding-bottom: 1px;
-    }
+      background-color: #c5c3c300;
+      color: var(--text-color-primary);
 
-    .fa-clock-rotate-left {
-      margin-right: 5px;
+      &:active {
+        transform: scale(1.1);
+      }
+  
+      &:hover {
+        background-color: #69696998;
+        opacity: 0.3;
+      }
+
+      .fa-calendar-day {
+        margin-right: 3px;
+        font-size: small;
+        padding-bottom: 1px;
+      }
+
+      .fa-clock-rotate-left {
+        margin-right: 5px;
+      }
     }
   }
+
+
 }
 
 .flatpickr-calendar {

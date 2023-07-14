@@ -41,8 +41,16 @@
           </a>
           <vue-flatpickr data-input v-model="selectedDate" @on-change="filterSelectedEventData" :config="flatpickrConfig" title="Open Calendar"></vue-flatpickr>
         </div>
-        <div class="today-button" @click="selectToday" title="Reset to today's date...">
-          <font-awesome-icon :icon="['fas', 'calendar-day']" /> Reset Day
+        <div class="datepicker-below-menu">
+          <a class="prev-day-button" title="Previous available day" @click="selectDay('prev')">
+            <font-awesome-icon :icon="['fas', 'chevron-left']" />
+          </a>
+          <div class="today-button" @click="selectToday" title="Reset to today's date...">
+            <font-awesome-icon :icon="['fas', 'calendar-day']" /> Reset Day
+          </div>
+          <a class="next-day-button" title="Next available day" @click="selectDay('next')">
+            <font-awesome-icon :icon="['fas', 'chevron-right']" />
+          </a>
         </div>
       </div>
 
@@ -380,9 +388,49 @@ export default {
 
       this.flatpickrConfig.disable = disabledRanges;
     },
-
+    
     selectToday() {
       this.selectedDate = new Date().toUTCString();
+    },
+
+    selectDay(direction) {
+      let date = new Date(this.selectedDate);
+      
+      if (direction === 'next') {
+        date.setDate(date.getDate() + 1);
+      } else if (direction === 'prev') {
+        date.setDate(date.getDate() - 1);
+      }
+
+      while (this.isDateDisabled(date)) {
+        if (direction === 'next') {
+          date.setDate(date.getDate() + 1);
+        } else if (direction === 'prev') {
+          date.setDate(date.getDate() - 1);
+        }
+      }
+
+      if (!this.isDateOutOfRange(date)) {
+        this.selectedDate = date.toUTCString();
+      } else {
+        this.$notify({
+          title: 'No Data',
+          text: 'No events data found...',
+          type: 'info',
+          duration: 2000,
+        });
+      }
+    },
+    
+    isDateDisabled(date) {
+      return this.flatpickrConfig.disable.some((range) => {
+        return date >= range.from && date <= range.to;
+      });
+    },
+
+    isDateOutOfRange(date) {
+      const { minDate, maxDate } = this.flatpickrConfig;
+      return (minDate && date < minDate) || (maxDate && date > maxDate);
     },
 
     formatTime(dateTime) {

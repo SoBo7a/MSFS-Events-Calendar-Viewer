@@ -1,4 +1,4 @@
-- Date Selector not working properly at around midnight... (Timezone differences between server and client might be the problem here)
 - Improve HomeView Theme
-
 - Implement logging?!
+- Add scroll up button to HomeView (create component...)
+- remeber selected day if coming from event to HomeView
