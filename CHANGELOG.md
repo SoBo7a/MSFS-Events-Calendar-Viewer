@@ -1,6 +1,7 @@
-## Changelog - v1.0.6
+## Changelog - v1.0.7
 
 - Added next and previous day buttons to the datepicker
+- Now remembers selected day when coming back from event details
 
 
 ## Changelog - v1.0.6

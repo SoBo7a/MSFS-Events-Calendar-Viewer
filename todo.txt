@@ -1,4 +1,0 @@
-- Improve HomeView Theme
-- Implement logging?!
-- Add scroll up button to HomeView (create component...)
-- remeber selected day if coming from event to HomeView

@@ -18,12 +18,29 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
 
-export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+
+const store = createStore({
+  state: {
+    selectedDate: new Date().toUTCString(),
+  },
+
+  mutations: {
+    setSelectedDate(state, date) {
+      state.selectedDate = date;
+    },
+  },
+
+  actions: {
+    updateSelectedDate({ commit }, date) {
+      commit('setSelectedDate', date);
+    },
+  },
+
+  getters: {
+    selectedDate: state => state.selectedDate,
+  },
 });
+
+export default store;

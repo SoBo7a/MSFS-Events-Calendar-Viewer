@@ -122,8 +122,8 @@ export default {
 
       selectedDate: new Date().toUTCString(),
       flatpickrConfig: {
-        minDate: new Date(new Date().setDate(new Date().getDate() - 30)), // Set the minimum allowed date to 30 days in the past
-        maxDate: null, // Set the maximum allowed date dynamically
+        minDate: new Date(new Date().setDate(new Date().getDate() - 30)),
+        maxDate: null,
         disable: [],
         dateFormat: 'D M d Y',
         wrap: true,
@@ -151,6 +151,18 @@ export default {
     formattedTimeSinceRefresh() {
       return this.formatTimeDuration(this.timeSinceRefresh);
     },
+
+    storedDate: {
+      get() {
+        return this.$store.getters.selectedDate;
+      }
+    },
+  },
+
+  watch: {
+    selectedDate(newDate) {
+      this.$store.dispatch('updateSelectedDate', newDate);
+    },
   },
 
   created() {
@@ -170,6 +182,8 @@ export default {
 
   mounted() {
     document.title = "Home | MSFS Events Calendar Viewer";
+
+    this.getDateFromStore();
 
     this.fetchEventData();
 
@@ -353,6 +367,13 @@ export default {
         const eventDate = item.event.start.split('T')[0];
         return eventDate === selectedDateString;
       });
+    },
+
+    getDateFromStore() {
+      const savedSelectedDate = this.$store.getters.selectedDate;
+      if (savedSelectedDate) {
+        this.selectedDate = this.storedDate;
+      }
     },
 
     setMinMaxDates() {
