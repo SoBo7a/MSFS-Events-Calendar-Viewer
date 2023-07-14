@@ -18,22 +18,30 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-@import './variables.scss';
-@import './animations.scss';
+.scroll-up-button {
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 25px;
+  padding: 5px;
+  margin-bottom: -10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  z-index: 9999;
+  border-radius: 20%;
+  font-size: x-large;
+  opacity: 0.75;
+  color: var(--text-color-secondary);
+  background-color: var(--background-color-secondary);
+  transition: transform 0.3s, font-size 0.3s;
 
-@import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
-@import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
-@import 'flatpickr/dist/flatpickr.css';
+  &:hover {
+    opacity: 1;
+    transform: rotate(15deg) scale(1.1);
+  }
 
-@import './components/home-view.scss';
-@import './components/notification.scss';
-@import './components/background.scss';
-@import './components/datepicker.scss';
-@import './components/contextmenu.scss';
-@import './components/event-view.scss';
-@import './components/calendar-modal.scss';
-@import './components/titlebar.scss';
-@import './components/scrollbar.scss';
-@import './components/about-modal.scss';
-@import './components/update-notification.scss';
-@import './components/scroll-up-button.scss';
+  &:active {
+    transform: scale(1.1);
+  }
+}

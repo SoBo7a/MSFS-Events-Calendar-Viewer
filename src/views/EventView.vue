@@ -32,8 +32,6 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
     <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
 
-    <font-awesome-icon v-show="!scrolledToTop" class="menu-icon" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
-
     <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
 
     <div class="event-details-date">
@@ -52,6 +50,8 @@
       </div>
     </div>
   </div>
+
+  <font-awesome-icon v-show="!scrolledToTop" class="scroll-up-button" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
 
   <ScrollBarComponent :content-ready="!loading" ></ScrollBarComponent>
 
@@ -72,10 +72,12 @@ import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
 import Loading from 'vue3-loading-overlay';
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
+import scrollMixin from '../shared/mixins/scroll-up-mixin';
 
 
 export default {
   name: 'EventView',
+  mixins: [scrollMixin],
 
   components: {
     ModalComponent,
@@ -94,8 +96,6 @@ export default {
       eventPosts: [],
       eventStartTime: null,
       eventEndTime: null,
-
-      scrolledToTop: true,
     }
   },
 
@@ -121,16 +121,6 @@ export default {
 
     document.addEventListener('click', this.handleLinkClick);
     document.addEventListener('mouseover', this.handleMouseOver);
-
-    // EventListener to show/hide to scroll up button
-    window.addEventListener('mousewheel', () => {
-      this.scrolledToTop = window.scrollY === 0 ? true : false;
-    });
-    window.addEventListener('mouseup', () => {
-      setTimeout(() => {
-        this.scrolledToTop = window.scrollY <= 3 ? true : false;
-      }, 1000);
-    });
 
     // Use MutationObserver to check if iframe present in the DOM and add handleLinkClick Eventlistener
     const observer = new MutationObserver(() => {
@@ -434,17 +424,6 @@ export default {
         }
         event.target.title = event.target.href;
       }
-    },
-
-    scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-
-      setTimeout(() => {
-        this.scrolledToTop = true;
-      }, 1000);
     },
 
     printPage() {

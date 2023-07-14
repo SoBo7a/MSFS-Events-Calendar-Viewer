@@ -80,6 +80,8 @@
       </div>
     </div>
 
+    <font-awesome-icon v-show="!scrolledToTop" class="scroll-up-button" :icon="['fas', 'arrow-up']" title="Scroll to the top..." @click="scrollToTop()" />
+
     <ScrollBarComponent :content-ready="!loading" ></ScrollBarComponent>
 
     <Loading v-model:active="loading"
@@ -99,12 +101,13 @@ import VueFlatpickr from 'vue-flatpickr-component';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import ScrollBarComponent from '@/components/ScrollBarComponent.vue';
 import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
-
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
+import scrollMixin from '../shared/mixins/scroll-up-mixin';
 
 
 export default {
   name: "HomeView",
+  mixins: [scrollMixin],
 
   components: {
     VueFlatpickr,
