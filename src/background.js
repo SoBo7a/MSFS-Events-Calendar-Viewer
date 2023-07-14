@@ -145,11 +145,6 @@ async function createWindow() {
     win.minimize();
   });
 
-  ipcMain.on('get-window-maximized-state', (event) => {
-    const isMaximized = win.isMaximized();
-    event.returnValue = isMaximized;
-  });
-
   ipcMain.on('toggle-maximize', () => {
     if (win.isMaximized()) {
       win.unmaximize();
@@ -158,6 +153,18 @@ async function createWindow() {
     }
     const isMaximized = win.isMaximized();
     win.webContents.send('window-maximized-state-changed', isMaximized);
+  });
+
+  win.on('maximize', () => {
+    win.webContents.send('window-maximized');
+  });
+
+  win.on('unmaximize', () => {
+    win.webContents.send('window-restored');
+  });
+
+  ipcMain.on('get-window-maximized-state', (event) => {
+    event.returnValue = win.isMaximized();
   });
 
   ipcMain.on('close-window', () => {

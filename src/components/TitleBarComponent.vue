@@ -89,6 +89,14 @@ export default {
       this.isMaximized = isMaximized;
     });
 
+    ipcRenderer.on('window-maximized', () => {
+      this.isMaximized = true;
+    });
+
+    ipcRenderer.on('window-restored', () => {
+      this.isMaximized = false;
+    });
+
     // Request the dark mode status from the main process
     if (ipcRenderer.sendSync('get-dark-mode-status')) {
       this.toggleDarkMode();

@@ -4,6 +4,7 @@
 - Now remembers selected day when coming back from event details
 - Added "scroll to the top" button on home-view
 - Event cards now always have the same height
+- Restore/maximize icon now correctly changing
 
 
 ## Changelog - v1.0.6
