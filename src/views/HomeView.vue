@@ -71,7 +71,7 @@
             <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event.start) }}
             <span v-show="event.event.end"> - {{ formatTime(event.event.end) }}</span>
           </div>
-          <img v-show="event.image_url" class="event-image" :src="event.image_url">
+          <img v-show="event.image_url" class="event-image" :src="event.image_url" loading="lazy">
           <p class="event-description" v-html="event.excerpt.length > 210 ? event.excerpt.substring(0, 210) + '...' : event.excerpt"></p>
         </div>
       </div>

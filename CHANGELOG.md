@@ -1,3 +1,8 @@
+## Changelog - v1.0.8
+
+- Fixed too large profile pictures on quotes
+
+
 ## Changelog - v1.0.7
 
 - Added next and previous day buttons to the datepicker

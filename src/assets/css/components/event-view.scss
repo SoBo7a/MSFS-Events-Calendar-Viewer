@@ -126,6 +126,12 @@ body {
           border-radius: 5px;
         }
 
+        .quote img {
+          min-width: 50px !important;
+          max-width: 50px !important;
+          height: 50px !important;
+        }
+
         .event-post-profileimage {
           position: absolute;
           left: 40px;

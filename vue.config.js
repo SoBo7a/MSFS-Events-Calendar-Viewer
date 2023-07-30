@@ -31,7 +31,7 @@ module.exports = {
         builderOptions: {
             appId: 'msfs-events-calendar-app',
             productName: 'MSFS Events Calendar Viewer',
-            buildVersion: '1.0.7',
+            buildVersion: '1.0.8',
             "publish": [
               {
                 "provider": "github",
