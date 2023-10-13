@@ -1,3 +1,8 @@
+## Changelog - v1.0.9
+
+- Images now open in a new Tab in default Browser when clicked
+
+
 ## Changelog - v1.0.8
 
 - Fixed too large profile pictures on quotes

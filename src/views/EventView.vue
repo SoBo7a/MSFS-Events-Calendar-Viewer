@@ -18,7 +18,7 @@
  * -------------------------------------------------------------------------------------------->
 
 
-<template>
+ <template>
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
   <div class="event-details-wrapper" @contextmenu="onContextMenu($event, event)">
@@ -415,6 +415,14 @@ export default {
           event.preventDefault();
           shell.openExternal(href);
       }
+
+      // Check if clicked element is an <img> tag
+      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image') {
+        event.target.title = 'Click to open the Image in your Browser.'
+        const href = event.target.src;
+        event.preventDefault();
+        shell.openExternal(href);
+      }
     },
 
     handleMouseOver(event) {
@@ -423,6 +431,10 @@ export default {
           return;
         }
         event.target.title = event.target.href;
+      }
+
+      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image') {
+        event.target.title = 'Click to open the Image in your Browser.'
       }
     },
 
