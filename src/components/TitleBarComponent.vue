@@ -97,10 +97,7 @@ export default {
       this.isMaximized = false;
     });
 
-    // Request the dark mode status from the main process
-    if (ipcRenderer.sendSync('get-dark-mode-status')) {
-      this.toggleDarkMode();
-    }
+    this.setInitialDarkModeSettings();
   },
 
   methods: {
@@ -148,8 +145,24 @@ export default {
       return this.isMaximized ? ["far", "window-restore"] : ["far", "window-maximize"];
     },
 
+    setInitialDarkModeSettings() {
+      const darkModeStatus = ipcRenderer.sendSync('get-dark-mode-status');
+      this.darkModeEnabled = darkModeStatus;
+      
+      if (this.darkModeEnabled) {
+        document.documentElement.classList.add("dark-mode"); // Apply the dark mode class to the root element
+      } else {
+        document.documentElement.classList.remove("dark-mode"); // Remove the dark mode class from the root element
+      }
+    },
+
     toggleDarkMode() {
-      this.darkModeEnabled = !this.darkModeEnabled; // Toggle the dark mode state
+      const darkModeStatus = ipcRenderer.sendSync('get-dark-mode-status');
+
+      this.darkModeEnabled = !darkModeStatus;
+
+      // Send an IPC message to the main process to update the dark mode status
+      ipcRenderer.send('toggle-dark-mode', this.darkModeEnabled);
 
       if (this.darkModeEnabled) {
         document.documentElement.classList.add("dark-mode"); // Apply the dark mode class to the root element

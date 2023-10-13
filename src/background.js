@@ -33,6 +33,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const tempDir = app.getPath('temp');
 const versionFilePath = path.join(tempDir, 'msfs_events_viewer_version.txt');
 
+const configPath = path.join(app.getPath('appData'), 'MSFS-Events-Calendar-Viewer', 'config.json');
+
+
 require('@electron/remote/main').initialize()
 
 // Scheme must be registered before the app is ready
@@ -189,8 +192,52 @@ app.on('ready', () => {
   });
 
   ipcMain.on('get-dark-mode-status', (event) => {
-    event.returnValue = nativeTheme.shouldUseDarkColors;
+    let darkModeStatus = nativeTheme.shouldUseDarkColors;
+
+    console.log(darkModeStatus)
+  
+    if (fs.existsSync(configPath)) {
+      try {
+        const configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        darkModeStatus = configData.darkModeStatus;
+      } catch (err) {
+        console.error('Error reading config file:', err);
+      }
+    } else {
+      try {
+        const defaultConfigData = { darkModeStatus };
+        if (!fs.existsSync(path.dirname(configPath))) {
+          fs.mkdirSync(path.dirname(configPath), { recursive: true });
+        }
+        fs.writeFileSync(configPath, JSON.stringify(defaultConfigData), 'utf8');
+      } catch (err) {
+        console.error('Error creating config file:', err);
+      }
+    }
+  
+    event.returnValue = darkModeStatus;
   });
+
+  ipcMain.on('toggle-dark-mode', (event, enableDarkMode) => {
+    try {
+      let configData = {};
+      
+      if (fs.existsSync(configPath)) {
+        configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      }
+  
+      configData.darkModeStatus = enableDarkMode;
+      
+      if (!fs.existsSync(path.dirname(configPath))) {
+        fs.mkdirSync(path.dirname(configPath), { recursive: true });
+      }
+      fs.writeFileSync(configPath, JSON.stringify(configData), 'utf8');
+  
+      event.returnValue = enableDarkMode; // Return the updated dark mode status
+    } catch (err) {
+      console.error('Error updating config file:', err);
+    }
+  });  
 });
 
 // Quit when all windows are closed.

@@ -1,3 +1,8 @@
+## Changelog - v1.1.0
+
+- Added persistent theme settings via a config file
+
+
 ## Changelog - v1.0.9
 
 - Images now open in a new Tab in default Browser when clicked
