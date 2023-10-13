@@ -33,7 +33,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const tempDir = app.getPath('temp');
 const versionFilePath = path.join(tempDir, 'msfs_events_viewer_version.txt');
 
-const configPath = path.join(app.getPath('appData'), 'MSFS-Events-Calendar-Viewer', 'config.json');
+const configPath = path.join(app.getPath('appData'), 'msfs-events-calender-app', 'Config', 'config.json');
 
 
 require('@electron/remote/main').initialize()
@@ -193,8 +193,6 @@ app.on('ready', () => {
 
   ipcMain.on('get-dark-mode-status', (event) => {
     let darkModeStatus = nativeTheme.shouldUseDarkColors;
-
-    console.log(darkModeStatus)
   
     if (fs.existsSync(configPath)) {
       try {
