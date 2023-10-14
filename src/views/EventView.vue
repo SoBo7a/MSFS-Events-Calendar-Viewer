@@ -438,6 +438,8 @@ export default {
       }
     },
 
+    // ToDo: Create "convert to PDF" feature
+    // FixMe: Create proper print view of the event
     printPage() {
       window.print();
     },

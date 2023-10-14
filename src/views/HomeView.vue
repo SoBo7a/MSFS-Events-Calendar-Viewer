@@ -39,6 +39,7 @@
           <a class="input-button" title="toggle" data-toggle>
             <font-awesome-icon :icon="['far', 'calendar-check']" title="Open Calendar" />
           </a>
+          <!-- FixMe: Date empty if "reset day" is clicked -->
           <vue-flatpickr data-input v-model="selectedDate" @on-change="filterSelectedEventData" :config="flatpickrConfig" title="Open Calendar"></vue-flatpickr>
         </div>
         <div class="datepicker-below-menu">
