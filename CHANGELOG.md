@@ -1,3 +1,8 @@
+## Changelog - v1.1.1
+
+- Implemented proper styles for printed events
+
+
 ## Changelog - v1.1.0
 
 - Added persistent theme settings via a config file

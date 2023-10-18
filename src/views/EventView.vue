@@ -32,21 +32,23 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
     <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
 
-    <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
+    <div class="event-details">
+      <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
 
-    <div class="event-details-date">
-      {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
-    </div>
+      <div class="event-details-date">
+        {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
+      </div>
 
-    <div class="event-posts-container">
-      <div v-for="(post, index) in eventPosts" :key="post.id" class="event-post" :id="`post-${index + 1}`">
-        <div class="event-post-profileimage">
-          <img :src="`${msfsForumsUrl}${post.avatar_template.replace('{size}', '50')}`" :alt="post.username">
+      <div class="event-posts-container">
+        <div v-for="(post, index) in eventPosts" :key="post.id" class="event-post" :id="`post-${index + 1}`">
+          <div class="event-post-profileimage">
+            <img :src="`${msfsForumsUrl}${post.avatar_template.replace('{size}', '50')}`" :alt="post.username">
+          </div>
+          <div class="event-post-username">{{ post.username }}</div>
+          <div class="event-post-created">{{ formatDate(post.created_at) }}</div>
+          <div class="event-post-index"># {{ index + 1 }} / {{ eventPosts.length }}</div>
+          <p class="event-post-content" v-html="post.cooked"></p>
         </div>
-        <div class="event-post-username">{{ post.username }}</div>
-        <div class="event-post-created">{{ formatDate(post.created_at) }}</div>
-        <div class="event-post-index"># {{ index + 1 }} / {{ eventPosts.length }}</div>
-        <p class="event-post-content" v-html="post.cooked"></p>
       </div>
     </div>
   </div>
@@ -439,9 +441,45 @@ export default {
     },
 
     // ToDo: Create "convert to PDF" feature
-    // FixMe: Create proper print view of the event
     printPage() {
-      window.print();
+      if (window && window.require) {
+        const { remote } = window.require('electron');
+        const { BrowserWindow } = remote;
+
+        const printWindow = new BrowserWindow({ show: false });
+
+        printWindow.webContents.on('did-finish-load', () => {
+          printWindow.webContents.print({}, () => {
+            printWindow.close();
+          });
+        });
+
+        const printContent = document.querySelector('.event-details').cloneNode(true);
+        const images = printContent.querySelectorAll('img');
+        const iframes = printContent.querySelectorAll('iframe');
+        const links = printContent.querySelectorAll('a');
+
+        for (const image of images) {
+          image.remove();
+        }
+        for (const iframe of iframes) {
+          iframe.remove();
+        }
+        for (const link of links) {
+          link.remove();
+        }
+
+        let stylesHtml = '';
+        const headStyles = document.head.querySelectorAll('link[rel="stylesheet"], style');
+
+        for (const node of headStyles) {
+          stylesHtml += node.outerHTML;
+        }
+
+        printWindow.loadURL('data:text/html,' + encodeURIComponent(`<html><head><meta charset="UTF-8">${stylesHtml}<title>Print Event Details</title></head><body><div class="print-view">` + printContent.innerHTML + '</div></body></html>'));
+      } else {
+        console.error("Cannot print in this environment. This is not an Electron app.");
+      }
     },
 
     showCalendarPopup() {
@@ -449,7 +487,7 @@ export default {
     },
 
     handleCalendarOptionSelected(option) {
-      const storedEventData = JSON.parse(localStorage.getItem('eventData')); // Parse the stored data from JSON
+      const storedEventData = JSON.parse(localStorage.getItem('eventData')); 
       const matchingEvent = storedEventData.find(event => event.id === this.eventDetails.id);
 
       if (matchingEvent) {
