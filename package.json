@@ -2,11 +2,14 @@
   "name": "msfs-events-calender-app",
   "description": "App to view the Events from the MSFS Events Calender.",
   "homepage": "https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "SoBo7a",
   "license": "GPL-3.0-or-later",
   "private": true,
-  "repository": { "type": "git", "url": "https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer"
+  },
   "scripts": {
     "start": "concurrently \"node ./proxy/server.js\" \"vue-cli-service electron:serve\"",
     "serve": "vue-cli-service serve",

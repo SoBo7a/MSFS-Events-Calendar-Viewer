@@ -28,7 +28,8 @@
     <font-awesome-icon class="menu-icon" :icon="['fas', 'arrows-rotate']" title="Refresh page contents..." :class="{ 'rotate': loading }" @click="fetchEventDetails()" />
     <font-awesome-icon class="menu-icon" :icon="['fab', 'chrome']" title="Open this Event in your Browser..." @click="openEventInBrowser()" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'link']" title="Copy the URL of this Event to your Clipboard..." @click="saveURLToClipboard()" />
-    <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage()" />
+    <!-- <font-awesome-icon class="menu-icon" :icon="['fas', 'file-pdf']" title="Save Event as PDF..." @click="printPage('pdf')" /> -->
+    <font-awesome-icon class="menu-icon" :icon="['fas', 'print']" title="Print the current page..." @click="printPage('print')" />
     <font-awesome-icon class="menu-icon" :icon="['fas', 'calendar-days']" title="Add Event to Calendar..." @click="showCalendarPopup()" />
     <ModalComponent v-model:show-modal="showModal" @option-selected="handleCalendarOptionSelected" />
 
