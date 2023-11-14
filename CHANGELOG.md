@@ -1,3 +1,8 @@
+## Changelog - v1.1.2
+
+- Restored compatibility with updated Microsoft Flight Simulator Forums Events calendar software
+
+
 ## Changelog - v1.1.1
 
 - Implemented proper styles for printed events

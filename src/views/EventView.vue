@@ -17,7 +17,6 @@
  * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------------------------->
 
-
  <template>
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
@@ -66,6 +65,8 @@
 </template>
 
 <script>
+// ToDo: Add "Going", "Not Going" and "Interested"
+
 import { h } from 'vue';
 import axios from 'axios';
 import { shell, clipboard } from 'electron';
@@ -160,10 +161,11 @@ export default {
         .then(response => {
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
-          this.eventStartTime =this.formatDate(this.eventDetails.event.start);
+          this.eventStartTime =this.formatDate(this.eventDetails.event_starts_at);
 
-          if(this.eventDetails.event.end) {
-            this.eventEndTime = this.formatDate(this.eventDetails.event.end);
+          console.log(this.eventDetails)
+          if(this.eventDetails.event_ends_at) {
+            this.eventEndTime = this.formatDate(this.eventDetails.event_ends_at);
           }
 
           // Modify Twitch Iframes

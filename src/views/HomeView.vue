@@ -68,8 +68,8 @@
         <div v-for="event in selectedDateEvents" :key="event.id" :class="['event-card', getEventCardClass(event)]" @click="navigateToEvent(event.slug)" @contextmenu="onContextMenu($event, event)" :title="event.fancy_title">
           <h3 class="event-title" v-html="event.fancy_title"></h3>
           <div class="event-time">
-            <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event.start) }}
-            <span v-show="event.event.end"> - {{ formatTime(event.event.end) }}</span>
+            <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event_starts_at) }}
+            <span v-show="event.event_ends_at"> - {{ formatTime(event.event_ends_at) }}</span>
           </div>
           <img v-show="event.image_url" class="event-image" :src="event.image_url" loading="lazy">
           <p class="event-description" v-html="event.excerpt.length > 210 ? event.excerpt.substring(0, 210) + '...' : event.excerpt"></p>
@@ -117,7 +117,7 @@ export default {
 
   data() {
     return {
-      eventsCalendarJsonURL: 'https://forums.flightsimulator.com/c/community/community-fly-in-events/143/l/calendar.json',
+      eventsCalendarJsonURL: 'https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143.json',
       msfsEventsUrl: 'https://forums.flightsimulator.com/t/',
       eventData: [],
       loading: true,
@@ -239,7 +239,8 @@ export default {
           .get(this.eventsCalendarJsonURL)
           .then(response => {
             const eventTopics = response.data.topic_list.topics;
-            this.eventData = this.filterRecentEventData(eventTopics);
+            this.eventData = this.filterRecentEventData(eventTopics.filter(event => Object.prototype.hasOwnProperty.call(event, 'event_starts_at')));
+            // this.eventData = this.filterRecentEventData(eventTopics);
             this.setMinMaxDates();
             this.setDisabledDates();
             this.filterSelectedEventData();
@@ -346,9 +347,9 @@ export default {
       const today = new Date();
       let pastMonth = new Date(today);
       pastMonth.setDate(pastMonth.getDate() - 30);
-      pastMonth = pastMonth.toISOString().split('T')[0]; // Get 30 days in the past in the format 'YYYY-MM-DD'
+      pastMonth = pastMonth.toISOString().split(' ')[0]; // Get 30 days in the past in the format 'YYYY-MM-DD'
       const filteredArray = eventData.filter(item => {
-        const eventStartDate = item.event.start.split('T')[0];
+        const eventStartDate = item.event_starts_at.split(' ')[0];
         return eventStartDate >= pastMonth;
       });
       return filteredArray;
@@ -357,7 +358,7 @@ export default {
     filterSelectedEventData() {
       let selectedDateString = this.selectedDate;
       if(typeof(selectedDateString) !== 'string') {
-        selectedDateString = selectedDateString.toISOString().split('T')[0]
+        selectedDateString = selectedDateString.toISOString().split(' ')[0]
       } else {
         const selectedDateObject = new Date(selectedDateString);
         const year = selectedDateObject.getFullYear();
@@ -367,7 +368,7 @@ export default {
       }
       
       this.selectedDateEvents = this.eventData.filter(item => {
-        const eventDate = item.event.start.split('T')[0];
+        const eventDate = item.event_starts_at.split(' ')[0];
         return eventDate === selectedDateString;
       });
     },
@@ -382,21 +383,21 @@ export default {
     setMinMaxDates() {
       if (this.eventData.length > 0) {
         const latestEvent = this.eventData[this.eventData.length - 1];
-        this.flatpickrConfig.maxDate = new Date(latestEvent.event.start.split('T')[0]);
+        this.flatpickrConfig.maxDate = new Date(latestEvent.event_starts_at.split(' ')[0]);
       }
     },
 
     setDisabledDates() {
       const disabledRanges = [];
-      const eventDates = this.eventData.map((event) => new Date(event.event.start.split('T')[0]));
-      eventDates.sort((a, b) => a - b); // Sort the event dates in ascending order
+      const eventDates = this.eventData.map((event) => new Date(event.event_starts_at.split(' ')[0]));
+      eventDates.sort((a, b) => a - b);
 
-      if (eventDates.length > 0) {
+      if (eventDates.length > 1) {
         let fromDate = new Date(eventDates[0]);
 
         for (let i = 1; i < eventDates.length; i++) {
           const toDate = new Date(eventDates[i]);
-          toDate.setDate(toDate.getDate() - 1); // Subtract one day from the event date
+          toDate.setDate(toDate.getDate() - 1);
 
           if (fromDate < toDate) {
             disabledRanges.push(
@@ -408,11 +409,23 @@ export default {
 
           fromDate = new Date(eventDates[i]);
         }
+      } else if (eventDates.length === 1) {
+        const today = new Date();
+        const fromDate = new Date(eventDates[0]);
+        fromDate.setDate(fromDate.getDate() - 30);
+        const toDate = new Date(Math.max(today, eventDates[0]));
+        toDate.setDate(toDate.getDate() - 1); 
+        disabledRanges.push(
+          { 
+            from: fromDate,
+            to: toDate 
+          });
       }
 
       this.flatpickrConfig.disable = disabledRanges;
     },
     
+    // FixMe: triggering this function empties the flatpickr input (this.selectedDate gets "null")
     selectToday() {
       this.selectedDate = new Date().toUTCString();
     },
@@ -496,7 +509,7 @@ export default {
 
     getEventCardClass(event) {
       const currentTime = new Date().getTime();
-      const eventStartTime = new Date(event.event.start).getTime();
+      const eventStartTime = new Date(event.event_starts_at).getTime();
       const twoHours = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
       if (eventStartTime < currentTime) {

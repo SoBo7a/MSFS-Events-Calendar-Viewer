@@ -35,9 +35,9 @@
         - Events Calendar
         <br />
         <a
-          href="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar"
+          href="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143"
           target="_blank"
-          title="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar"
+          title="https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143"
           class="shortened-url"
           >Learn more</a
         >

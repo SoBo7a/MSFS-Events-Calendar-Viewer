@@ -23,7 +23,7 @@ import { createEvent } from 'ics';
 
 
 export function getICSFile(event) {
-  const start = new Date(event.event.start);
+  const start = new Date(event.event_starts_at);
   const startTime = [
     start.getFullYear(),
     start.getMonth(),
@@ -32,8 +32,8 @@ export function getICSFile(event) {
     start.getMinutes(),
   ];
   let endTime = null;
-  if (event.event.end) {
-    const end = new Date(event.event.end);
+  if (event.event_ends_at) {
+    const end = new Date(event.event_ends_at);
     endTime = [
       end.getFullYear(),
       end.getMonth(),
@@ -62,10 +62,10 @@ export function getICSFile(event) {
 
 
 export function addEventToGoogleCalendar(event) {
-  const formattedStart = convertToRFC5545Format(event.event.start);
+  const formattedStart = convertToRFC5545Format(event.event_starts_at);
   let formattedEnd = null;
-  if (event.event.end) {
-    formattedEnd = convertToRFC5545Format(event.event.end);
+  if (event.event_ends_at) {
+    formattedEnd = convertToRFC5545Format(event.event_ends_at);
   }
 
   // Encode the event details

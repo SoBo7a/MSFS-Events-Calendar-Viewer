@@ -139,6 +139,7 @@ async function createWindow() {
     })
   });
 
+  // ToDo: implement remembering of last window size and position (through config file?!)
   ipcMain.on('get-window-position', (event) => {
     const position = win.getPosition();
     event.returnValue = position;
