@@ -35,8 +35,33 @@ const versionFilePath = path.join(tempDir, 'msfs_events_viewer_version.txt');
 
 const configPath = path.join(app.getPath('appData'), 'msfs-events-calender-app', 'Config', 'config.json');
 
-
 require('@electron/remote/main').initialize()
+
+
+function readWindowSettings() {
+  try {
+    if (fs.existsSync(configPath)) {
+      const configData = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      return configData.windowSettings;
+    }
+  } catch (err) {
+    console.error('Error reading window settings from config file:', err);
+  }
+  return null;
+}
+
+function writeWindowSettings(windowSettings) {
+  try {
+    const configData = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, 'utf8')) : {};
+    configData.windowSettings = windowSettings;
+    if (!fs.existsSync(path.dirname(configPath))) {
+      fs.mkdirSync(path.dirname(configPath), { recursive: true });
+    }
+    fs.writeFileSync(configPath, JSON.stringify(configData), 'utf8');
+  } catch (err) {
+    console.error('Error writing window settings to config file:', err);
+  }
+}
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -64,6 +89,16 @@ async function createWindow() {
       nativeWindowOpen: true,
     }
   })
+
+  const windowSettings = readWindowSettings();
+  if (windowSettings) {
+    if (windowSettings.isMaximized) {
+      win.maximize();
+    } else {
+      win.setSize(windowSettings.width, windowSettings.height);
+      win.setPosition(windowSettings.x, windowSettings.y);
+    }
+  }
   
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
@@ -139,7 +174,6 @@ async function createWindow() {
     })
   });
 
-  // ToDo: implement remembering of last window size and position (through config file?!)
   ipcMain.on('get-window-position', (event) => {
     const position = win.getPosition();
     event.returnValue = position;
@@ -156,14 +190,19 @@ async function createWindow() {
       win.maximize();
     }
     const isMaximized = win.isMaximized();
+    writeWindowSettings({ ...windowSettings, isMaximized });
     win.webContents.send('window-maximized-state-changed', isMaximized);
   });
 
   win.on('maximize', () => {
+    const updatedWindowSettings = { ...windowSettings, isMaximized: true };
+    writeWindowSettings(updatedWindowSettings);
     win.webContents.send('window-maximized');
   });
-
+  
   win.on('unmaximize', () => {
+    const updatedWindowSettings = { ...windowSettings, isMaximized: false };
+    writeWindowSettings(updatedWindowSettings);
     win.webContents.send('window-restored');
   });
 
@@ -175,9 +214,18 @@ async function createWindow() {
     if (win.isDevToolsOpened()) {
       win.closeDevTools();
     }
-    
+  
+    const windowSettings = {
+      isMaximized: win.isMaximized(),
+      width: win.getSize()[0],
+      height: win.getSize()[1],
+      x: win.getPosition()[0],
+      y: win.getPosition()[1],
+    };
+    writeWindowSettings(windowSettings);
+  
     win.close();
-  });
+  });  
 }
 
 app.on('ready', () => {

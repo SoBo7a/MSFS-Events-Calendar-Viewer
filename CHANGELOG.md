@@ -1,7 +1,7 @@
 ## Changelog - v1.1.2
 
-- 
-- Fixed a issue where the "reset day" button didn't work as expected
+- The app now retains the last window size and position across sessions
+- Resolved an issue with the "reset day" button, ensuring it functions as expected
 
 
 ## Changelog - v1.1.2
