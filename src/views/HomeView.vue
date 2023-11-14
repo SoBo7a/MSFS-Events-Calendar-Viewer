@@ -164,7 +164,9 @@ export default {
 
   watch: {
     selectedDate(newDate) {
-      this.$store.dispatch('updateSelectedDate', newDate);
+      if (newDate !== null) {
+        this.$store.dispatch('updateSelectedDate', newDate);
+      }
     },
   },
 
@@ -427,6 +429,11 @@ export default {
     
     // FixMe: triggering this function empties the flatpickr input (this.selectedDate gets "null")
     selectToday() {
+      if (this.selectedDate !== null) {
+        this.selectedDate = this.storedDate
+        return
+      }
+
       this.selectedDate = new Date().toUTCString();
     },
 
