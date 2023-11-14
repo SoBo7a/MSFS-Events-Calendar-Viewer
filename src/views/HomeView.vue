@@ -426,8 +426,7 @@ export default {
 
       this.flatpickrConfig.disable = disabledRanges;
     },
-    
-    // FixMe: triggering this function empties the flatpickr input (this.selectedDate gets "null")
+
     selectToday() {
       if (this.selectedDate !== null) {
         this.selectedDate = this.storedDate
