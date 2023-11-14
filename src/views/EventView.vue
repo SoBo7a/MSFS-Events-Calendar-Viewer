@@ -35,14 +35,38 @@
     <div class="event-details">
       <h1 class="event-details-title" v-html="eventDetails.fancy_title"></h1>
 
-      <div class="event-details-date">
-        {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
+      <div class="event-details-date" title="Event Date">
+        <font-awesome-icon :icon="['far', 'clock']" /> {{ eventStartTime }}{{eventEndTime ?  ` - ${eventEndTime}` : '' }}
       </div>
+
+      <div v-show="filteredInvitees.length !== 0">
+        <div class="invitee-counter">{{ goingCount }} Going - {{ interestedCount }} Interested - {{ notGoingCount }} Not Going</div>
+        <div class="invitees">
+          <div v-for="invitee in filteredInvitees.slice(0, calculateAvatarCount())" :key="invitee.id" class="invitee-avatar">
+            <a class="invitee-avatar-link" :href="`${msfsForumsUrl}/u/${invitee.user.username}`" :title="`Click to visit ${invitee.user.username}'s profile in the Browser`" >
+              <img
+                class="invitee-avatar-img"
+                :src="`${msfsForumsUrl}${invitee.user.avatar_template.replace('{size}', '50')}`"
+                :alt="invitee.user.username"
+                :style="{ borderColor: getAvatarBorderColor(invitee.status) }"
+              />
+            </a>
+          </div>
+          <button class="show-all-button" @click="showAllInvitees">Show All</button>
+        </div>
+      </div>
+      <InviteeModalComponent
+        v-if="showInviteeModal"
+        :goingInvitees="goingInvitees"
+        :interestedInvitees="interestedInvitees"
+        :notGoingInvitees="notGoingInvitees"
+        @close="closeInviteeModal"
+      />
 
       <div class="event-posts-container">
         <div v-for="(post, index) in eventPosts" :key="post.id" class="event-post" :id="`post-${index + 1}`">
-          <div class="event-post-profileimage">
-            <img :src="`${msfsForumsUrl}${post.avatar_template.replace('{size}', '50')}`" :alt="post.username">
+          <div class="event-post-profileimage" :title="`Click to visit ${post.username}'s profile in the Browser`">
+            <img class="profile-image" :src="`${msfsForumsUrl}${post.avatar_template.replace('{size}', '50')}`" :alt="post.username">
           </div>
           <div class="event-post-username">{{ post.username }}</div>
           <div class="event-post-created">{{ formatDate(post.created_at) }}</div>
@@ -73,6 +97,7 @@ import { shell, clipboard } from 'electron';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import ModalComponent from '@/components/CalendarModalComponent.vue';
 import ScrollBarComponent from '@/components/ScrollBarComponent.vue'
+import InviteeModalComponent from '@/components/InviteeModalComponent.vue';
 import Loading from 'vue3-loading-overlay';
 import { addEventToGoogleCalendar, getICSFile } from '../shared/calendars.js'
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
@@ -87,6 +112,7 @@ export default {
     ModalComponent,
     Loading,
     ScrollBarComponent,
+    InviteeModalComponent,
   },
 
   data() {
@@ -100,7 +126,40 @@ export default {
       eventPosts: [],
       eventStartTime: null,
       eventEndTime: null,
+
+      showInviteeModal: false,
+      goingInvitees: [],
+      interestedInvitees: [],
+      notGoingInvitees: [],
     }
+  },
+
+  computed: {
+    filteredInvitees() {
+      const posts = this.eventDetails.post_stream?.posts;
+
+      if (!posts || posts.length === 0 || !posts[0].event) {
+        return [];
+      }
+
+      const goingInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'going');
+      const interestedInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'interested');
+      const notGoingInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'not going');
+
+      return [...goingInvitees, ...interestedInvitees, ...notGoingInvitees];
+    },
+
+    goingCount() {
+      return this.filteredInvitees.filter(invitee => invitee.status === 'going').length;
+    },
+
+    interestedCount() {
+      return this.filteredInvitees.filter(invitee => invitee.status === 'interested').length;
+    },
+    
+    notGoingCount() {
+      return this.filteredInvitees.filter(invitee => invitee.status === 'not going').length;
+    },
   },
 
   created() {
@@ -126,6 +185,8 @@ export default {
     document.addEventListener('click', this.handleLinkClick);
     document.addEventListener('mouseover', this.handleMouseOver);
 
+    window.addEventListener('resize', this.handleResize);
+
     // Use MutationObserver to check if iframe present in the DOM and add handleLinkClick Eventlistener
     const observer = new MutationObserver(() => {
       const iframes = document.querySelectorAll('iframe');
@@ -145,6 +206,9 @@ export default {
   beforeUnmount() {
     document.removeEventListener('click', this.handleLinkClick);
     document.removeEventListener('mouseover', this.handleMouseOver);
+
+    window.removeEventListener('resize', this.handleResize);
+
   },
 
   methods: {
@@ -161,11 +225,10 @@ export default {
         .then(response => {
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
-          this.eventStartTime =this.formatDate(this.eventDetails.event_starts_at);
+          this.eventStartTime =this.formatDate(this.eventDetails.event_starts_at + "Z");
 
-          console.log(this.eventDetails)
           if(this.eventDetails.event_ends_at) {
-            this.eventEndTime = this.formatDate(this.eventDetails.event_ends_at);
+            this.eventEndTime = this.formatDate(this.eventDetails.event_ends_at + "Z");
           }
 
           // Modify Twitch Iframes
@@ -392,6 +455,75 @@ export default {
       });
     },
 
+    getAvatarBorderColor(status) {
+      // Set border color based on the invitee's status
+      switch (status) {
+        case 'going':
+          return 'green';
+        case 'interested':
+          return 'yellow';
+        case 'not going':
+          return 'red';
+        default:
+          return 'transparent';
+      }
+    },
+
+    calculateAvatarCount() {
+      const containerWidth = window.innerWidth;
+      const avatarWidth = 88;
+
+      // Calculate the maximum number of avatars that can fit in the container
+      let maxAvatars = Math.max(Math.floor(containerWidth / avatarWidth), 7);
+      // Return the minimum of maxAvatars and the total number of avatars
+      return Math.min(maxAvatars, this.filteredInvitees.length);
+    },
+
+    showAllInvitees() {
+      // Populate goingInvitees, interestedInvitees, notGoingInvitees based on your logic
+      // For example, you can filter invitees based on their status
+
+      // Assuming your eventDetails object has information about invitees
+      const posts = this.eventDetails.post_stream?.posts;
+
+      if (!posts || posts.length === 0 || !posts[0].event) {
+        return;
+      }
+
+      const invitees = posts[0].event.sample_invitees;
+
+      // Assuming sample_invitees structure:
+      // [{ status: 'going', user: { username: 'John', avatar_template: '/path/to/avatar' } }, ...]
+
+      // Clear previous data
+      this.goingInvitees = [];
+      this.interestedInvitees = [];
+      this.notGoingInvitees = [];
+
+      // Separate invitees based on status
+      invitees.forEach(invitee => {
+        if (invitee.status === 'going') {
+          this.goingInvitees.push(invitee);
+        } else if (invitee.status === 'interested') {
+          this.interestedInvitees.push(invitee);
+        } else if (invitee.status === 'not going') {
+          this.notGoingInvitees.push(invitee);
+        }
+      });
+
+      // Set showInviteeModal to true to display the modal
+      this.showInviteeModal = true;
+    },
+
+    closeInviteeModal() {
+      // Close the modal when the user clicks the close button
+      this.showInviteeModal = false;
+    },
+
+    handleResize() {
+      this.$forceUpdate(); 
+    },
+
     handleLinkClick(event) {
       // Check if the clicked element is an <a> tag
         // "offline-embeds--stylized-link" for twitch iframe links
@@ -414,17 +546,30 @@ export default {
         shell.openExternal(event.target.href);
       }
 
-      if(event.target.className === 'offline-embeds--stylized-link') {
+      if (event.target.className === 'offline-embeds--stylized-link') {
           const parentEl = event.target.parentElement;
           const href = parentEl.href;
           event.preventDefault();
           shell.openExternal(href);
       }
 
-      // Check if clicked element is an <img> tag
-      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image') {
+      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image' && event.target.className !== 'invitee-avatar-img' && event.target.className !== 'modal-avatar-image' && event.target.className !== 'profile-image') {
         event.target.title = 'Click to open the Image in your Browser.'
         const href = event.target.src;
+        event.preventDefault();
+        shell.openExternal(href);
+      }
+
+      if (event.target.className === 'profile-image') {
+        const userName = event.target.alt;
+        const profileUrl = `${this.msfsForumsUrl}/u/${userName}`;
+        event.preventDefault();
+        shell.openExternal(profileUrl);
+      }
+
+      if (event.target.className === 'invitee-avatar-img' && event.target.className === 'modal-avatar-image') {
+        const parentEl = event.target.parentElement;
+        const href = parentEl.href;
         event.preventDefault();
         shell.openExternal(href);
       }
@@ -432,13 +577,13 @@ export default {
 
     handleMouseOver(event) {
       if (event.target.tagName === 'A') {
-        if(event.target.className == 'home-link') {
+        if(event.target.className === 'home-link' || event.target.className === 'invitee-avatar-link') {
           return;
         }
         event.target.title = event.target.href;
       }
 
-      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image') {
+      if (event.target.tagName ==='IMG' && event.target.className !== 'event-image' && event.target.className !== 'invitee-avatar-img' && event.target.className !== 'modal-avatar-image' && event.target.className !== 'profile-image') {
         event.target.title = 'Click to open the Image in your Browser.'
       }
     },

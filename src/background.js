@@ -211,7 +211,7 @@ async function createWindow() {
   });
 
   ipcMain.on('close-window', () => {
-    if (win.isDevToolsOpened()) {
+    if (isDevelopment) {
       win.closeDevTools();
     }
   

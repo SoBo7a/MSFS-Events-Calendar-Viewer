@@ -68,8 +68,8 @@
         <div v-for="event in selectedDateEvents" :key="event.id" :class="['event-card', getEventCardClass(event)]" @click="navigateToEvent(event.slug)" @contextmenu="onContextMenu($event, event)" :title="event.fancy_title">
           <h3 class="event-title" v-html="event.fancy_title"></h3>
           <div class="event-time">
-            <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event_starts_at) }}
-            <span v-show="event.event_ends_at"> - {{ formatTime(event.event_ends_at) }}</span>
+            <font-awesome-icon :icon="['far', 'clock']" /> {{ formatTime(event.event_starts_at + "Z") }}
+            <span v-show="event.event_ends_at"> - {{ formatTime(event.event_ends_at + "Z") }}</span>
           </div>
           <img v-show="event.image_url" class="event-image" :src="event.image_url" loading="lazy">
           <p class="event-description" v-html="event.excerpt.length > 210 ? event.excerpt.substring(0, 210) + '...' : event.excerpt"></p>
@@ -242,6 +242,7 @@ export default {
           .then(response => {
             const eventTopics = response.data.topic_list.topics;
             this.eventData = this.filterRecentEventData(eventTopics.filter(event => Object.prototype.hasOwnProperty.call(event, 'event_starts_at')));
+            console.log(this.eventData)
             // this.eventData = this.filterRecentEventData(eventTopics);
             this.setMinMaxDates();
             this.setDisabledDates();
@@ -517,7 +518,7 @@ export default {
 
     getEventCardClass(event) {
       const currentTime = new Date().getTime();
-      const eventStartTime = new Date(event.event_starts_at).getTime();
+      const eventStartTime = new Date(event.event_starts_at + "Z").getTime();
       const twoHours = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
       if (eventStartTime < currentTime) {

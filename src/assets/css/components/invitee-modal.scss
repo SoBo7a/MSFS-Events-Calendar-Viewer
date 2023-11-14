@@ -1,0 +1,163 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) 2023 SoBo7a.
+ * 
+ * This file is part of MSFS Events Calendar Viewer https://github.com/SoBo7a/MSFS-Events-Calendar-Viewer.
+ * 
+ * MSFS Events Calendar Viewer is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * MSFS Events Calendar Viewer is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with MSFS Events Calendar Viewer.  If not, see <http://www.gnu.org/licenses/>.
+ *--------------------------------------------------------------------------------------------*/
+
+.invitee-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+
+  .invitee-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0; 
+  }
+
+  .invitee-modal-content {
+    background: var(--modal-background-color);
+    color: var(--text-color-primary);
+    padding: 20px;
+    border-radius: 8px;
+    height: 400px;
+    width: 35%;
+    min-width: 250px;
+    z-index: 2;
+
+    h2 {
+        position: relative;
+        text-align: left;
+        margin-top: 0;
+    
+        .close-button {
+          position: absolute;
+          top: 0;
+          right: 0;
+          cursor: pointer;
+          font-size: 1rem;
+          color: var(--text-color-primary);
+
+          &:hover {
+            color: rgb(196, 32, 32);
+          }
+        }
+    }
+    
+    .invitee-searchbar {
+        margin-bottom: 15px;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: var(--background-color-primary);
+        color: var(--text-color-primary);
+        border: 1px solid var(--border-color-primary);
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+    .invitee-category-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 10px;
+
+      button {
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        background-color: var(--background-color-primary); 
+        color: var(--text-color-primary); 
+        width: 33%;
+        min-width: 85px;
+
+        &:hover {
+            background: linear-gradient(180deg, #79b9e4, #5a90b4);
+            color: #000;
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+      }
+
+      button.active {
+        // background-color: #3498db; 
+        background: linear-gradient(180deg, #2d87c4, #1a6292);
+        color: #fff;
+      }
+    }
+
+    .no-invitee-data {
+        margin-top: 130px;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+
+    ul {
+      list-style-type: none;
+      background-color: var(--background-color-primary);
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 10px;
+      overflow-y: auto;
+
+      li {
+        margin-top: 15px;
+        font-weight: 700;
+        text-align: left;
+        display: flex;
+        align-items: center; 
+        border-bottom: 1px solid var(--border-color-primary);
+        padding-bottom: 10px;
+
+        &:first-child {
+          border-top: 1px solid var(--border-color-primary);
+          padding-top: 10px;
+          margin-top: 0;
+        }
+
+        &:hover {
+            transform: scale(0.98);
+        }
+
+        a {
+          text-decoration: none; 
+          color: inherit;
+          display: flex;
+          align-items: center;
+
+          .modal-avatar-image {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+}

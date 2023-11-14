@@ -1,7 +1,10 @@
-## Changelog - v1.1.2
+## Changelog - v1.1.3
 
-- The app now retains the last window size and position across sessions
-- Resolved an issue with the "reset day" button, ensuring it functions as expected
+- Introduced Invitees to Event View
+- Made small design enhancements
+- App now remembers last window size and position
+- Fixed "reset day" button functionality
+- Addressed date/time calculation issues
 
 
 ## Changelog - v1.1.2
