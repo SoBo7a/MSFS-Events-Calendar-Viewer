@@ -1,5 +1,11 @@
 ## Changelog - v1.1.2
 
+- 
+- Fixed a issue where the "reset day" button didn't work as expected
+
+
+## Changelog - v1.1.2
+
 - Restored compatibility with updated Microsoft Flight Simulator Forums Events calendar software
 
 

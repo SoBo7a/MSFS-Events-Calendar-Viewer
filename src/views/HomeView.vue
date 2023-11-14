@@ -376,9 +376,11 @@ export default {
     },
 
     getDateFromStore() {
-      const savedSelectedDate = this.$store.getters.selectedDate;
+      let savedSelectedDate = this.$store.getters.selectedDate;
       if (savedSelectedDate) {
         this.selectedDate = this.storedDate;
+      } else {
+        savedSelectedDate = new Date().toUTCString();
       }
     },
 
