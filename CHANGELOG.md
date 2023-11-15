@@ -1,3 +1,8 @@
+## Changelog - v1.1.4
+
+- Fixed "Not Going" Invitees not beeing shown
+
+
 ## Changelog - v1.1.3
 
 - Introduced Invitees to Event View

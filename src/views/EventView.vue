@@ -89,8 +89,6 @@
 </template>
 
 <script>
-// ToDo: Add "Going", "Not Going" and "Interested"
-
 import { h } from 'vue';
 import axios from 'axios';
 import { shell, clipboard } from 'electron';
@@ -144,7 +142,7 @@ export default {
 
       const goingInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'going');
       const interestedInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'interested');
-      const notGoingInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'not going');
+      const notGoingInvitees = posts[0].event.sample_invitees.filter(invitee => invitee.status === 'not_going');
 
       return [...goingInvitees, ...interestedInvitees, ...notGoingInvitees];
     },
@@ -158,7 +156,7 @@ export default {
     },
     
     notGoingCount() {
-      return this.filteredInvitees.filter(invitee => invitee.status === 'not going').length;
+      return this.filteredInvitees.filter(invitee => invitee.status === 'not_going').length;
     },
   },
 
@@ -223,6 +221,7 @@ export default {
       axios
         .get(`${this.eventUrl}.json`)
         .then(response => {
+          console.log(response.data)
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
           this.eventStartTime =this.formatDate(this.eventDetails.event_starts_at + "Z");
@@ -462,7 +461,7 @@ export default {
           return 'green';
         case 'interested':
           return 'yellow';
-        case 'not going':
+        case 'not_going':
           return 'red';
         default:
           return 'transparent';
@@ -506,7 +505,7 @@ export default {
           this.goingInvitees.push(invitee);
         } else if (invitee.status === 'interested') {
           this.interestedInvitees.push(invitee);
-        } else if (invitee.status === 'not going') {
+        } else if (invitee.status === 'not_going') {
           this.notGoingInvitees.push(invitee);
         }
       });
