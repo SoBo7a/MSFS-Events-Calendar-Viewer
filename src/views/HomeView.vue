@@ -123,7 +123,7 @@ export default {
       loading: true,
       error: null,
 
-      selectedDate: new Date().toUTCString(),
+      selectedDate: '',
       flatpickrConfig: {
         minDate: new Date(new Date().setDate(new Date().getDate() - 30)),
         maxDate: null,
@@ -194,6 +194,8 @@ export default {
 
     this.updateTimeSinceRefresh();
     setInterval(this.updateTimeSinceRefresh, 1000);
+
+    this.selectToday();
 
     window.addEventListener('mouseover', function(event) {
       if (event.target.classList.contains('mx-context-menu')) {
