@@ -43,10 +43,11 @@
     color: var(--text-color-primary);
     padding: 20px;
     border-radius: 8px;
-    height: 400px;
+    height: 40%;
     width: 35%;
     min-width: 250px;
     z-index: 2;
+    overflow-y: auto;
 
     h2 {
         position: relative;
@@ -123,7 +124,6 @@
       border-radius: 5px;
       padding: 15px;
       margin-bottom: 10px;
-      overflow-y: auto;
 
       li {
         margin-top: 15px;

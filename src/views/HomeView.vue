@@ -72,7 +72,7 @@
             <span v-show="event.event_ends_at"> - {{ formatTime(event.event_ends_at + "Z") }}</span>
           </div>
           <img v-show="event.image_url" class="event-image" :src="event.image_url" loading="lazy">
-          <p class="event-description" v-html="event.excerpt.length > 210 ? event.excerpt.substring(0, 210) + '...' : event.excerpt"></p>
+          <p class="event-description" v-html="event.excerpt ? (event.excerpt.length > 210 ? event.excerpt.substring(0, 210) + '...' : event.excerpt) : 'No short description available...'"></p>
         </div>
       </div>
       <div v-else-if="selectedDateEvents.length == 0 && !loading">
@@ -242,7 +242,6 @@ export default {
           .then(response => {
             const eventTopics = response.data.topic_list.topics;
             this.eventData = this.filterRecentEventData(eventTopics.filter(event => Object.prototype.hasOwnProperty.call(event, 'event_starts_at')));
-            console.log(this.eventData)
             // this.eventData = this.filterRecentEventData(eventTopics);
             this.setMinMaxDates();
             this.setDisabledDates();
@@ -359,7 +358,7 @@ export default {
     },
 
     filterSelectedEventData() {
-      let selectedDateString = this.selectedDate;
+      let selectedDateString = this.selectedDate === 'today' ? new Date().toUTCString() : this.selectedDate;
       if(typeof(selectedDateString) !== 'string') {
         selectedDateString = selectedDateString.toISOString().split(' ')[0]
       } else {
@@ -379,30 +378,40 @@ export default {
     getDateFromStore() {
       let savedSelectedDate = this.$store.getters.selectedDate;
       if (savedSelectedDate) {
-        this.selectedDate = this.storedDate;
-      } else {
-        savedSelectedDate = new Date().toUTCString();
+        this.selectedDate = savedSelectedDate;
       }
     },
 
     setMinMaxDates() {
       if (this.eventData.length > 0) {
-        const latestEvent = this.eventData[this.eventData.length - 1];
-        this.flatpickrConfig.maxDate = new Date(latestEvent.event_starts_at.split(' ')[0]);
+        const latestEvent = this.eventData.reduce((latest, event) => {
+          const eventDate = new Date(event.event_starts_at.split(' ')[0]);
+          return eventDate > latest.eventDate ? { eventDate, event } : latest;
+        }, { eventDate: new Date(0), event: null }).event;
+
+        const oldestEvent = this.eventData.reduce((oldest, event) => {
+          const eventDate = new Date(event.event_starts_at.split(' ')[0]);
+          return eventDate < oldest.eventDate ? { eventDate, event } : oldest;
+        }, { eventDate: new Date(), event: null }).event;
+
+        if (latestEvent && oldestEvent) {
+          this.flatpickrConfig.maxDate = new Date(latestEvent.event_starts_at.split(' ')[0]);
+          this.flatpickrConfig.minDate = new Date(oldestEvent.event_starts_at.split(' ')[0]);
+        }
       }
     },
 
     setDisabledDates() {
       const disabledRanges = [];
       const eventDates = this.eventData.map((event) => new Date(event.event_starts_at.split(' ')[0]));
-      eventDates.sort((a, b) => a - b);
+      eventDates.sort((a, b) => a - b); // Sort the event dates in ascending order
 
-      if (eventDates.length > 1) {
+      if (eventDates.length > 0) {
         let fromDate = new Date(eventDates[0]);
 
         for (let i = 1; i < eventDates.length; i++) {
           const toDate = new Date(eventDates[i]);
-          toDate.setDate(toDate.getDate() - 1);
+          toDate.setDate(toDate.getDate() - 1); // Subtract one day from the event date
 
           if (fromDate < toDate) {
             disabledRanges.push(
@@ -414,29 +423,15 @@ export default {
 
           fromDate = new Date(eventDates[i]);
         }
-      } else if (eventDates.length === 1) {
-        const today = new Date();
-        const fromDate = new Date(eventDates[0]);
-        fromDate.setDate(fromDate.getDate() - 30);
-        const toDate = new Date(Math.max(today, eventDates[0]));
-        toDate.setDate(toDate.getDate() - 1); 
-        disabledRanges.push(
-          { 
-            from: fromDate,
-            to: toDate 
-          });
       }
 
       this.flatpickrConfig.disable = disabledRanges;
     },
 
     selectToday() {
-      if (this.selectedDate !== null) {
-        this.selectedDate = this.storedDate
-        return
-      }
+      this.selectedDate = 'today';
 
-      this.selectedDate = new Date().toUTCString();
+      console.log(this.flatpickrConfig)
     },
 
     selectDay(direction) {
@@ -476,7 +471,7 @@ export default {
 
     isDateOutOfRange(date) {
       const { minDate, maxDate } = this.flatpickrConfig;
-      return (minDate && date < minDate) || (maxDate && date > maxDate);
+      return (minDate && date < new Date(minDate).setHours(0, 0, 0, 0)) || (maxDate && date > new Date(maxDate).setHours(23, 59, 59, 999));
     },
 
     formatTime(dateTime) {
