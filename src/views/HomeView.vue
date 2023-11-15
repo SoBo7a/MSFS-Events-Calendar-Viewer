@@ -18,7 +18,7 @@
  * -------------------------------------------------------------------------------------------->
 
 
-<template>
+ <template>
   <notifications position="bottom right" :pauseOnHover="true" :duration="5000" classes="notification-base" title="Click to close this notification..." />
 
   <div style="margin: 20px; margin-top: 45px;">
@@ -195,7 +195,11 @@ export default {
     this.updateTimeSinceRefresh();
     setInterval(this.updateTimeSinceRefresh, 1000);
 
-    this.selectToday();
+    if (!this.storedDate) {
+      this.selectToday();
+    } else {
+      this.selectedDate = new Date(this.selectedDate).toDateString()
+    }
 
     window.addEventListener('mouseover', function(event) {
       if (event.target.classList.contains('mx-context-menu')) {
@@ -432,8 +436,6 @@ export default {
 
     selectToday() {
       this.selectedDate = 'today';
-
-      console.log(this.flatpickrConfig)
     },
 
     selectDay(direction) {

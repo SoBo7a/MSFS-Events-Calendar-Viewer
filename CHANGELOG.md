@@ -4,7 +4,7 @@
 - Made small design enhancements
 - App now remembers last window size and position
 - Fixed "reset day" button functionality
-- Addressed date/time calculation issues
+- Addressed date/time issues
 
 
 ## Changelog - v1.1.2

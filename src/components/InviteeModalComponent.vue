@@ -21,7 +21,9 @@
   <div class="invitee-modal">
     <div class="invitee-modal-overlay" @click="closeModal"></div>
     <div class="invitee-modal-content">
-      <h2>Invitee Overview <span @click="closeModal" class="close-button">&#x2716;</span></h2>
+      <h2>Invitee Overview <span @click="closeModal" class="close-button">
+        <font-awesome-icon :icon="['fas', 'circle-xmark']" class="fa-icon" />
+      </span></h2>
 
       <!-- Search Bar -->
       <input class="invitee-searchbar" v-model="searchQuery" placeholder="Search invitees" />
