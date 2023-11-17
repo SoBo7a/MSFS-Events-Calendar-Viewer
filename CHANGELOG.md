@@ -1,3 +1,8 @@
+## Changelog - v1.1.5
+
+- The Invitee Counter shows now all Invitees; Invitee Images are limited to 10 in data, open the event in the browser to view all.
+
+
 ## Changelog - v1.1.4
 
 - Added optional event URL display on event details page.

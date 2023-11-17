@@ -40,7 +40,7 @@
       </div>
 
       <div v-show="filteredInvitees.length !== 0">
-        <div class="invitee-counter">{{ goingCount }} Going - {{ interestedCount }} Interested - {{ notGoingCount }} Not Going</div>
+        <div class="invitee-counter">{{ eventInviteeStats.going }} Going - {{ eventInviteeStats.interested }} Interested - {{ eventInviteeStats.not_going }} Not Going</div>
         <div class="invitees">
           <div v-for="invitee in filteredInvitees.slice(0, calculateAvatarCount())" :key="invitee.id" class="invitee-avatar">
             <a class="invitee-avatar-link" :href="`${msfsForumsUrl}/u/${invitee.user.username}`" :title="`Click to visit ${invitee.user.username}'s profile in the Browser`" >
@@ -132,6 +132,7 @@ export default {
       goingInvitees: [],
       interestedInvitees: [],
       notGoingInvitees: [],
+      eventInviteeStats: {},
     }
   },
 
@@ -150,17 +151,18 @@ export default {
       return [...goingInvitees, ...interestedInvitees, ...notGoingInvitees];
     },
 
-    goingCount() {
-      return this.filteredInvitees.filter(invitee => invitee.status === 'going').length;
-    },
+    // FixMe: not all Invitee Avatars are shown (10 is the maximum in the data?!)
+    // goingCount() {
+    //   return this.filteredInvitees.filter(invitee => invitee.status === 'going').length;
+    // },
 
-    interestedCount() {
-      return this.filteredInvitees.filter(invitee => invitee.status === 'interested').length;
-    },
+    // interestedCount() {
+    //   return this.filteredInvitees.filter(invitee => invitee.status === 'interested').length;
+    // },
     
-    notGoingCount() {
-      return this.filteredInvitees.filter(invitee => invitee.status === 'not_going').length;
-    },
+    // notGoingCount() {
+    //   return this.filteredInvitees.filter(invitee => invitee.status === 'not_going').length;
+    // },
   },
 
   created() {
@@ -224,7 +226,6 @@ export default {
       axios
         .get(`${this.eventUrl}.json`)
         .then(response => {
-          console.log(response.data)
           this.eventDetails = response.data;
           this.eventPosts = response.data.post_stream.posts.filter(post => post.cooked && post.cooked.length > 0);
           this.eventStartTime =this.formatDate(this.eventDetails.event_starts_at + "Z");
@@ -234,6 +235,8 @@ export default {
           }
 
           this.eventDetailsUrl = this.eventPosts[0].event.url
+
+          this.eventInviteeStats = this.eventPosts[0].event.stats
 
           // Modify Twitch Iframes
           this.eventPosts.forEach(post => {
