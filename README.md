@@ -2,7 +2,7 @@
 
 MSFS Events Calendar Viewer is an independent desktop application - written in Vue 3 and compiled, using "vue-electron-builder" - to provide a convenient way to explore and stay updated on flight simulation events.
 
-It utilizes the [Microsoft Flight Simulator Forums Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar) as its data source, offering users a comprehensive view of community-driven events. 
+It utilizes the [Microsoft Flight Simulator Forums Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143) as its data source, offering users a comprehensive view of community-driven events. 
 
 Please note that MSFS Events Calendar Viewer is not affiliated with or endorsed by Microsoft Flight Simulator or its developers. 
 
@@ -16,7 +16,7 @@ This program comes with ABSOLUTELY NO WARRANTY.
 
 - Shows Events up to 30 Days in the past
 - Shows all future Events
-- Provides a faster usage of the [MSFS Events Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143/l/calendar). This is archieved by caching and more optimiziations
+- Provides a faster usage of the [MSFS Events Calendar](https://forums.flightsimulator.com/c/msfs/community-fly-in-events/143). This is archieved by caching and more optimiziations
 - Automatic Application updates
 - Dark mode
 - And more...

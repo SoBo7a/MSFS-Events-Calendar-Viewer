@@ -1,6 +1,9 @@
 ## Changelog - v1.1.4
 
-- Fixed "Not Going" Invitees not beeing shown
+- Added optional event URL display on event details page.
+- Resolved issue: "Not Going" Invitees are now correctly shown.
+- Fixed sorting problem in the overview; events are now sorted by time.
+- Adjusted event filtering in the overview to use the local timezone instead of UTC.
 
 
 ## Changelog - v1.1.3

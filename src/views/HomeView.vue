@@ -104,7 +104,7 @@ import { getICSFile, addEventToGoogleCalendar } from '../shared/calendars.js';
 import { FontAwesomeIcon, iconObj } from '../shared/fontawesome-icons'
 import scrollMixin from '../shared/mixins/scroll-up-mixin';
 
-
+// FixMe: if today == no event, show latest available date/event
 export default {
   name: "HomeView",
   mixins: [scrollMixin],
@@ -365,8 +365,8 @@ export default {
 
     filterSelectedEventData() {
       let selectedDateString = this.selectedDate === 'today' ? new Date().toUTCString() : this.selectedDate;
-      if(typeof(selectedDateString) !== 'string') {
-        selectedDateString = selectedDateString.toISOString().split(' ')[0]
+      if (typeof (selectedDateString) !== 'string') {
+        selectedDateString = selectedDateString.toISOString().split(' ')[0];
       } else {
         const selectedDateObject = new Date(selectedDateString);
         const year = selectedDateObject.getFullYear();
@@ -374,11 +374,15 @@ export default {
         const day = String(selectedDateObject.getDate()).padStart(2, '0');
         selectedDateString = `${year}-${month}-${day}`;
       }
-      
-      this.selectedDateEvents = this.eventData.filter(item => {
-        const eventDate = item.event_starts_at.split(' ')[0];
-        return eventDate === selectedDateString;
-      });
+
+      this.selectedDateEvents = this.eventData
+        .filter(item => {
+          const eventDate = new Date(item.event_starts_at + "Z").toLocaleDateString('fr-CA');
+          return eventDate === selectedDateString;
+        })
+        .sort((a, b) => {
+          return new Date(a.event_starts_at) - new Date(b.event_starts_at);
+        });
     },
 
     getDateFromStore() {
@@ -410,14 +414,14 @@ export default {
     setDisabledDates() {
       const disabledRanges = [];
       const eventDates = this.eventData.map((event) => new Date(event.event_starts_at.split(' ')[0]));
-      eventDates.sort((a, b) => a - b); // Sort the event dates in ascending order
+      eventDates.sort((a, b) => a - b);
 
       if (eventDates.length > 0) {
         let fromDate = new Date(eventDates[0]);
 
         for (let i = 1; i < eventDates.length; i++) {
           const toDate = new Date(eventDates[i]);
-          toDate.setDate(toDate.getDate() - 1); // Subtract one day from the event date
+          toDate.setDate(toDate.getDate() - 1);
 
           if (fromDate < toDate) {
             disabledRanges.push(

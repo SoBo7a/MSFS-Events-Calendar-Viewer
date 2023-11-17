@@ -132,6 +132,21 @@ body {
       }
     }
 
+    .event-url {
+      text-align: left;
+      margin-bottom: 25px;
+
+      a {
+        text-decoration: none;
+        color: var(--link-color);
+        font-weight: 700;
+
+        &:hover {
+          color: var(--link-color-hover);
+        }
+      }
+    }
+
     .event-posts-container {
       margin-top: 20px;
 

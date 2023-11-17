@@ -63,6 +63,8 @@
         @close="closeInviteeModal"
       />
 
+      <div v-if="eventDetailsUrl" class="event-url"><font-awesome-icon :icon="['fas', 'link']" /> <a :href="eventDetailsUrl">{{ eventDetailsUrl }}</a></div>
+
       <div class="event-posts-container">
         <div v-for="(post, index) in eventPosts" :key="post.id" class="event-post" :id="`post-${index + 1}`">
           <div class="event-post-profileimage" :title="`Click to visit ${post.username}'s profile in the Browser`">
@@ -122,6 +124,7 @@ export default {
       eventUrl: this.$route.params.url,
       eventDetails: {},
       eventPosts: [],
+      eventDetailsUrl: '',
       eventStartTime: null,
       eventEndTime: null,
 
@@ -229,6 +232,8 @@ export default {
           if(this.eventDetails.event_ends_at) {
             this.eventEndTime = this.formatDate(this.eventDetails.event_ends_at + "Z");
           }
+
+          this.eventDetailsUrl = this.eventPosts[0].event.url
 
           // Modify Twitch Iframes
           this.eventPosts.forEach(post => {
